@@ -8,6 +8,14 @@ This chapter builds a GitHub/API page that fetches public data and handles the f
 
 By the end, your portfolio fetches public repository data from GitHub or a simple mock API, renders cards, and handles failed or empty responses gracefully.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends `useEffect` chapter: https://resources.devweekends.com/courses/react-crash-course/07-useeffect.
+
+> **Mandatory read.** Read one focused article on `useEffect` cleanup if you want to understand why effects can need cleanup. For this simple page, focus first on loading/error/success.
+
+Before writing `fetch`, draw the four states in your learning log: loading, success, error, and empty. You are designing the data flow before writing the effect.
+
 ## Step 1 - Choose the API
 
 Recommended:
@@ -85,10 +93,6 @@ You may add a retry button if you want, but it is not required.
 ## Step 5 - Avoid unnecessary complexity
 
 Do not add a data-fetching library for this course. A simple `fetch` call is enough. Libraries like TanStack Query are excellent for larger apps, but using one here would hide the basic state model you need to learn.
-
-> **Mandatory read.** Read the DevWeekends `useEffect` chapter: https://resources.devweekends.com/courses/react-crash-course/07-useeffect.
-
-> **Mandatory read.** Read one focused article on `useEffect` cleanup if you want to understand why effects can need cleanup. For this simple page, focus first on loading/error/success.
 
 > **Interesting to read.** If you want to go deeper after the page works, skim the hooks section of the DevWeekends React interview deep dive: https://resources.devweekends.com/resources/interview-questions/react. Treat it as review, not as required beginner material.
 

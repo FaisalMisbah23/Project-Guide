@@ -8,6 +8,12 @@ Routing is the difference between "I have components" and "I have pages visitors
 
 By the end, your app has routes for every main page, navigation links that do not reload the browser, a dynamic route for project details, and a not-found page.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends React Router chapter: https://resources.devweekends.com/courses/react-crash-course/09-react-router.
+
+Before installing React Router, write your route map in `learning-log/07-routing-and-project-details.md`. A route should exist because a visitor needs that page, not because the outline has a checkbox.
+
 ## Step 1 - Install React Router
 
 Install:
@@ -90,8 +96,6 @@ Test:
 ```
 
 Navigation should work without a full page refresh. Unknown routes should show `NotFound`.
-
-> **Mandatory read.** Read the DevWeekends React Router chapter: https://resources.devweekends.com/courses/react-crash-course/09-react-router.
 
 > **Interesting to read.** Read the routing docs for React Router's current version. Use official docs when library behavior matters.
 

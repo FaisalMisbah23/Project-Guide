@@ -8,6 +8,12 @@ The mistake beginners make is turning the about page into either a life story or
 
 By the end, you have an `About` page, a skills section or page, grouped skill data, and reusable components for skill categories or cards.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends React lists and keys chapter: https://resources.devweekends.com/courses/react-crash-course/05-lists-keys. This is the concept behind rendering grouped skills from data.
+
+Before creating `skills.js`, sketch your skill categories in the learning log. Do not write JSX yet; decide what the data should say first.
+
 ## Step 1 - Create the page files
 
 Create:
@@ -85,8 +91,6 @@ src/components/
 Do not let the about page and skills page contradict each other. If your about page says you are focused on frontend engineering, the skills page should make React, JavaScript, CSS, accessibility, and responsive UI easy to find.
 
 This is product thinking. The portfolio should tell one coherent story.
-
-> **Mandatory read.** Read the DevWeekends React lists and keys chapter: https://resources.devweekends.com/courses/react-crash-course/05-lists-keys. This is the concept behind rendering grouped skills from data.
 
 > **Interesting to read.** Skim a clean-code or technical-debt article from your article list. Your skill list is not only about tools; it should also signal maintainability and learning habits.
 

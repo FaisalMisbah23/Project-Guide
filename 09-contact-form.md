@@ -10,6 +10,14 @@ Use a contact form only if it behaves reliably. A broken contact form is worse t
 
 By the end, visitors can fill a contact form, see useful validation errors, submit valid input, and see a success message.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends React forms chapter: https://resources.devweekends.com/courses/react-crash-course/06-forms.
+
+> **Mandatory read.** Read "Validate Input Everywhere" and "Think About Real Users" in `Daily_Software_Development_Guidelines.md`.
+
+Before creating `ContactForm.jsx`, write the four fields and their validation rules in your learning log. The form should start as behavior requirements, not markup.
+
 ## Step 1 - Create the contact page and components
 
 Create:
@@ -80,10 +88,6 @@ On valid submit:
 If you later connect a form service, that belongs after this course. For now, be honest: this is frontend validation and UI behavior.
 
 Also protect against double submissions. If the form has a submitting state, disable the submit button while it is processing. Users double-click, networks feel slow, and good interfaces make the current state visible.
-
-> **Mandatory read.** Read the DevWeekends React forms chapter: https://resources.devweekends.com/courses/react-crash-course/06-forms.
-
-> **Mandatory read.** Read "Validate Input Everywhere" and "Think About Real Users" in `Daily_Software_Development_Guidelines.md`.
 
 > **Hint - validation.** Keep validation logic separate from JSX if the form becomes hard to read. A small helper function that returns an errors object is easier to explain than validation scattered through markup.
 

@@ -10,6 +10,14 @@ Your target is not perfection, but you should be aiming for Lighthouse scores ar
 
 By the end, the site works cleanly on mobile and desktop, navigation is usable, forms are accessible, project content is sharper, and the UI feels consistent.
 
+## Before you build
+
+> **Mandatory read.** Read the relevant HTML, accessibility, performance, and image-optimization sections in the DevWeekends frontend interview guide: https://resources.devweekends.com/resources/frontend-interview-qs. Then check whether your portfolio images are too large.
+
+> **Mandatory read.** Read "Avoid Premature Optimization" in `Daily_Software_Development_Guidelines.md`.
+
+Before editing CSS, write the three biggest issues you are trying to improve: mobile layout, accessibility, performance, content clarity, or SEO metadata. Polish should respond to evidence.
+
 ## Step 1 - Audit the site on mobile
 
 Check every route on a narrow screen:
@@ -113,10 +121,6 @@ Check:
 - no console errors.
 
 If you are using plain Vite without a metadata library, start with the basics in `index.html`. You do not need a complex SEO setup for this project, but you should not ship with default Vite metadata.
-
-> **Mandatory read.** Read the relevant HTML, accessibility, performance, and image-optimization sections in the DevWeekends frontend interview guide: https://resources.devweekends.com/resources/frontend-interview-qs. Then check whether your portfolio images are too large.
-
-> **Mandatory read.** Read "Avoid Premature Optimization" in `Daily_Software_Development_Guidelines.md`.
 
 > **Hint - visual consistency.** If every section uses different spacing, button styles, and card styles, the site feels assembled from scraps. Reuse patterns deliberately.
 

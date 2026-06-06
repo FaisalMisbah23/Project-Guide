@@ -8,6 +8,12 @@ This chapter turns the blank Vite app into a portfolio shell: layout, navigation
 
 By the end, your app has a reusable layout and the first shared components in `src/components/`. The browser should show a simple portfolio frame: navigation at the top, a main content area, and a footer.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends React crash course chapters on JSX and components/props: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx and https://resources.devweekends.com/courses/react-crash-course/02-components-props.
+
+Before creating components, write two sentences in `learning-log/03-components-and-jsx.md`: what JSX is, and what props are for. Keep the answers rough; you will refine them after building.
+
 ## Step 1 - Understand JSX
 
 JSX is JavaScript syntax that describes UI. It looks like HTML, but it is not exactly HTML. It lives inside JavaScript, can use variables, and must follow JavaScript rules.
@@ -104,8 +110,6 @@ SectionTitle receives:
 Do not overdo it. If a component is only used once and has no repeated pattern yet, it may not need props. Props are for real variation.
 
 Avoid over-abstraction here. Not every repeated line deserves a new component. Create an abstraction when it improves clarity, removes meaningful duplication, or gives a repeated UI pattern one clear home.
-
-> **Mandatory read.** Read the DevWeekends React crash course chapters on JSX and components/props: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx and https://resources.devweekends.com/courses/react-crash-course/02-components-props.
 
 > **Interesting to read.** Read the "Keep components focused and reusable" notes in `react_learning_package.md`. Keep the extra reading light here; the project matters more than collecting theory.
 

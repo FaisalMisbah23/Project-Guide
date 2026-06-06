@@ -10,6 +10,14 @@ Quality beats quantity here. Aim for **3-6 strong projects**, not a wall of half
 
 By the end, your portfolio has a projects page, a `projects.js` data file, reusable project cards, category filters, and an empty state when no project matches.
 
+## Before you build
+
+> **Mandatory read.** Read the DevWeekends React chapters on state, events, and lists/keys: https://resources.devweekends.com/courses/react-crash-course/03-state-hook, https://resources.devweekends.com/courses/react-crash-course/04-events, and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.
+
+> **Mandatory read.** Read "Think About Real Users" and "Test Edge Cases" in `Daily_Software_Development_Guidelines.md`.
+
+Before creating the projects page, choose your 3-6 strongest projects and write one line for each: problem, contribution, and result. If a project cannot answer those yet, it may not belong in the first version.
+
 ## Step 1 - Create the projects page and data file
 
 Create:
@@ -108,10 +116,6 @@ Result:        What improved, shipped, or became clearer?
 ```
 
 If you do not have metrics yet, do not invent them. Use honest outcomes: deployed successfully, improved Lighthouse score, reduced repeated markup, added validation, or learned how to handle API failures.
-
-> **Mandatory read.** Read the DevWeekends React chapters on state, events, and lists/keys: https://resources.devweekends.com/courses/react-crash-course/03-state-hook, https://resources.devweekends.com/courses/react-crash-course/04-events, and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.
-
-> **Mandatory read.** Read "Think About Real Users" and "Test Edge Cases" in `Daily_Software_Development_Guidelines.md`.
 
 > **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
 

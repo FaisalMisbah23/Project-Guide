@@ -8,6 +8,12 @@ This is also another controlled use of state. The visitor changes a search value
 
 By the end, your portfolio has a learning notes page with notes rendered from data, searchable by title or filterable by tag, plus an empty state.
 
+## Before you build
+
+> **Mandatory read.** From `Software_Engineering_Community_Affirmations.md`, keep this as the chapter motto: "Learn, build, share, repeat." Then write one real note title you would be willing to publish.
+
+Before creating `notes.js`, write three possible learning-note titles from this project. Choose titles that say what you learned, not just what topic you touched.
+
 ## Step 1 - Create the notes page and data
 
 Create:
@@ -87,8 +93,6 @@ Why I stopped hard-coding repeated project markup
 ```
 
 Specific notes make the portfolio feel lived-in.
-
-> **Mandatory read.** From `Software_Engineering_Community_Affirmations.md`, keep this as the chapter motto: "Learn, build, share, repeat." Then write one real note title you would be willing to publish.
 
 > **Interesting to read.** If you want a broader frontend review, skim the DevWeekends frontend interview guide and pick one beginner-friendly section that connects to your note: https://resources.devweekends.com/resources/frontend-interview-qs
 

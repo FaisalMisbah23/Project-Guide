@@ -8,6 +8,12 @@ This chapter takes the local React app, builds it for production, deploys it, do
 
 By the end, the site is deployed on Netlify or Vercel, the README explains the project, all links are checked, and your learning log is ready for review.
 
+## Before you build
+
+> **Mandatory read.** Revisit DevWeekends Git Fundamentals for repository hygiene, then read the DevWeekends Job Prep & Branding guide before polishing your README and portfolio copy: https://resources.devweekends.com/courses/devops-tools/git-fundamentals and https://resources.devweekends.com/resources/job-prep-branding
+
+Before running the final build, write a short release checklist in `learning-log/12-deploy-and-final-review.md`: what you will test, what links must work, and what the README must explain.
+
 ## Step 1 - Run a production build
 
 Run:
@@ -136,8 +142,6 @@ Before sharing:
 If you make a final change, commit it with a message that explains the purpose. "final" is not a purpose.
 
 Before sharing the link, return to the reason you wrote in Chapter 1. A portfolio is not only a React exercise; it is evidence that you can keep a promise to yourself, work through confusion, and turn learning into something visible. That is worth noticing before you rush to the next project.
-
-> **Mandatory read.** Revisit DevWeekends Git Fundamentals for repository hygiene, then read the DevWeekends Job Prep & Branding guide before polishing your README and portfolio copy: https://resources.devweekends.com/courses/devops-tools/git-fundamentals and https://resources.devweekends.com/resources/job-prep-branding
 
 > **Review read.** Skim the DevWeekends React interview deep dive and practice explaining only the parts you used in this project: JSX, components, props, state, events, lists/keys, forms, `useEffect`, and routing. https://resources.devweekends.com/resources/interview-questions/react
 
