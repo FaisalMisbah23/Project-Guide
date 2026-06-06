@@ -4,6 +4,8 @@ The portfolio is not finished until someone else can open it on the internet.
 
 This chapter takes the local React app, builds it for production, deploys it, documents it, and prepares you to explain every important decision.
 
+> **Principle.** Shipping is the moment your work becomes real enough for someone else to use.
+
 ## Where we're headed
 
 By the end, the site is deployed on Netlify or Vercel, the README explains the project, all links are checked, and your learning log is ready for review.
@@ -159,6 +161,20 @@ Before sharing:
 If you make a final change, commit it with a message that explains the purpose. "final" is not a purpose.
 
 Before sharing the link, return to the reason you wrote in Chapter 1. A portfolio is not only a React exercise; it is evidence that you can keep a promise to yourself, work through confusion, and turn learning into something visible. That is worth noticing before you rush to the next project.
+
+## What your screen should show
+
+The deployed URL should behave like the local preview: routes work, refreshes work, links work, the contact form validates, the API page handles failure, and the README tells a reviewer what they are about to inspect.
+
+## Small challenge
+
+Send the deployed link to yourself in a message and open it on your phone. If the first screen does not make you proud enough to share, fix the smallest thing that would change that.
+
+Suggested commit:
+
+```bash
+git commit -m "chore: deploy and document portfolio"
+```
 
 ## Definition of Done
 

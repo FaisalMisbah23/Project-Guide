@@ -4,6 +4,8 @@ Your portfolio has a shell. Now it needs a first impression.
 
 The home page has one job: help a visitor understand who you are, what kind of software work you do, and where to go next. It should not explain your entire life. It should open the door.
 
+> **Principle.** The home page is not a biography; it is a useful first answer.
+
 Use the 30-60 second test from the introduction. A recruiter should be able to land here and quickly answer: who is this, what do they build, and what should I click next?
 
 ## Where we're headed
@@ -79,6 +81,20 @@ The home page can say what kind of projects will appear and link to the future p
 Check the home page on a narrow screen. The hero text should wrap cleanly, buttons should not overflow, and sections should have enough spacing.
 
 Do not wait until Chapter 11 to care about mobile. Chapter 11 is for final polish; every chapter should avoid obvious layout breakage as it is built.
+
+## What your screen should show
+
+The page should show your name, role, short summary, two clear actions, and a small skills preview. On mobile, nothing should overflow horizontally and both action buttons should be easy to tap.
+
+## Small challenge
+
+Ask: "If someone only reads the hero, what would they remember about me?" Rewrite one sentence until the answer is specific.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: build portfolio home page"
+```
 
 ## Definition of Done
 

@@ -4,6 +4,8 @@ The portfolio now has the main features. This chapter makes it feel finished.
 
 Polish is not decoration. It is the work that lets visitors use the site without friction: mobile layout, readable text, good spacing, keyboard-friendly navigation, clear focus states, color contrast, and content that says something specific.
 
+> **Principle.** Polish is respect for the person trying to use what you built.
+
 Your target is not perfection, but you should be aiming for Lighthouse scores around **90+** in Performance, Accessibility, SEO, and Best Practices before sharing the site seriously.
 
 ## Where we're headed
@@ -123,6 +125,20 @@ Check:
 - no console errors.
 
 If you are using plain Vite without a metadata library, start with the basics in `index.html`. You do not need a complex SEO setup for this project, but you should not ship with default Vite metadata.
+
+## What your screen should show
+
+Every page should feel intentional on mobile and desktop. Focus states should be visible, form labels should be clear, images should have appropriate alt text, and the site should no longer look like a collection of unrelated sections.
+
+## Small challenge
+
+Navigate the whole site using only the keyboard. Fix the first thing that feels confusing.
+
+Suggested commit:
+
+```bash
+git commit -m "fix: polish responsive and accessible UI"
+```
 
 ## Definition of Done
 

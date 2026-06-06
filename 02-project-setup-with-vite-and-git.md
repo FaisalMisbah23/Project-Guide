@@ -4,6 +4,8 @@ You've decided what you're building: a React portfolio for a software engineer. 
 
 This chapter is not glamorous. A blank Vite app is not something you can show a recruiter. But the decisions here shape the whole project: how the app starts, what files belong in Git, what gets cleaned out, where your source code lives, and how you make the first checkpoint before adding real features.
 
+> **Principle.** A clean start is not wasted time; it is the first proof that you can work deliberately.
+
 ## The point of this chapter
 
 By the end, you have a Vite + React app that runs locally, a cleaned starter project, a sensible first folder structure, a `learning-log/` folder, a `.gitignore`, and your first commit.
@@ -181,6 +183,20 @@ git commit -m "chore: set up vite react portfolio"
 ```
 
 > **Read before the next chapter.** Read the DevWeekends React crash course introduction to JSX: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx. Focus on what JSX is and why React components return it.
+
+## What your screen should show
+
+The browser should show a simple portfolio placeholder, not the default Vite demo. The terminal should show the dev server running without errors, and `npm run build` should complete successfully.
+
+## Small challenge
+
+Rename the placeholder text so it already sounds like *your* portfolio. Do not design the full hero yet; just replace generic starter text with a calm first signal.
+
+Suggested commit:
+
+```bash
+git commit -m "chore: set up vite react portfolio"
+```
 
 ## Definition of Done
 

@@ -4,6 +4,8 @@ So far, your portfolio data has been local. That is good: local data is predicta
 
 This chapter builds a GitHub/API page that fetches public data and handles the four states every real data UI needs: loading, success, error, and empty.
 
+> **Principle.** A real data UI is not complete until failure has a design.
+
 ## Where we're headed
 
 By the end, your portfolio fetches public repository data from GitHub or a simple mock API, renders cards, and handles failed or empty responses gracefully.
@@ -108,6 +110,20 @@ You may add a retry button if you want, but it is not required.
 ## Step 5 - Avoid unnecessary complexity
 
 Do not add a data-fetching library for this course. A simple `fetch` call is enough. Libraries like TanStack Query are excellent for larger apps, but using one here would hide the basic state model you need to learn.
+
+## What your screen should show
+
+The GitHub/API page should show loading while data is requested, repo cards on success, a friendly error if the request fails, and a useful empty state if the response contains nothing to show.
+
+## Small challenge
+
+Temporarily break the API URL and confirm the error state is understandable. Then restore the URL before committing.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add github api page"
+```
 
 ## Definition of Done
 

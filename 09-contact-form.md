@@ -2,6 +2,8 @@
 
 A portfolio should make contact easy. This chapter builds a contact page with a controlled form and validation.
 
+> **Principle.** A contact page fails if the visitor wants to reach you and has to work for it.
+
 You are not building a backend or sending real email from your own server. The goal is frontend form behavior: state, validation, errors, disabled submit, and a success state.
 
 Use a contact form only if it behaves reliably. A broken contact form is worse than no form. Email, LinkedIn, and GitHub links should always be present as direct fallback paths.
@@ -103,6 +105,20 @@ On valid submit:
 If you later connect a form service, that belongs after this course. For now, be honest: this is frontend validation and UI behavior.
 
 Also protect against double submissions. If the form has a submitting state, disable the submit button while it is processing. Users double-click, networks feel slow, and good interfaces make the current state visible.
+
+## What your screen should show
+
+The contact page should show direct contact links and a form. Empty fields, invalid email, and short messages should show specific errors. A valid submit should show success and prevent repeated submission.
+
+## Small challenge
+
+Make the error messages sound helpful instead of scolding. A visitor made a mistake; they did not fail an exam.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add contact form validation"
+```
 
 ## Definition of Done
 

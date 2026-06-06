@@ -2,6 +2,8 @@
 
 A strong portfolio does not only show finished projects. It can also show how you think and learn. This chapter adds a small learning notes page: articles, notes, or write-ups rendered from data, with search or tag filtering.
 
+> **Principle.** Writing about what you learned turns hidden effort into visible judgment.
+
 This is also another controlled use of state. The visitor changes a search value or tag, and the UI updates.
 
 ## Where we're headed
@@ -97,6 +99,20 @@ Why I stopped hard-coding repeated project markup
 ```
 
 Specific notes make the portfolio feel lived-in.
+
+## What your screen should show
+
+The notes page should show useful note cards from data, a search or tag filter, and a clear message when nothing matches.
+
+## Small challenge
+
+Write one note title that could only belong to *your* project. If it could fit any tutorial, make it more specific.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add searchable learning notes"
+```
 
 ## Definition of Done
 

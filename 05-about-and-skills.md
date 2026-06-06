@@ -2,6 +2,8 @@
 
 The home page introduced you quickly. Now you build the parts that give the introduction weight: your story and your skills.
 
+> **Principle.** Trust grows when your story and your evidence point in the same direction.
+
 The mistake beginners make is turning the about page into either a life story or a list of buzzwords. A useful about page is narrower. It explains your path, what you are practicing now, what strengths show up in your work, and what kind of role or collaboration you are moving toward.
 
 ## Where we're headed
@@ -95,6 +97,20 @@ src/components/
 Do not let the about page and skills page contradict each other. If your about page says you are focused on frontend engineering, the skills page should make React, JavaScript, CSS, accessibility, and responsive UI easy to find.
 
 This is product thinking. The portfolio should tell one coherent story.
+
+## What your screen should show
+
+The about page should feel concise and human. The skills page should show grouped skills from data, with no percentage bars and no tools you cannot discuss.
+
+## Small challenge
+
+Remove one sentence or skill that sounds impressive but does not help the visitor trust your actual work.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add about and skills pages"
+```
 
 ## Definition of Done
 

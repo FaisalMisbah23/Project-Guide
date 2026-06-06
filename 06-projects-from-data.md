@@ -2,6 +2,8 @@
 
 Projects are the heart of a software engineer portfolio. They show what you can build better than a list of technologies ever can.
 
+> **Principle.** A project card should make someone want to inspect the work, not merely count the tools.
+
 This chapter builds the projects page the React way: project information lives in a data file, and the UI renders cards from that data. You also add category filtering, which introduces state for a real reason.
 
 Quality beats quantity here. Aim for **3-6 strong projects**, not a wall of half-finished cards. A small set of finished, explainable projects is stronger than ten tutorial clones.
@@ -127,6 +129,20 @@ Result:        What improved, shipped, or became clearer?
 ```
 
 If you do not have metrics yet, do not invent them. Use honest outcomes: deployed successfully, improved Lighthouse score, reduced repeated markup, added validation, or learned how to handle API failures.
+
+## What your screen should show
+
+The projects page should show a filter control, a grid of project cards, and a clear empty state when a filter has no matches. Each card should make the project understandable without opening the detail page.
+
+## Small challenge
+
+Pick your weakest project card and rewrite it around the problem it solves, not the stack it uses.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: render projects from data"
+```
 
 ## Definition of Done
 

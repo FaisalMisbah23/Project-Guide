@@ -4,6 +4,8 @@ Your app exists. Now it needs a shape. React's first real idea is that a screen 
 
 This chapter turns the blank Vite app into a portfolio shell: layout, navigation, footer, buttons, and section titles. Nothing fancy yet. The goal is to learn how JSX and components work before you build the home page.
 
+> **Principle.** If you can name a piece of UI clearly, you are halfway to designing it clearly.
+
 ## Where we're headed
 
 By the end, your app has a reusable layout and the first shared components in `src/components/`. The browser should show a simple portfolio frame: navigation at the top, a main content area, and a footer.
@@ -123,6 +125,20 @@ SectionTitle receives:
 Do not overdo it. If a component is only used once and has no repeated pattern yet, it may not need props. Props are for real variation.
 
 Avoid over-abstraction here. Not every repeated line deserves a new component. Create an abstraction when it improves clarity, removes meaningful duplication, or gives a repeated UI pattern one clear home.
+
+## What your screen should show
+
+Your app should look like a quiet shell: navigation at the top, a main content area with placeholder content, and a footer. The pieces should come from separate component files, not one long `App.jsx`.
+
+## Small challenge
+
+Make the navigation labels match the future portfolio pages, even if the routes do not exist yet. A visitor should be able to guess where the site is going.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add portfolio shell components"
+```
 
 ## Definition of Done
 

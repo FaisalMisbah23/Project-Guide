@@ -4,6 +4,8 @@ Until now, your pages exist as files, but the app does not truly navigate betwee
 
 Routing is the difference between "I have components" and "I have pages visitors can move through." You will also build project detail pages, where each project can tell a deeper story than a card allows.
 
+> **Principle.** A URL is a promise: if someone saves it, shares it, or refreshes it, the app should know what to show.
+
 ## Where we're headed
 
 By the end, your app has routes for every main page, navigation links that do not reload the browser, a dynamic route for project details, and a not-found page.
@@ -113,6 +115,20 @@ Test:
 ```
 
 Navigation should work without a full page refresh. Unknown routes should show `NotFound`.
+
+## What your screen should show
+
+Clicking navigation links should swap pages without a full reload. A project card should open a matching detail page, a fake project id should show a useful fallback, and a nonsense URL should show `NotFound`.
+
+## Small challenge
+
+Copy one project detail URL, paste it into a new tab, and refresh it. Then write down what should happen after deployment if that same URL is opened directly.
+
+Suggested commit:
+
+```bash
+git commit -m "feat: add routing and project detail pages"
+```
 
 ## Definition of Done
 
