@@ -53,6 +53,8 @@ Click through the site in preview mode. Sometimes a development server hides iss
 
 ## Step 2 - Choose a deployment platform
 
+You now have a production build; next, choose where the built files will live on the internet.
+
 Use Netlify or Vercel. Both can deploy a Vite React app.
 
 Typical settings:
@@ -65,6 +67,8 @@ Publish directory: dist
 If client-side routes break after refresh, configure the platform to serve `index.html` for unknown routes. React Router handles the route after the app loads.
 
 ## Step 3 - Check the deployed site
+
+You now have a live URL; next, test the deployed app instead of trusting the local version.
 
 Open the live URL and test:
 
@@ -85,6 +89,8 @@ External links
 Do not only test locally. Deployment can reveal path, routing, asset, and API issues.
 
 ## Step 4 - Write the README
+
+You now have a deployed app; next, document it so a reviewer understands what they are opening.
 
 Create or update:
 
@@ -128,6 +134,8 @@ React Portfolio Website
 
 ## Step 5 - Prepare the final explanation
 
+You now have the site and README; next, make sure you can explain the decisions behind them.
+
 You should be able to explain:
 
 - why you used Vite;
@@ -144,6 +152,8 @@ You should be able to explain:
 If you cannot explain one of those, revisit the chapter and update your learning log.
 
 ## Step 6 - Create a maintenance habit
+
+You now have a shipped portfolio; next, plan how it stays accurate after this course ends.
 
 A portfolio goes stale quietly. Add a short maintenance checklist to your README or learning log:
 
@@ -162,6 +172,8 @@ Quarterly:
 ```
 
 ## Step 7 - Self-review before sharing
+
+You now have a maintenance plan; next, do one final review before you send the link to anyone.
 
 Do a final self-review like a small pull request:
 

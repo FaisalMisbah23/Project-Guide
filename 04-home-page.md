@@ -37,6 +37,8 @@ The weak approach is to keep writing every section in `App.jsx`. That file becom
 
 ## Step 2 - Build the hero section
 
+You now have a real page file; next, make the first screen answer the visitor's first questions.
+
 The hero should answer:
 
 ```txt
@@ -68,6 +70,8 @@ and document what I learn while shipping small web projects.
 
 ## Step 3 - Add a skills preview
 
+You now have a first impression; next, give the visitor a quick scan of the tools and strengths behind it.
+
 Create a short array of main skills inside the page or in a temporary data file:
 
 ```txt
@@ -83,11 +87,15 @@ Render the list using a reusable badge or simple repeated element. The point is 
 
 ## Step 4 - Add a project preview placeholder
 
+You now have identity and skills on the page; next, point the visitor toward the work they should inspect.
+
 Add a small section that points visitors toward the projects page. Do not build full project cards yet; Chapter 6 handles projects properly from data.
 
 The home page can say what kind of projects will appear and link to the future projects route. If the link does not work yet, that is fine until routing arrives, but the page should still communicate the intended flow.
 
 ## Step 5 - Make it responsive early
+
+You now have the home page content; next, check that the first impression survives a small screen.
 
 Check the home page on a narrow screen. The hero text should wrap cleanly, buttons should not overflow, and sections should have enough spacing.
 

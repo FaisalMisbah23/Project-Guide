@@ -51,6 +51,8 @@ And your JSX can use those values instead of repeating text everywhere.
 
 ## Step 2 - Create your layout components
 
+You now understand the JSX shape; next, turn repeated layout ideas into named components.
+
 Create these files:
 
 ```txt
@@ -74,6 +76,8 @@ This is the daily guideline "one component = one responsibility" in React form. 
 
 ## Step 3 - Wire the shell into `App.jsx`
 
+You now have component files; next, compose them into one visible app shell.
+
 Use `App.jsx` as the temporary app shell:
 
 ```txt
@@ -88,6 +92,8 @@ This is not the final routing setup. React Router arrives in Chapter 7. For now,
 
 ## Step 4 - Add basic global styles
 
+You now have the shell rendering; next, give it enough base styling to be readable.
+
 Set a calm base in your CSS:
 
 - readable body font;
@@ -101,6 +107,8 @@ Set a calm base in your CSS:
 Do not start polishing every pixel. The home page will give the design real content in Chapter 4. This chapter only needs enough styling to make the shell readable.
 
 ## Step 5 - Use props in small places
+
+You now have reusable pieces; next, make the pieces flexible where they genuinely vary.
 
 Props are values passed into a component. They let a component stay reusable instead of hard-coded.
 

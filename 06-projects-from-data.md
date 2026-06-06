@@ -78,6 +78,8 @@ status: "Live demo coming after deployment"
 
 ## Step 2 - Create project components
 
+You now have project data; next, create the UI pieces that will display one project and the whole list.
+
 Create:
 
 ```txt
@@ -93,11 +95,15 @@ The tempting shortcut is to put filtering logic, card markup, and layout all ins
 
 ## Step 3 - Render projects from the data file
 
+You now have the data and components; next, connect them so the page is generated from your project array.
+
 Import the projects array and render a card for each project.
 
 React needs a stable `key` when rendering a list. Use a stable project `id`, not the array index. An index key can behave badly when items are filtered, reordered, or inserted.
 
 ## Step 4 - Add category filtering with state
+
+You now have all projects rendering; next, let the visitor narrow the list without changing the data itself.
 
 Use state for the selected category. State is data React remembers between renders. Here, it is needed because the visitor can change the filter.
 
@@ -115,6 +121,8 @@ Include an "All" option. If no projects match a category, show a clear empty mes
 This is one of the daily habits: handle empty states. A blank page makes users wonder whether the app broke. A clear message tells them exactly what happened.
 
 ## Step 5 - Improve project descriptions
+
+You now have a working project grid; next, make each project worth clicking.
 
 A weak project description says:
 

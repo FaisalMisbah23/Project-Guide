@@ -54,6 +54,8 @@ If you prefer fewer components, keep the responsibilities clear. Repeated field 
 
 ## Step 2 - Define the fields
 
+You now have the contact page and form files; next, define exactly what information the form should collect.
+
 The form needs:
 
 ```txt
@@ -76,6 +78,8 @@ The weak approach is to accept anything and only hope the visitor typed correctl
 
 ## Step 3 - Use controlled inputs
 
+You now have fields and validation rules; next, connect the fields to React state.
+
 A controlled input is an input whose value is stored in React state. When the user types, state updates; when state updates, the input reflects it.
 
 Use controlled inputs here because the form needs validation and a success reset.
@@ -83,6 +87,8 @@ Use controlled inputs here because the form needs validation and a success reset
 Do not manually read DOM values at submit time unless you can explain why. React state gives you one clear source of truth for the form.
 
 ## Step 4 - Show errors clearly
+
+You now have form state; next, turn invalid state into clear feedback.
 
 Errors should appear near the relevant field. They should be specific:
 
@@ -111,6 +117,8 @@ Message must be at least 20 characters so I have enough context to reply.
 ```
 
 ## Step 5 - Submit without pretending there is a backend
+
+You now have validation feedback; next, define what a successful frontend-only submit should do.
 
 On valid submit:
 

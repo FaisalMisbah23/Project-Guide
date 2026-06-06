@@ -50,6 +50,8 @@ Fix the layout problems before visual decoration.
 
 ## Step 2 - Improve navigation
 
+You now know how each route behaves on mobile; next, make the navigation usable when space is tight.
+
 If the navigation has too many links for mobile, add a simple mobile menu state.
 
 The menu should:
@@ -62,6 +64,8 @@ The menu should:
 Do not add complex animation here. The goal is usable navigation.
 
 ## Step 3 - Check accessibility basics
+
+You now have a usable layout; next, check whether people can actually navigate and understand it.
 
 Accessibility means people with different devices and abilities can use the site. For this project, check:
 
@@ -89,6 +93,8 @@ Error text appears near the field when invalid
 
 ## Step 4 - Refine the content
 
+You now have the interaction basics covered; next, sharpen the words so the work is easier to trust.
+
 Read every project card and detail page. Replace vague text with specific text.
 
 Weak:
@@ -108,6 +114,8 @@ Do the same for the about page and learning notes. The site should sound like a 
 
 ## Step 5 - Check performance basics
 
+You now have clearer content and accessibility; next, make sure the page is not heavier than it needs to be.
+
 Keep it simple:
 
 - remove unused assets;
@@ -124,6 +132,8 @@ Do not chase advanced optimization. Make it work, make it correct, measure, then
 This is where "measure before refactoring" matters. If a page feels slow, gather evidence first: image size, bundle size, Lighthouse output, or a visible network delay. Do not add complex optimization patterns because they sound senior.
 
 ## Step 6 - Check SEO and sharing basics
+
+You now have a polished interface; next, make sure the site looks intentional in browser tabs, search previews, and shared links.
 
 Even a simple portfolio should have enough metadata to look intentional when shared.
 

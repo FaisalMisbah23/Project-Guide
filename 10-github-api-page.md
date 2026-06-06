@@ -47,6 +47,8 @@ Do not use private tokens in this beginner portfolio. Public data is enough, and
 
 ## Step 2 - Create the page and components
 
+You now know which API you are using; next, create the page and small UI pieces for each data state.
+
 Create:
 
 ```txt
@@ -70,6 +72,8 @@ link
 ```
 
 ## Step 3 - Fetch with `useEffect`
+
+You now have a page ready to display data; next, load that data after the component renders.
 
 `useEffect` lets a component run code after rendering. Fetching data is one common use.
 
@@ -112,6 +116,8 @@ Success: repo cards with name, description, language, stars, and link.
 
 ## Step 4 - Render all data states
 
+You now have fetch state; next, make every possible state visible to the visitor.
+
 Your page should show:
 
 - loading UI while the request is in progress;
@@ -122,6 +128,8 @@ Your page should show:
 You may add a retry button if you want, but it is not required.
 
 ## Step 5 - Avoid unnecessary complexity
+
+You now have the full fetch flow; next, keep it understandable instead of hiding the basics behind a library.
 
 Do not add a data-fetching library for this course. A simple `fetch` call is enough. Libraries like TanStack Query are excellent for larger apps, but using one here would hide the basic state model you need to learn.
 

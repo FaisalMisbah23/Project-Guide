@@ -47,6 +47,8 @@ These can be real external links, short local summaries, or placeholders for not
 
 ## Step 2 - Create note components
 
+You now have note data; next, create reusable pieces for displaying and filtering that data.
+
 Create:
 
 ```txt
@@ -59,6 +61,8 @@ src/components/
 If your design combines search and tags differently, that is fine. The page still needs clear, reusable pieces.
 
 ## Step 3 - Add search state
+
+You now have notes rendering; next, let the visitor narrow them by changing state.
 
 Use state to store the current search text. Filter notes by title, summary, or tags.
 
@@ -75,6 +79,8 @@ Do not mutate the original notes array. Filtering should produce a derived list.
 
 ## Step 4 - Add tags
 
+You now have text search; next, add tags so visitors can scan by learning area.
+
 Tags help visitors scan your learning areas:
 
 ```txt
@@ -89,6 +95,8 @@ Deployment
 You may implement tag filtering instead of search, or both if the page stays simple. If no notes match, show an empty state.
 
 ## Step 5 - Make notes useful
+
+You now have searchable notes; next, make the note content specific enough to prove real learning.
 
 A learning note should say something. Avoid titles like "React Notes." Prefer titles like:
 

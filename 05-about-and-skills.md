@@ -34,6 +34,8 @@ You may render one at a time in `App.jsx` until routing arrives. The important t
 
 ## Step 2 - Write the about content as sections
 
+You now have page files; next, fill the about page with a short story that supports the portfolio's promise.
+
 Your about page should include:
 
 - who you are;
@@ -58,6 +60,8 @@ clearly through project notes.
 ```
 
 ## Step 3 - Store skills as grouped data
+
+You now have your story; next, turn your skills into data so they stay easy to update and render.
 
 Create:
 
@@ -110,6 +114,8 @@ Frontend:
 
 ## Step 4 - Create skill components
 
+You now have grouped skill data; next, create components that can render each group consistently.
+
 Create:
 
 ```txt
@@ -121,6 +127,8 @@ src/components/
 `SkillCategory` should receive a category name and list of skills. `SkillBadge` should render one skill. This keeps the page readable and gives repeated UI a home.
 
 ## Step 5 - Connect the story to the skills
+
+You now have story content and skill data; next, make sure they reinforce the same professional signal.
 
 Do not let the about page and skills page contradict each other. If your about page says you are focused on frontend engineering, the skills page should make React, JavaScript, CSS, accessibility, and responsive UI easy to find.
 

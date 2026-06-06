@@ -47,6 +47,8 @@ Before you run the command, apply the daily guideline: understand the expected o
 
 ## Step 2 - Understand the files before changing them
 
+You now have a running Vite app; next, slow down and learn what Vite created before you start deleting files.
+
 Before deleting anything, inspect the starter:
 
 ```txt
@@ -74,6 +76,8 @@ Do not treat these files as magic. A React app is still HTML, CSS, and JavaScrip
 
 ## Step 3 - Clean the starter without over-building
 
+You now know what each starter file does; next, remove only the demo pieces so your project starts from a clean base.
+
 Now remove the demo-specific content: logos, counter behavior, and starter copy. Your goal is a small blank app that proves React is rendering.
 
 Keep the app minimal:
@@ -90,6 +94,8 @@ You may delete unused logo assets and starter CSS that only supported the demo s
 Do not build the hero, navbar, routing, or project cards yet. Chapter 3 teaches components properly; Chapter 4 builds the home page. Rushing ahead here usually creates code you will have to reorganize two chapters later.
 
 ## Step 4 - Add the first real folders
+
+You now have a clean React app; next, create the homes where future pages, components, data, and routes will live.
 
 Create the folders the next chapters will fill:
 
@@ -117,6 +123,8 @@ This structure is feature-aware without being over-engineered:
 The tempting shortcut is to create files only when you need them. That is fine for tiny experiments, but this course already knows the app will have pages, components, data, and routes. Creating the folders now gives every future chapter a predictable home.
 
 ## Step 5 - Confirm the scripts
+
+You now have a folder structure; next, make sure the commands that run and build the app still work.
 
 Open `package.json` and understand the scripts Vite created:
 
@@ -147,6 +155,8 @@ npm run build
 If it passes, the cleaned starter still compiles. If it fails, fix it before continuing. A broken build at setup is cheaper to fix than a broken build after ten chapters.
 
 ## Step 6 - Set up Git and `.gitignore`
+
+You now have a working starter; next, save that checkpoint and protect the repo from generated or private files.
 
 Initialize Git:
 

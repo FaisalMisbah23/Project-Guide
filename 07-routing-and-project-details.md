@@ -57,6 +57,8 @@ URL can be shared, refreshed, and bookmarked
 
 ## Step 2 - Create the route file
 
+You now have the router installed; next, describe which URL should show which page.
+
 Create:
 
 ```txt
@@ -82,11 +84,15 @@ Some pages may be placeholders until later chapters. That is fine. Create enough
 
 ## Step 3 - Use router links in navigation
 
+You now have route definitions; next, connect the navigation so visitors can move through them without a full reload.
+
 Update `Navbar` to use React Router navigation links instead of plain reload-style page changes.
 
 Plain anchors are still correct for external links. Router links are for internal pages. Use each for the right job.
 
 ## Step 4 - Create the project details page
+
+You now have a projects route; next, make each project card lead to a deeper URL-backed story.
 
 Create:
 
@@ -124,6 +130,8 @@ This project may have moved or been removed. Go back to all projects.
 ```
 
 ## Step 5 - Test route behavior
+
+You now have routes and dynamic details; next, test the paths people will click, paste, mistype, and refresh.
 
 Test:
 
