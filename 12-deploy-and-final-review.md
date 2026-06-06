@@ -23,11 +23,9 @@ flowchart TD
 
 ## Before you build
 
-> **Mandatory read.** Revisit DevWeekends Git Fundamentals for repository hygiene, then read the DevWeekends Job Prep & Branding guide before polishing your README and portfolio copy: https://resources.devweekends.com/courses/devops-tools/git-fundamentals and https://resources.devweekends.com/resources/job-prep-branding
+> **Mandatory read.** Revisit DevWeekends Git Fundamentals before the final build and deploy: https://resources.devweekends.com/courses/devops-tools/git-fundamentals. Focus on repository hygiene, commit messages, and keeping generated/private files out of Git.
 
 > **Review read.** Skim the DevWeekends React interview deep dive and practice explaining only the parts you used in this project: JSX, components, props, state, events, lists/keys, forms, `useEffect`, and routing. https://resources.devweekends.com/resources/interview-questions/react
-
-> **Optional blog.** Pick one career or engineering culture article from your article list. A portfolio is not only code; it is how you communicate your engineering identity.
 
 > **Hint - final fixes.** Do not start a redesign on deployment day. Fix broken links, broken layouts, unclear content, and failed builds. Save big redesign ideas for a future version.
 
@@ -91,6 +89,10 @@ Do not only test locally. Deployment can reveal path, routing, asset, and API is
 ## Step 4 - Write the README
 
 You now have a deployed app; next, document it so a reviewer understands what they are opening.
+
+> **Reading before this step.** Read the DevWeekends Job Prep & Branding guide: https://resources.devweekends.com/resources/job-prep-branding. Focus on making your work easy for a reviewer to understand quickly.
+
+> **Optional direct read after the README works.** Pick one career or engineering culture article from your article list. Use it to improve how you describe your engineering identity, not as a blocker before deployment.
 
 Create or update:
 

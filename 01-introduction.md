@@ -65,6 +65,8 @@ Most build chapters start with **Before you build**. Treat that section as part 
 - **Hints** — nudges for tricky parts. A hint points at the thinking, not the finished code.
 - **Stuck reminders** — prompts to slow down, write the question, use rubber duck debugging, or think on paper before thrashing through code.
 
+Some readings appear inside a build step instead of at the top. That is intentional. Read about lists when you render a list, events when you handle a click, forms when you build a form, and `useEffect` when you fetch data. The goal is not to collect tabs; the goal is to read one useful thing, apply it immediately, and keep moving.
+
 ### The checklist is your gate
 
 Every chapter ends with a **Definition of Done**: observable things you can run, click, see, or explain. Do not move forward until every box is true. If a box will not tick, that is the work for the day.

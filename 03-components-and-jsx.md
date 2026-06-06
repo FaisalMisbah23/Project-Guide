@@ -21,8 +21,6 @@ flowchart TD
 
 ## Before you build
 
-> **Mandatory read.** Read the DevWeekends React crash course chapters on JSX and components/props: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx and https://resources.devweekends.com/courses/react-crash-course/02-components-props.
-
 > **Optional blog.** Read the "Keep components focused and reusable" notes in `react_learning_package.md`. Keep the extra reading light here; the project matters more than collecting theory.
 
 > **Hint - naming components.** Name components after what they are in the product, not after CSS tricks. `ProjectCard` is clearer than `BoxWithShadow`; `SectionTitle` is clearer than `BigText`.
@@ -30,6 +28,8 @@ flowchart TD
 Before creating components, write two sentences in `learning-log/03-components-and-jsx.md`: what JSX is, and what props are for. Keep the answers rough; you will refine them after building.
 
 ## Step 1 - Understand JSX
+
+> **Reading before this step.** Read DevWeekends React intro to JSX: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx. Focus on how JSX looks like HTML but follows JavaScript rules.
 
 JSX is JavaScript syntax that describes UI. It looks like HTML, but it is not exactly HTML. It lives inside JavaScript, can use variables, and must follow JavaScript rules.
 
@@ -52,6 +52,8 @@ And your JSX can use those values instead of repeating text everywhere.
 ## Step 2 - Create your layout components
 
 You now understand the JSX shape; next, turn repeated layout ideas into named components.
+
+> **Reading before this step.** Read DevWeekends React components and props: https://resources.devweekends.com/courses/react-crash-course/02-components-props. Focus on how components let you name pieces of UI and reuse them.
 
 Create these files:
 

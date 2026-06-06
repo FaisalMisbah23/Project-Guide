@@ -21,10 +21,6 @@ stateDiagram-v2
 
 ## Before you build
 
-> **Mandatory read.** Read the DevWeekends `useEffect` chapter: https://resources.devweekends.com/courses/react-crash-course/07-useeffect.
-
-> **Mandatory read.** Read one focused article on `useEffect` cleanup if you want to understand why effects can need cleanup. For this simple page, focus first on loading/error/success.
-
 > **Optional deep dive.** If you want to go deeper after the page works, skim the hooks section of the DevWeekends React interview deep dive: https://resources.devweekends.com/resources/interview-questions/react. Treat it as review, not as required beginner material.
 
 > **Hint - public API limits.** If GitHub rate limits you, switch temporarily to mock data or another public API. The learning goal is fetch state, not fighting an API quota.
@@ -74,6 +70,10 @@ link
 ## Step 3 - Fetch with `useEffect`
 
 You now have a page ready to display data; next, load that data after the component renders.
+
+> **Reading before this step.** Read DevWeekends React `useEffect`: https://resources.devweekends.com/courses/react-crash-course/07-useeffect. Focus on why effects run after render and why fetched data usually needs loading and error state.
+
+> **Optional direct read after it works.** Read React's official "Synchronizing with Effects" guide if you want a deeper explanation of effects and cleanup: https://react.dev/learn/synchronizing-with-effects. This is extra context, not a blocker for the beginner version.
 
 `useEffect` lets a component run code after rendering. Fetching data is one common use.
 

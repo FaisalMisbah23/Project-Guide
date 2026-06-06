@@ -23,13 +23,9 @@ flowchart TD
 
 ## Before you build
 
-> **Mandatory read.** Read the DevWeekends React chapters on state, events, and lists/keys: https://resources.devweekends.com/courses/react-crash-course/03-state-hook, https://resources.devweekends.com/courses/react-crash-course/04-events, and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.
-
-> **Daily guideline.** Read "Think About Real Users" and "Test Edge Cases" in `Daily_Software_Development_Guidelines.md`.
-
-> **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
-
 Before creating the projects page, choose your 3-6 strongest projects and write one line for each: problem, contribution, and result. If a project cannot answer those yet, it may not belong in the first version.
+
+> **Daily guideline.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it here to choose projects a visitor can actually understand, not just projects that list impressive tools.
 
 ## Step 1 - Create the projects page and data file
 
@@ -97,6 +93,8 @@ The tempting shortcut is to put filtering logic, card markup, and layout all ins
 
 You now have the data and components; next, connect them so the page is generated from your project array.
 
+> **Reading before this step.** Read DevWeekends React lists and keys: https://resources.devweekends.com/courses/react-crash-course/05-lists-keys. Focus on why React needs a stable `key` when rendering arrays.
+
 Import the projects array and render a card for each project.
 
 React needs a stable `key` when rendering a list. Use a stable project `id`, not the array index. An index key can behave badly when items are filtered, reordered, or inserted.
@@ -105,7 +103,11 @@ React needs a stable `key` when rendering a list. Use a stable project `id`, not
 
 You now have all projects rendering; next, let the visitor narrow the list without changing the data itself.
 
+> **Reading before choosing the selected category.** Read DevWeekends React state: https://resources.devweekends.com/courses/react-crash-course/03-state-hook. Focus on why React needs to remember values that can change after the page renders.
+
 Use state for the selected category. State is data React remembers between renders. Here, it is needed because the visitor can change the filter.
+
+> **Reading before wiring the filter buttons.** Read DevWeekends React events: https://resources.devweekends.com/courses/react-crash-course/04-events. Focus on how a click event changes state and causes the UI to re-render.
 
 The flow should be:
 
@@ -117,6 +119,10 @@ Visitor clicks category
 ```
 
 Include an "All" option. If no projects match a category, show a clear empty message instead of a blank page.
+
+> **Daily guideline.** Read "Test Edge Cases" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Test the edge case where a filter has no matching projects.
+
+> **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
 
 This is one of the daily habits: handle empty states. A blank page makes users wonder whether the app broke. A clear message tells them exactly what happened.
 

@@ -25,15 +25,11 @@ flowchart TD
 
 ## Before you build
 
-> **Mandatory read.** Read the DevWeekends React forms chapter: https://resources.devweekends.com/courses/react-crash-course/06-forms.
-
-> **Daily guideline.** Read "Validate Input Everywhere" and "Think About Real Users" in `Daily_Software_Development_Guidelines.md`.
-
-> **Hint - validation.** Keep validation logic separate from JSX if the form becomes hard to read. A small helper function that returns an errors object is easier to explain than validation scattered through markup.
-
 > **When you're stuck.** Forms create emotional noise because one small typo can make the whole thing feel broken. Slow it down: write the current form state on paper, then the validation rule, then the error you expect to see. If those three do not line up, you have found the next question to answer.
 
 Before creating `ContactForm.jsx`, write the four fields and their validation rules in your learning log. The form should start as behavior requirements, not markup.
+
+> **Daily guideline.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it to decide what a visitor needs when they are trying to contact you quickly.
 
 ## Step 1 - Create the contact page and components
 
@@ -55,6 +51,8 @@ If you prefer fewer components, keep the responsibilities clear. Repeated field 
 ## Step 2 - Define the fields
 
 You now have the contact page and form files; next, define exactly what information the form should collect.
+
+> **Reading before this step.** Read the validation habit "Validate Input Everywhere" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Focus on why the interface should reject incomplete or unclear messages before pretending the form succeeded.
 
 The form needs:
 
@@ -80,6 +78,8 @@ The weak approach is to accept anything and only hope the visitor typed correctl
 
 You now have fields and validation rules; next, connect the fields to React state.
 
+> **Reading before this step.** Read DevWeekends React forms: https://resources.devweekends.com/courses/react-crash-course/06-forms. Focus on controlled inputs and how form values live in state.
+
 A controlled input is an input whose value is stored in React state. When the user types, state updates; when state updates, the input reflects it.
 
 Use controlled inputs here because the form needs validation and a success reset.
@@ -89,6 +89,8 @@ Do not manually read DOM values at submit time unless you can explain why. React
 ## Step 4 - Show errors clearly
 
 You now have form state; next, turn invalid state into clear feedback.
+
+> **Hint - validation.** Keep validation logic separate from JSX if the form becomes hard to read. A small helper function that returns an errors object is easier to explain than validation scattered through markup.
 
 Errors should appear near the relevant field. They should be specific:
 
