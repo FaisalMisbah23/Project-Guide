@@ -8,6 +8,15 @@ This chapter builds a GitHub/API page that fetches public data and handles the f
 
 By the end, your portfolio fetches public repository data from GitHub or a simple mock API, renders cards, and handles failed or empty responses gracefully.
 
+```mermaid
+stateDiagram-v2
+  [*] --> Loading
+  Loading --> Success: data received
+  Loading --> Error: request failed
+  Success --> Empty: no repositories
+  Error --> Loading: retry
+```
+
 ## Before you build
 
 > **Mandatory read.** Read the DevWeekends `useEffect` chapter: https://resources.devweekends.com/courses/react-crash-course/07-useeffect.

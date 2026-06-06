@@ -8,6 +8,19 @@ Routing is the difference between "I have components" and "I have pages visitors
 
 By the end, your app has routes for every main page, navigation links that do not reload the browser, a dynamic route for project details, and a not-found page.
 
+```mermaid
+flowchart TD
+  Root[/] --> Home[Home]
+  AboutRoute[/about] --> About[About]
+  SkillsRoute[/skills] --> Skills[Skills]
+  ProjectsRoute[/projects] --> Projects[Projects]
+  ProjectId[/projects/:id] --> ProjectDetails[ProjectDetails]
+  NotesRoute[/notes] --> Notes[LearningNotes]
+  GithubRoute[/github] --> GitHub[GitHub]
+  ContactRoute[/contact] --> Contact[Contact]
+  Unknown[*] --> NotFound[NotFound]
+```
+
 ## Before you build
 
 > **Mandatory read.** Read the DevWeekends React Router chapter: https://resources.devweekends.com/courses/react-crash-course/09-react-router.

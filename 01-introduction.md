@@ -121,6 +121,19 @@ Those are future projects. This one is about finishing the React foundation well
 
 **The flow in one line:** *set up the Vite app -> split UI into components -> build pages -> move repeated content into data -> add state for interaction -> add routing -> fetch API data -> validate the contact form -> polish -> deploy.*
 
+```mermaid
+flowchart TD
+  Setup[Vite setup] --> JSX[JSX]
+  JSX --> Components[Reusable components]
+  Components --> Pages[Portfolio pages]
+  Pages --> Data[Projects, skills, and notes as data]
+  Data --> State[State for filters, forms, and search]
+  State --> Routing[React Router]
+  Routing --> Effects[API fetching with useEffect]
+  Effects --> Polish[Responsive polish and accessibility]
+  Polish --> Deploy[Deploy and final review]
+```
+
 ## Before you start
 
 This course assumes you already know basic HTML, CSS, and JavaScript, but you are new to React.

@@ -8,6 +8,17 @@ This chapter takes the local React app, builds it for production, deploys it, do
 
 By the end, the site is deployed on Netlify or Vercel, the README explains the project, all links are checked, and your learning log is ready for review.
 
+```mermaid
+flowchart TD
+  Build[npm run build] --> Preview[npm run preview]
+  Preview --> Deploy[Deploy to Netlify or Vercel]
+  Deploy --> CheckRoutes[Check routes and refresh behavior]
+  CheckRoutes --> CheckLinks[Check internal and external links]
+  CheckLinks --> README[Polish README]
+  README --> Explain[Practice final explanation]
+  Explain --> Share[Share portfolio link]
+```
+
 ## Before you build
 
 > **Mandatory read.** Revisit DevWeekends Git Fundamentals for repository hygiene, then read the DevWeekends Job Prep & Branding guide before polishing your README and portfolio copy: https://resources.devweekends.com/courses/devops-tools/git-fundamentals and https://resources.devweekends.com/resources/job-prep-branding

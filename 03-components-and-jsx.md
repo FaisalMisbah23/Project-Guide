@@ -8,6 +8,15 @@ This chapter turns the blank Vite app into a portfolio shell: layout, navigation
 
 By the end, your app has a reusable layout and the first shared components in `src/components/`. The browser should show a simple portfolio frame: navigation at the top, a main content area, and a footer.
 
+```mermaid
+flowchart TD
+  App[App.jsx] --> Navbar[Navbar]
+  App --> Main[main content]
+  App --> Footer[Footer]
+  Main --> Button[Button]
+  Main --> SectionTitle[SectionTitle]
+```
+
 ## Before you build
 
 > **Mandatory read.** Read the DevWeekends React crash course chapters on JSX and components/props: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx and https://resources.devweekends.com/courses/react-crash-course/02-components-props.

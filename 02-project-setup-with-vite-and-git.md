@@ -8,6 +8,16 @@ This chapter is not glamorous. A blank Vite app is not something you can show a 
 
 By the end, you have a Vite + React app that runs locally, a cleaned starter project, a sensible first folder structure, a `learning-log/` folder, a `.gitignore`, and your first commit.
 
+```mermaid
+flowchart TD
+  Start[Create Vite React app] --> Install[Install dependencies]
+  Install --> Run[Run dev server]
+  Run --> Clean[Clean starter files]
+  Clean --> Folders[Create source folders]
+  Folders --> Build[Run production build]
+  Build --> Git[Initialize Git and commit]
+```
+
 ## Before you build
 
 > **Mandatory read - Git habits.** Read DevWeekends Git Fundamentals: https://resources.devweekends.com/courses/devops-tools/git-fundamentals. Focus on repositories, staging, commits, and the basic Git workflow. The goal is simple: small commits, clear messages, no generated files.

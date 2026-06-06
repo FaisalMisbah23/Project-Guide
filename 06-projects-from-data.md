@@ -10,6 +10,15 @@ Quality beats quantity here. Aim for **3-6 strong projects**, not a wall of half
 
 By the end, your portfolio has a projects page, a `projects.js` data file, reusable project cards, category filters, and an empty state when no project matches.
 
+```mermaid
+flowchart TD
+  Data[projects.js] --> Filter[Selected category state]
+  Filter --> Visible[Visible projects]
+  Visible --> Grid[ProjectGrid]
+  Grid --> Card[ProjectCard]
+  Visible --> Empty[Empty state if no matches]
+```
+
 ## Before you build
 
 > **Mandatory read.** Read the DevWeekends React chapters on state, events, and lists/keys: https://resources.devweekends.com/courses/react-crash-course/03-state-hook, https://resources.devweekends.com/courses/react-crash-course/04-events, and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.

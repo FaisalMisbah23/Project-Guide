@@ -10,6 +10,17 @@ Use a contact form only if it behaves reliably. A broken contact form is worse t
 
 By the end, visitors can fill a contact form, see useful validation errors, submit valid input, and see a success message.
 
+```mermaid
+flowchart TD
+  Input[Visitor types into fields] --> State[Form state updates]
+  State --> Submit[Visitor submits]
+  Submit --> Validate{Valid input?}
+  Validate -->|No| Errors[Show field errors]
+  Errors --> State
+  Validate -->|Yes| Sending[Disable submit and show submitting state]
+  Sending --> Success[Show success message]
+```
+
 ## Before you build
 
 > **Mandatory read.** Read the DevWeekends React forms chapter: https://resources.devweekends.com/courses/react-crash-course/06-forms.
