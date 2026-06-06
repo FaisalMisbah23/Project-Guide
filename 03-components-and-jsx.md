@@ -12,6 +12,10 @@ By the end, your app has a reusable layout and the first shared components in `s
 
 > **Mandatory read.** Read the DevWeekends React crash course chapters on JSX and components/props: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx and https://resources.devweekends.com/courses/react-crash-course/02-components-props.
 
+> **Optional blog.** Read the "Keep components focused and reusable" notes in `react_learning_package.md`. Keep the extra reading light here; the project matters more than collecting theory.
+
+> **Hint - naming components.** Name components after what they are in the product, not after CSS tricks. `ProjectCard` is clearer than `BoxWithShadow`; `SectionTitle` is clearer than `BigText`.
+
 Before creating components, write two sentences in `learning-log/03-components-and-jsx.md`: what JSX is, and what props are for. Keep the answers rough; you will refine them after building.
 
 ## Step 1 - Understand JSX
@@ -110,10 +114,6 @@ SectionTitle receives:
 Do not overdo it. If a component is only used once and has no repeated pattern yet, it may not need props. Props are for real variation.
 
 Avoid over-abstraction here. Not every repeated line deserves a new component. Create an abstraction when it improves clarity, removes meaningful duplication, or gives a repeated UI pattern one clear home.
-
-> **Interesting to read.** Read the "Keep components focused and reusable" notes in `react_learning_package.md`. Keep the extra reading light here; the project matters more than collecting theory.
-
-> **Hint - naming components.** Name components after what they are in the product, not after CSS tricks. `ProjectCard` is clearer than `BoxWithShadow`; `SectionTitle` is clearer than `BigText`.
 
 ## Definition of Done
 

@@ -14,7 +14,9 @@ By the end, the home page has a hero section, a short professional summary, a ma
 
 > **Mandatory read.** Read the DevWeekends React components/props chapter, then skim the lists and keys chapter before rendering skills from an array: https://resources.devweekends.com/courses/react-crash-course/02-components-props and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.
 
-> **Mandatory read.** Read the "Name Things Clearly" and "Keep Components Focused" sections in `Daily_Software_Development_Guidelines.md`.
+> **Daily guideline.** Read the "Name Things Clearly" and "Keep Components Focused" sections in `Daily_Software_Development_Guidelines.md`.
+
+> **Hint - hero copy.** Write the summary in plain language first. If it sounds like a slogan from a template, rewrite it with one concrete skill and one concrete outcome.
 
 Before touching `Home.jsx`, write the hero's purpose in one sentence: who you are, what you build, and what the visitor should click next.
 
@@ -77,8 +79,6 @@ The home page can say what kind of projects will appear and link to the future p
 Check the home page on a narrow screen. The hero text should wrap cleanly, buttons should not overflow, and sections should have enough spacing.
 
 Do not wait until Chapter 11 to care about mobile. Chapter 11 is for final polish; every chapter should avoid obvious layout breakage as it is built.
-
-> **Hint - hero copy.** Write the summary in plain language first. If it sounds like a slogan from a template, rewrite it with one concrete skill and one concrete outcome.
 
 ## Definition of Done
 

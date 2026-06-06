@@ -12,6 +12,10 @@ By the end, your portfolio has a learning notes page with notes rendered from da
 
 > **Mandatory read.** From `Software_Engineering_Community_Affirmations.md`, keep this as the chapter motto: "Learn, build, share, repeat." Then write one real note title you would be willing to publish.
 
+> **Optional blog.** If you want a broader frontend review, skim the DevWeekends frontend interview guide and pick one beginner-friendly section that connects to your note: https://resources.devweekends.com/resources/frontend-interview-qs
+
+> **Hint - derived data.** The filtered list should be calculated from `notes` and the current search/tag. Do not store both the original list and filtered list in state unless you can explain why.
+
 Before creating `notes.js`, write three possible learning-note titles from this project. Choose titles that say what you learned, not just what topic you touched.
 
 ## Step 1 - Create the notes page and data
@@ -93,10 +97,6 @@ Why I stopped hard-coding repeated project markup
 ```
 
 Specific notes make the portfolio feel lived-in.
-
-> **Interesting to read.** If you want a broader frontend review, skim the DevWeekends frontend interview guide and pick one beginner-friendly section that connects to your note: https://resources.devweekends.com/resources/frontend-interview-qs
-
-> **Hint - derived data.** The filtered list should be calculated from `notes` and the current search/tag. Do not store both the original list and filtered list in state unless you can explain why.
 
 ## Definition of Done
 

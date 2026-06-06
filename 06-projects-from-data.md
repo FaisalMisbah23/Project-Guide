@@ -14,7 +14,9 @@ By the end, your portfolio has a projects page, a `projects.js` data file, reusa
 
 > **Mandatory read.** Read the DevWeekends React chapters on state, events, and lists/keys: https://resources.devweekends.com/courses/react-crash-course/03-state-hook, https://resources.devweekends.com/courses/react-crash-course/04-events, and https://resources.devweekends.com/courses/react-crash-course/05-lists-keys.
 
-> **Mandatory read.** Read "Think About Real Users" and "Test Edge Cases" in `Daily_Software_Development_Guidelines.md`.
+> **Daily guideline.** Read "Think About Real Users" and "Test Edge Cases" in `Daily_Software_Development_Guidelines.md`.
+
+> **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
 
 Before creating the projects page, choose your 3-6 strongest projects and write one line for each: problem, contribution, and result. If a project cannot answer those yet, it may not belong in the first version.
 
@@ -116,8 +118,6 @@ Result:        What improved, shipped, or became clearer?
 ```
 
 If you do not have metrics yet, do not invent them. Use honest outcomes: deployed successfully, improved Lighthouse score, reduced repeated markup, added validation, or learned how to handle API failures.
-
-> **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
 
 ## Definition of Done
 

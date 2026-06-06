@@ -14,6 +14,12 @@ By the end, your portfolio fetches public repository data from GitHub or a simpl
 
 > **Mandatory read.** Read one focused article on `useEffect` cleanup if you want to understand why effects can need cleanup. For this simple page, focus first on loading/error/success.
 
+> **Optional deep dive.** If you want to go deeper after the page works, skim the hooks section of the DevWeekends React interview deep dive: https://resources.devweekends.com/resources/interview-questions/react. Treat it as review, not as required beginner material.
+
+> **Hint - public API limits.** If GitHub rate limits you, switch temporarily to mock data or another public API. The learning goal is fetch state, not fighting an API quota.
+
+> **When you're stuck.** Say the data flow out loud like a rubber duck explanation: "The page renders, loading becomes true, fetch starts, success stores data, failure stores error, loading becomes false." Point to where each step happens in your code. The missing step is usually the bug.
+
 Before writing `fetch`, draw the four states in your learning log: loading, success, error, and empty. You are designing the data flow before writing the effect.
 
 ## Step 1 - Choose the API
@@ -93,12 +99,6 @@ You may add a retry button if you want, but it is not required.
 ## Step 5 - Avoid unnecessary complexity
 
 Do not add a data-fetching library for this course. A simple `fetch` call is enough. Libraries like TanStack Query are excellent for larger apps, but using one here would hide the basic state model you need to learn.
-
-> **Interesting to read.** If you want to go deeper after the page works, skim the hooks section of the DevWeekends React interview deep dive: https://resources.devweekends.com/resources/interview-questions/react. Treat it as review, not as required beginner material.
-
-> **Hint - public API limits.** If GitHub rate limits you, switch temporarily to mock data or another public API. The learning goal is fetch state, not fighting an API quota.
-
-> **When you're stuck.** Say the data flow out loud like a rubber duck explanation: "The page renders, loading becomes true, fetch starts, success stores data, failure stores error, loading becomes false." Point to where each step happens in your code. The missing step is usually the bug.
 
 ## Definition of Done
 

@@ -14,7 +14,11 @@ By the end, visitors can fill a contact form, see useful validation errors, subm
 
 > **Mandatory read.** Read the DevWeekends React forms chapter: https://resources.devweekends.com/courses/react-crash-course/06-forms.
 
-> **Mandatory read.** Read "Validate Input Everywhere" and "Think About Real Users" in `Daily_Software_Development_Guidelines.md`.
+> **Daily guideline.** Read "Validate Input Everywhere" and "Think About Real Users" in `Daily_Software_Development_Guidelines.md`.
+
+> **Hint - validation.** Keep validation logic separate from JSX if the form becomes hard to read. A small helper function that returns an errors object is easier to explain than validation scattered through markup.
+
+> **When you're stuck.** Forms create emotional noise because one small typo can make the whole thing feel broken. Slow it down: write the current form state on paper, then the validation rule, then the error you expect to see. If those three do not line up, you have found the next question to answer.
 
 Before creating `ContactForm.jsx`, write the four fields and their validation rules in your learning log. The form should start as behavior requirements, not markup.
 
@@ -88,10 +92,6 @@ On valid submit:
 If you later connect a form service, that belongs after this course. For now, be honest: this is frontend validation and UI behavior.
 
 Also protect against double submissions. If the form has a submitting state, disable the submit button while it is processing. Users double-click, networks feel slow, and good interfaces make the current state visible.
-
-> **Hint - validation.** Keep validation logic separate from JSX if the form becomes hard to read. A small helper function that returns an errors object is easier to explain than validation scattered through markup.
-
-> **When you're stuck.** Forms create emotional noise because one small typo can make the whole thing feel broken. Slow it down: write the current form state on paper, then the validation rule, then the error you expect to see. If those three do not line up, you have found the next question to answer.
 
 ## Definition of Done
 

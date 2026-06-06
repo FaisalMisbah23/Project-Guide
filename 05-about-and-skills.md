@@ -12,6 +12,10 @@ By the end, you have an `About` page, a skills section or page, grouped skill da
 
 > **Mandatory read.** Read the DevWeekends React lists and keys chapter: https://resources.devweekends.com/courses/react-crash-course/05-lists-keys. This is the concept behind rendering grouped skills from data.
 
+> **Optional blog.** Skim a clean-code or technical-debt article from your article list. Your skill list is not only about tools; it should also signal maintainability and learning habits.
+
+> **Hint - skill honesty.** Do not add tools you cannot discuss. A smaller honest skill list is stronger than a long list that collapses in an interview.
+
 Before creating `skills.js`, sketch your skill categories in the learning log. Do not write JSX yet; decide what the data should say first.
 
 ## Step 1 - Create the page files
@@ -91,10 +95,6 @@ src/components/
 Do not let the about page and skills page contradict each other. If your about page says you are focused on frontend engineering, the skills page should make React, JavaScript, CSS, accessibility, and responsive UI easy to find.
 
 This is product thinking. The portfolio should tell one coherent story.
-
-> **Interesting to read.** Skim a clean-code or technical-debt article from your article list. Your skill list is not only about tools; it should also signal maintainability and learning habits.
-
-> **Hint - skill honesty.** Do not add tools you cannot discuss. A smaller honest skill list is stronger than a long list that collapses in an interview.
 
 ## Definition of Done
 

@@ -24,14 +24,17 @@ Read this part before you create the Vite app. It explains how the course works.
 
 The course is **12 short chapters across 1-2 weeks**. Each chapter is one focused topic: a decision to make, a React concept to learn, or a portfolio feature to build. Work through them **in order**; the full list is in the [course outline](#course-outline) below.
 
-### Each chapter teaches, then asks you to build
+### Each chapter prepares you, then asks you to build
 
 A chapter is not a copy-paste tutorial. It explains the idea, shows the weak approach and the better approach, then tells you exactly what your project must do. You write the implementation.
 
-You'll see two kinds of support:
+Most build chapters start with **Before you build**. Treat that section as part of the work, not as decoration. It may include:
 
 - **Mandatory reads/videos** — short resources placed where they matter. Read or watch them before moving on; they give the idea another angle.
+- **Daily guideline** — one practical engineering habit to apply in that chapter.
+- **Optional blog/extra read** — a useful deepener when it fits the task.
 - **Hints** — nudges for tricky parts. A hint points at the thinking, not the finished code.
+- **Stuck reminders** — prompts to slow down, write the question, use rubber duck debugging, or think on paper before thrashing through code.
 
 ### The checklist is your gate
 

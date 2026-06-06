@@ -12,6 +12,10 @@ By the end, your app has routes for every main page, navigation links that do no
 
 > **Mandatory read.** Read the DevWeekends React Router chapter: https://resources.devweekends.com/courses/react-crash-course/09-react-router.
 
+> **Optional docs.** Read the routing docs for React Router's current version. Use official docs when library behavior matters.
+
+> **Hint - project IDs.** Use URL-friendly IDs such as `react-portfolio` or `todo-app`, not display titles with spaces. URLs are part of the product.
+
 Before installing React Router, write your route map in `learning-log/07-routing-and-project-details.md`. A route should exist because a visitor needs that page, not because the outline has a checkbox.
 
 ## Step 1 - Install React Router
@@ -96,10 +100,6 @@ Test:
 ```
 
 Navigation should work without a full page refresh. Unknown routes should show `NotFound`.
-
-> **Interesting to read.** Read the routing docs for React Router's current version. Use official docs when library behavior matters.
-
-> **Hint - project IDs.** Use URL-friendly IDs such as `react-portfolio` or `todo-app`, not display titles with spaces. URLs are part of the product.
 
 ## Definition of Done
 

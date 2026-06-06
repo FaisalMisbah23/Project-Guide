@@ -12,6 +12,10 @@ By the end, you have a Vite + React app that runs locally, a cleaned starter pro
 
 > **Mandatory read - Git habits.** Read DevWeekends Git Fundamentals: https://resources.devweekends.com/courses/devops-tools/git-fundamentals. Focus on repositories, staging, commits, and the basic Git workflow. The goal is simple: small commits, clear messages, no generated files.
 
+> **Hint - if `npm run dev` works but `npm run build` fails.** Development servers can hide some mistakes until the production build runs. Read the build error from the top, find the file it names, and fix that first. Do not edit random files hoping the error disappears.
+
+> **When you're stuck.** Use the rubber duck method before changing more code: explain what Vite is supposed to do, what command you ran, what the terminal printed, and which file you changed last. If the explanation feels messy, write it in `learning-log/02-project-setup-with-vite-and-git.md` first; messy thoughts become debuggable when they become text.
+
 ## Step 1 - Create the Vite app
 
 Start in the folder where you want the portfolio project to live. Create the app with Vite's React template:
@@ -167,10 +171,6 @@ git commit -m "chore: set up vite react portfolio"
 ```
 
 > **Read before the next chapter.** Read the DevWeekends React crash course introduction to JSX: https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx. Focus on what JSX is and why React components return it.
-
-> **Hint - if `npm run dev` works but `npm run build` fails.** Development servers can hide some mistakes until the production build runs. Read the build error from the top, find the file it names, and fix that first. Do not edit random files hoping the error disappears.
-
-> **When you're stuck.** Use the rubber duck method before changing more code: explain what Vite is supposed to do, what command you ran, what the terminal printed, and which file you changed last. If the explanation feels messy, write it in `learning-log/02-project-setup-with-vite-and-git.md` first; messy thoughts become debuggable when they become text.
 
 ## Definition of Done
 
