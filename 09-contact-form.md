@@ -94,6 +94,22 @@ Message must be at least 20 characters.
 
 Do not show all errors before the user interacts if that makes the page noisy. Choose a simple rule: validate on submit, then update errors as the user fixes fields.
 
+Example:
+
+```txt
+Weak:
+Invalid input.
+
+Stronger:
+Enter a valid email address.
+
+Weak:
+Message error.
+
+Stronger:
+Message must be at least 20 characters so I have enough context to reply.
+```
+
 ## Step 5 - Submit without pretending there is a backend
 
 On valid submit:
@@ -105,6 +121,17 @@ On valid submit:
 If you later connect a form service, that belongs after this course. For now, be honest: this is frontend validation and UI behavior.
 
 Also protect against double submissions. If the form has a submitting state, disable the submit button while it is processing. Users double-click, networks feel slow, and good interfaces make the current state visible.
+
+Example:
+
+```txt
+Weak:
+Submit button stays active while the form is processing.
+
+Stronger:
+Button text changes to "Sending..." and the button is disabled until the
+submit flow finishes.
+```
 
 ## What your screen should show
 

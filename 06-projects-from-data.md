@@ -63,6 +63,19 @@ results
 
 Do not include fake links unless clearly marked as placeholders. Broken portfolio links are louder than missing links.
 
+Example:
+
+```txt
+Weak:
+live: "https://coming-soon.com"
+github: "https://github.com/username/private-or-empty"
+
+Stronger:
+live: null
+github: "https://github.com/username/react-portfolio"
+status: "Live demo coming after deployment"
+```
+
 ## Step 2 - Create project components
 
 Create:
@@ -129,6 +142,22 @@ Result:        What improved, shipped, or became clearer?
 ```
 
 If you do not have metrics yet, do not invent them. Use honest outcomes: deployed successfully, improved Lighthouse score, reduced repeated markup, added validation, or learned how to handle API failures.
+
+Example:
+
+```txt
+Weak:
+Built a React project using React, CSS, and JavaScript.
+
+Improved:
+Built a responsive portfolio that renders projects from data, filters by
+category, opens dynamic detail pages, validates contact input, and deploys
+as a Vite production build.
+
+Even stronger, when true:
+Improved Lighthouse accessibility from 74 to 96 by adding labels, visible
+focus states, semantic sections, and clearer link text.
+```
 
 ## What your screen should show
 

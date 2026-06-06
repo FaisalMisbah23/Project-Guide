@@ -44,6 +44,19 @@ Your about page should include:
 
 Keep each section short. The visitor should feel oriented, not trapped in an autobiography.
 
+Example:
+
+```txt
+Weak:
+I have always loved computers and technology since childhood. I enjoy learning
+many things and hope to become successful in software engineering.
+
+Stronger:
+I am learning frontend engineering by building small, finished React projects.
+My current focus is reusable UI, responsive layouts, and explaining my work
+clearly through project notes.
+```
+
 ## Step 3 - Store skills as grouped data
 
 Create:
@@ -79,6 +92,21 @@ JavaScript: 90%
 ```
 
 Those numbers are subjective and hard to defend. Prefer grouping, ordering, and honest wording. If you want to show depth, use project evidence: "used React state and routing in the portfolio project" says more than a percentage bar.
+
+Example:
+
+```txt
+Weak:
+React - 95%
+JavaScript - 90%
+CSS - 85%
+
+Stronger:
+Frontend:
+  React - built routed pages, project filtering, forms, and API states
+  JavaScript - used arrays, objects, state updates, and async fetch
+  CSS - built responsive layouts and accessible focus states
+```
 
 ## Step 4 - Create skill components
 

@@ -96,6 +96,20 @@ The weak approach is to fetch and assume it always works. Real networks fail. Th
 
 This chapter is the daily guideline "design for failure" made visible. A portfolio reviewer should not see a broken blank area because GitHub is slow, rate-limited, or temporarily unavailable.
 
+Example:
+
+```txt
+Weak:
+Blank section while the request loads.
+Blank section when the request fails.
+
+Stronger:
+Loading: "Loading GitHub repositories..."
+Error: "GitHub repos could not load right now. Try again later."
+Empty: "No public repositories to show yet."
+Success: repo cards with name, description, language, stars, and link.
+```
+
 ## Step 4 - Render all data states
 
 Your page should show:

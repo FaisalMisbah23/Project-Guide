@@ -100,6 +100,20 @@ Why I stopped hard-coding repeated project markup
 
 Specific notes make the portfolio feel lived-in.
 
+Example:
+
+```txt
+Weak:
+React notes
+
+Stronger:
+What I learned about props while building reusable project cards
+
+Even stronger:
+Why my project cards became easier to maintain after moving project content
+into a data file
+```
+
 ## What your screen should show
 
 The notes page should show useful note cards from data, a search or tag filter, and a clear message when nothing matches.

@@ -55,6 +55,17 @@ Include:
 
 Avoid vague claims. Do not write "passionate developer who loves technology" unless the rest of the sentence proves it. Prefer concrete language about React, web interfaces, learning notes, problem solving, or project work.
 
+Example:
+
+```txt
+Weak:
+I am a passionate developer who loves building amazing digital experiences.
+
+Stronger:
+I build responsive React interfaces, organize UI into reusable components,
+and document what I learn while shipping small web projects.
+```
+
 ## Step 3 - Add a skills preview
 
 Create a short array of main skills inside the page or in a temporary data file:
@@ -89,6 +100,16 @@ The page should show your name, role, short summary, two clear actions, and a sm
 ## Small challenge
 
 Ask: "If someone only reads the hero, what would they remember about me?" Rewrite one sentence until the answer is specific.
+
+Example:
+
+```txt
+Weak memory:
+They like coding.
+
+Better memory:
+They are a frontend-focused engineer who can build and explain React projects.
+```
 
 Suggested commit:
 

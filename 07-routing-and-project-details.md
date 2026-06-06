@@ -43,6 +43,18 @@ npm install react-router-dom
 
 The weak alternative is to fake navigation by conditionally rendering pages with local state. That hides the URL from the visitor, breaks sharing, and does not teach how React apps normally handle pages. Use routing.
 
+Example:
+
+```txt
+Weak:
+User clicks "Projects" -> setCurrentPage("projects")
+URL stays "/"
+
+Stronger:
+User clicks "Projects" -> route changes to "/projects"
+URL can be shared, refreshed, and bookmarked
+```
+
 ## Step 2 - Create the route file
 
 Create:
@@ -99,6 +111,17 @@ screenshots
 If the id does not match a project, show a useful fallback. Do not let the page crash.
 
 That fallback is not optional polish; it is designing for failure. Users paste old links, mistype URLs, and click stale bookmarks. Your app should handle that calmly.
+
+Example:
+
+```txt
+Weak:
+Cannot read properties of undefined.
+
+Stronger:
+Project not found.
+This project may have moved or been removed. Go back to all projects.
+```
 
 ## Step 5 - Test route behavior
 

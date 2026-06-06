@@ -108,6 +108,24 @@ The README should help a reviewer understand the project before opening the site
 
 For your portfolio repo and your major linked project repos, the same standard applies: clear overview, screenshots, installation steps, usage notes, tech stack, and future improvements. Empty GitHub repositories and unclear READMEs weaken the portfolio even if the website looks good.
 
+Example:
+
+```txt
+Weak README:
+My portfolio.
+
+Improved README:
+React Portfolio Website
+- Live URL
+- What it does
+- Features
+- Tech stack
+- How to run locally
+- Screenshots
+- What I learned
+- Future improvements
+```
+
 ## Step 5 - Prepare the final explanation
 
 You should be able to explain:
@@ -159,6 +177,20 @@ Before sharing:
 ```
 
 If you make a final change, commit it with a message that explains the purpose. "final" is not a purpose.
+
+Example:
+
+```txt
+Weak:
+final
+final-final
+done
+
+Stronger:
+fix: update deployed route fallback
+docs: add portfolio README screenshots
+chore: deploy portfolio to netlify
+```
 
 Before sharing the link, return to the reason you wrote in Chapter 1. A portfolio is not only a React exercise; it is evidence that you can keep a promise to yourself, work through confusion, and turn learning into something visible. That is worth noticing before you rush to the next project.
 

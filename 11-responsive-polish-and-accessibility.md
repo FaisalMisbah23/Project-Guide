@@ -75,6 +75,18 @@ Accessibility means people with different devices and abilities can use the site
 
 These are not bonus points. They are part of web quality.
 
+Example:
+
+```txt
+Weak:
+<input placeholder="Email" />
+
+Stronger:
+Visible label: Email
+Input has an accessible name
+Error text appears near the field when invalid
+```
+
 ## Step 4 - Refine the content
 
 Read every project card and detail page. Replace vague text with specific text.
@@ -125,6 +137,19 @@ Check:
 - no console errors.
 
 If you are using plain Vite without a metadata library, start with the basics in `index.html`. You do not need a complex SEO setup for this project, but you should not ship with default Vite metadata.
+
+Example:
+
+```txt
+Weak:
+Title: Vite + React
+Description: empty
+
+Stronger:
+Title: Your Name - Software Engineer
+Description: Portfolio of Your Name, a software engineer building React
+interfaces, project case studies, and learning notes.
+```
 
 ## What your screen should show
 
