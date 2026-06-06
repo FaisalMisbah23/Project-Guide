@@ -28,6 +28,35 @@ The course is **12 short chapters across 1-2 weeks**. Each chapter is one focuse
 
 A chapter is not a copy-paste tutorial. It explains the idea, shows the weak approach and the better approach, then tells you exactly what your project must do. You write the implementation.
 
+Most build chapters follow the same rhythm, so you are never guessing what kind of work comes next:
+
+1. **Principle** — the simple idea behind the chapter.
+2. **Where we're headed** — the feature or milestone you will have by the end.
+3. **Before you build** — the required reading, daily habit, hint, and stuck reminder.
+4. **Build steps** — the work broken into small checkpoints.
+5. **What your screen should show** — the visible result to compare against.
+6. **Small challenge** — one stretch task that makes the feature more personal.
+7. **Definition of Done** — the gate before moving forward.
+8. **Log it** — reflection prompts so you can explain the work later.
+
+When you see a rule, turn it into an action. Instead of telling yourself "think carefully about architecture," ask:
+
+```txt
+Before coding:
+- What problem am I solving?
+- Who will use this?
+- What could break later?
+- Can I explain this feature in one sentence?
+```
+
+Many chapters also use this quick pattern:
+
+```txt
+✅ Do:      The behavior to practice.
+❌ Don't:   The mistake to avoid.
+💡 Why:     The reason this rule matters in real work.
+```
+
 Most build chapters start with **Before you build**. Treat that section as part of the work, not as decoration. It may include:
 
 - **Mandatory reads/videos** — short resources placed where they matter. Read or watch them before moving on; they give the idea another angle.
@@ -229,13 +258,66 @@ This is a **1-2 week course**. It starts with setup and moves up the React ladde
 
 Set these habits from Day 1:
 
-- **Commit small work often.** Use messages like `feat: add project card`, not `update`.
-- **Keep generated and private files out of Git.** `node_modules/`, `dist/`, `.env`, and logs do not belong in commits.
-- **Read the error before changing code.** Capture what you expected, what happened, and the exact error.
-- **Test unhappy paths.** Empty filters, invalid forms, missing project IDs, failed API requests, and mobile screens count.
-- **Write the learning log.** Your notes are the proof that you can explain the project, not just show it.
-- **Understand before coding.** Before each chapter, name the outcome, the files involved, and the edge cases you need to check.
-- **Prefer maintainability over cleverness.** Future you is another developer; write code and docs that future you can understand quickly.
+### Commits
+
+✅ Do: Commit small changes with messages like `feat: add project card`.
+
+❌ Don't: Commit 50 files at once with a message like `update` or `final`.
+
+💡 Why: Small commits are easier to review, explain, revert, and debug.
+
+### Git safety
+
+✅ Do: Keep generated and private files out of Git.
+
+❌ Don't: Commit `node_modules/`, `dist/`, `.env`, logs, passwords, or API keys.
+
+💡 Why: You do not want to upload secrets, huge build files, personal settings, or files that can be regenerated.
+
+### Debugging
+
+✅ Do: Read the error before changing code. Write what you expected, what happened, and the exact error.
+
+❌ Don't: Change random files until the error disappears.
+
+💡 Why: Guessing sometimes hides the real bug and creates a second one.
+
+### Edge cases
+
+✅ Do: Test empty filters, invalid forms, missing project IDs, failed API requests, and mobile screens.
+
+❌ Don't: Test only the happy path where everything works.
+
+💡 Why: Real users arrive with broken links, small screens, slow networks, and unfinished form input.
+
+### Maintainability
+
+✅ Do: Split a file when it becomes difficult to understand.
+
+❌ Don't: keep adding logic to one component because "it still works."
+
+💡 Why: If a file needs a lot of comments to explain itself, it may be doing too many jobs.
+
+### Learning log
+
+✅ Do: Write short notes in your own words after each chapter.
+
+❌ Don't: paste definitions you cannot explain.
+
+💡 Why: Your notes become interview practice and proof that you understand your own project.
+
+## Your developer progression
+
+This portfolio starts at Level 1, but the habits scale upward:
+
+| Level | Where you are | What good looks like |
+|---|---|---|
+| 1 | Personal projects | You can build, explain, commit, and deploy your own work |
+| 2 | Team projects | You can make readable changes someone else can review |
+| 3 | Open source | You can follow project conventions and explain trade-offs in public |
+| 4 | Production systems | You can think about users, failure, security, maintainability, and rollback |
+
+Do not skip levels. A clean personal project is not small; it is the first place you practice professional behavior without waiting for a job title.
 
 Keep one small reminder at the top of your learning log: **why you started this portfolio**. Maybe you want your first software role, a cleaner way to show your projects, or proof that you can finish and ship something real. Write that reason in one honest paragraph. On difficult days, read it before opening the editor.
 

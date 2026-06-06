@@ -6,7 +6,7 @@ This chapter is not glamorous. A blank Vite app is not something you can show a 
 
 > **Principle.** A clean start is not wasted time; it is the first proof that you can work deliberately.
 
-## The point of this chapter
+## Where we're headed
 
 By the end, you have a Vite + React app that runs locally, a cleaned starter project, a sensible first folder structure, a `learning-log/` folder, a `.gitignore`, and your first commit.
 
@@ -176,6 +176,26 @@ dist/
 `node_modules/` is reinstalled from `package.json`; it should never be committed. `dist/` is build output; Vite regenerates it. `.env` is where secrets would live in future projects; even if this portfolio has no secrets, the habit starts here.
 
 Also keep logs and temporary files out of commits. A clean repository is easier to review, deploy, and trust.
+
+```txt
+✅ Do: add `.env`, `node_modules/`, `dist/`, and logs to `.gitignore`.
+❌ Don't: push secrets, generated files, or personal settings to GitHub.
+💡 Why: anyone with repository access can read committed secrets, and large generated files make the repo noisy.
+```
+
+Real developer mistake:
+
+```txt
+Mistake:
+Push an API key to GitHub.
+
+Why it's bad:
+Anyone who can see the repository can copy it, and deleting the line later does
+not erase it from Git history.
+
+Fix:
+Move secrets into `.env`, keep `.env` in `.gitignore`, and rotate the exposed key.
+```
 
 Now create the learning log:
 

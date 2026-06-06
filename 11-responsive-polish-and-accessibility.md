@@ -22,6 +22,15 @@ By the end, the site works cleanly on mobile and desktop, navigation is usable, 
 
 Before editing CSS, write the three biggest issues you are trying to improve: mobile layout, accessibility, performance, content clarity, or SEO metadata. Polish should respond to evidence.
 
+Before coding:
+
+```txt
+- What page feels hardest to use?
+- Who might struggle with this screen?
+- What could break on mobile?
+- Can I explain the improvement in one sentence?
+```
+
 ## Step 1 - Audit the site on mobile
 
 Check every route on a narrow screen:
@@ -47,6 +56,12 @@ Look for:
 - form fields that are hard to tap.
 
 Fix the layout problems before visual decoration.
+
+```txt
+✅ Do: fix overflow, unreadable text, weak contrast, and confusing navigation.
+❌ Don't: add animation or decoration before the page is usable.
+💡 Why: polish should remove friction before it adds personality.
+```
 
 ## Step 2 - Improve navigation
 
@@ -89,6 +104,20 @@ Stronger:
 Visible label: Email
 Input has an accessible name
 Error text appears near the field when invalid
+```
+
+Real developer mistake:
+
+```txt
+Mistake:
+Use placeholder text as the only label.
+
+Why it's bad:
+The label disappears when the user types, and assistive technologies may not
+get a clear field name.
+
+Fix:
+Use a visible label, then add placeholder text only as an optional hint.
 ```
 
 ## Step 4 - Refine the content

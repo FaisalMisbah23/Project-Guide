@@ -188,6 +188,23 @@ Before sharing:
   - note what changed and why
 ```
 
+Before creating a PR or sharing the final link:
+
+- [ ] Tested locally
+- [ ] Ran the production build
+- [ ] Checked the deployed site
+- [ ] Removed console logs and debugging code
+- [ ] Updated documentation
+- [ ] Checked edge cases
+- [ ] Added screenshots if the UI changed
+- [ ] Verified links, resume, GitHub, and contact information
+
+```txt
+✅ Do: review your own work before asking someone else to review it.
+❌ Don't: send the link the moment deployment says "success."
+💡 Why: deployment only proves the site was uploaded; it does not prove the experience works.
+```
+
 If you make a final change, commit it with a message that explains the purpose. "final" is not a purpose.
 
 Example:

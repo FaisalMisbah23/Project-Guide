@@ -151,6 +151,21 @@ Result:        What improved, shipped, or became clearer?
 
 If you do not have metrics yet, do not invent them. Use honest outcomes: deployed successfully, improved Lighthouse score, reduced repeated markup, added validation, or learned how to handle API failures.
 
+Think about future edits when you choose the shape of the data.
+
+```txt
+Bad:
+Store only one long description string for each project.
+
+Problem:
+Later, the project detail page needs a problem, solution, challenge, result,
+GitHub link, live link, tags, and screenshots. You end up parsing one paragraph
+or duplicating content in multiple files.
+
+Better:
+Store each important piece as its own field in the project object.
+```
+
 Example:
 
 ```txt
