@@ -60,7 +60,7 @@ Many chapters also use this quick pattern:
 Most build chapters start with **Before you build**. Treat that section as part of the work, not as decoration. It may include:
 
 - **Mandatory reads/videos** — short resources placed where they matter. Read or watch them before moving on; they give the idea another angle.
-- **Daily guideline** — one practical engineering habit to apply in that chapter.
+- **Apply this habit** — one practical engineering habit to use immediately.
 - **Optional blog/extra read** — a useful deepener when it fits the task.
 - **Hints** — nudges for tricky parts. A hint points at the thinking, not the finished code.
 - **Stuck reminders** — prompts to slow down, write the question, use rubber duck debugging, or think on paper before thrashing through code.

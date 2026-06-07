@@ -16,7 +16,7 @@ By the end, the site works cleanly on mobile and desktop, navigation is usable, 
 
 > **Mandatory read.** Read the relevant HTML, accessibility, performance, and image-optimization sections in the DevWeekends frontend interview guide: https://resources.devweekends.com/resources/frontend-interview-qs. Then check whether your portfolio images are too large.
 
-> **Daily guideline.** Read "Avoid Premature Optimization" in `Daily_Software_Development_Guidelines.md`.
+> **Apply this habit.** Read "Avoid Premature Optimization" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then choose polish fixes based on real issues you found, not guesses.
 
 > **Hint - visual consistency.** If every section uses different spacing, button styles, and card styles, the site feels assembled from scraps. Reuse patterns deliberately.
 

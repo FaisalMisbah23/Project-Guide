@@ -16,7 +16,7 @@ By the end, the home page has a hero section, a short professional summary, a ma
 
 > **Mandatory read.** Read the DevWeekends React components/props chapter: https://resources.devweekends.com/courses/react-crash-course/02-components-props. Focus on how a page can be made from smaller reusable pieces.
 
-> **Daily guideline.** Read "Name Things Clearly" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it when naming hero sections, buttons, and page components.
+> **Apply this habit.** Read "Name Things Clearly" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then use it when naming hero sections, buttons, and page components.
 
 > **Hint - hero copy.** Write the summary in plain language first. If it sounds like a slogan from a template, rewrite it with one concrete skill and one concrete outcome.
 
@@ -74,7 +74,7 @@ You now have a first impression; next, give the visitor a quick scan of the tool
 
 > **Reading before this step.** Read DevWeekends React lists and keys: https://resources.devweekends.com/courses/react-crash-course/05-lists-keys. Focus on rendering repeated UI from an array instead of copying the same markup.
 
-> **Daily guideline.** Read "Keep Components Focused" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it to decide whether the skills preview deserves a small reusable component.
+> **Apply this habit.** Read "Keep Components Focused" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then use it to decide whether the skills preview deserves a small reusable component.
 
 Create a short array of main skills inside the page or in a temporary data file:
 

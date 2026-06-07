@@ -25,7 +25,7 @@ flowchart TD
 
 Before creating the projects page, choose your 3-6 strongest projects and write one line for each: problem, contribution, and result. If a project cannot answer those yet, it may not belong in the first version.
 
-> **Daily guideline.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it here to choose projects a visitor can actually understand, not just projects that list impressive tools.
+> **Apply this habit.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then use it to choose projects a visitor can actually understand, not just projects that list impressive tools.
 
 ## Step 1 - Create the projects page and data file
 
@@ -120,7 +120,7 @@ Visitor clicks category
 
 Include an "All" option. If no projects match a category, show a clear empty message instead of a blank page.
 
-> **Daily guideline.** Read "Test Edge Cases" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Test the edge case where a filter has no matching projects.
+> **Apply this habit.** Read "Test Edge Cases" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then test the edge case where a filter has no matching projects.
 
 > **Hint - empty states.** A blank grid looks broken. Empty state text should tell the visitor what happened, such as "No projects match this category yet."
 

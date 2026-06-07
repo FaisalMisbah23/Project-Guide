@@ -29,7 +29,7 @@ flowchart TD
 
 Before creating `ContactForm.jsx`, write the four fields and their validation rules in your learning log. The form should start as behavior requirements, not markup.
 
-> **Daily guideline.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md). Use it to decide what a visitor needs when they are trying to contact you quickly.
+> **Apply this habit.** Read "Think About Real Users" in [Daily_Software_Development_Guidelines.md](../Daily_Software_Development_Guidelines.md), then use it to decide what a visitor needs when they are trying to contact you quickly.
 
 ## Step 1 - Create the contact page and components
 
