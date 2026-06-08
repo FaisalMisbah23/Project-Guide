@@ -52,6 +52,12 @@ Use this decision guide before choosing an editor:
 
 Study more: [Frontend Interview Questions - HTML and React](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Related reading:** review [Frontend Interview Questions](https://resources.devweekends.com/resources/frontend-interview-qs), focusing on HTML, React, and security questions.
+
+**Comparison:** Markdown vs HTML: Markdown is easier for writing and can be rendered safely with the right tools. HTML is more flexible but dangerous if user-submitted content is injected without sanitizing.
+
+**Big word alert:** **XSS** means cross-site scripting. It is when unsafe content lets an attacker run JavaScript in someone else's browser.
+
 ### Draft and published states
 
 **Real-life analogy:** writers keep drafts private until the article is ready.
@@ -114,6 +120,8 @@ function ArticleBody({ body }: ArticleBodyProps) {
 
 Why it helps beginners: the database stores readable text, the owner can preview before publishing, and the renderer decides which elements are allowed. If you add Markdown plugins later, review their security settings before publishing.
 
+**Quick quiz:** what is safer to render by default: raw HTML from a user, sanitized HTML, Markdown through a trusted renderer, or plain text? Explain the tradeoff.
+
 Option 2: store sanitized HTML.
 
 Choose this if you use an editor that outputs HTML. Do not render raw editor output directly. Sanitize it first, then render only the cleaned result.
@@ -162,7 +170,25 @@ function renderArticleBlock(block: ArticleBlock) {
 
 JSON gives you control, but it also means you must build or use a renderer for every block type. For this guide, Markdown is the recommended starting point unless you deliberately want the extra editor complexity.
 
+**Content exercise:** create an article with headings, links, code, and an intentionally suspicious HTML snippet. Confirm the final rendering is readable and safe.
+
 Add comment moderation. Pending comments can be approved, hidden, or deleted. Approved comments appear publicly; hidden/deleted ones do not.
+
+**Moderation exercise:** submit three comments: helpful, empty, and abusive. Confirm only approved comments appear publicly.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  articleDraft[Article draft] --> safeBody[Safe body format]
+  safeBody --> preview[Preview renderer]
+  preview --> publish[Publish action]
+  publish --> publicArticle[Public article page]
+
+  commentSubmit[Comment submit] --> pending[Pending]
+  pending --> moderation[Owner moderates]
+  moderation --> approved[Approved comments render]
+```
 
 ## Do and don't
 
@@ -186,35 +212,5 @@ Don't create a tag system that requires editing code.
 - [ ] Draft articles are hidden from public reads.
 
 > **Log it.** In `learning-log/10-admin-article-crud.md`, explain the risk of rendering article/comment content unsafely and how your approach reduces it.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Reading:** review [Frontend Interview Questions](https://resources.devweekends.com/resources/frontend-interview-qs), focusing on HTML, React, and security questions.
-
-**Quiz:** what is safer to render by default: raw HTML from a user, sanitized HTML, Markdown through a trusted renderer, or plain text? Explain the tradeoff.
-
-**Content exercise:** create an article with headings, links, code, and an intentionally suspicious HTML snippet. Confirm the final rendering is readable and safe.
-
-**Moderation exercise:** submit three comments: helpful, empty, and abusive. Confirm only approved comments appear publicly.
-
-**Comparison:** Markdown vs HTML: Markdown is easier for writing and can be rendered safely with the right tools. HTML is more flexible but dangerous if user-submitted content is injected without sanitizing.
-
-**Big word alert:** **XSS** means cross-site scripting. It is when unsafe content lets an attacker run JavaScript in someone else's browser.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  articleDraft[Article draft] --> safeBody[Safe body format]
-  safeBody --> preview[Preview renderer]
-  preview --> publish[Publish action]
-  publish --> publicArticle[Public article page]
-
-  commentSubmit[Comment submit] --> pending[Pending]
-  pending --> moderation[Owner moderates]
-  moderation --> approved[Approved comments render]
-```
 
 Next: content exists, but it needs images that do not live in database rows. -> **[Chapter 11 - Image storage](11-image-storage.md)**

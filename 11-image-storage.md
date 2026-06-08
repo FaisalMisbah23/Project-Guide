@@ -39,6 +39,10 @@ Database: image_path = "projects/portfolio-dashboard.png"
 
 Study more: [AWS Core Concepts - Storage and Cloud Basics](https://resources.devweekends.com/aws/core-concepts)
 
+**Comparison:** database row vs object storage file: the row stores facts and paths. Object storage holds the actual image bytes.
+
+**Big word alert:** **metadata** means data about data. For an image, metadata might include path, alt text, file size, content type, and upload time.
+
 ### Alt text
 
 **Real-life analogy:** alt text is a spoken description of an image for someone who cannot see it.
@@ -50,6 +54,8 @@ Study more: [AWS Core Concepts - Storage and Cloud Basics](https://resources.dev
 ```
 
 Study more: [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility)
+
+**Accessibility exercise:** temporarily remove image alt text and use that discomfort to write a better description. Restore useful alt text before moving on.
 
 ## Daily guideline
 
@@ -72,6 +78,20 @@ Add storage policies so only the authenticated owner can upload/update/delete. P
 
 Add upload controls in project and article admin forms. Show selected filename, loading state, upload error, preview, and saved path. Store alt text with the content record.
 
+**Mini assignment:** upload one intentionally oversized image and one broken/unsupported file type in development. Write what the UI should show for each.
+
+**Storage exercise:** upload an image, replace it, then remove or archive it. Confirm the database path and public rendering stay consistent.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  upload[Admin uploads image] --> storage[Supabase Storage stores file]
+  storage --> database["Database stores image_path and image_alt"]
+  database --> publicPage[Public page reads row]
+  publicPage --> browser[Browser loads image from Storage URL]
+```
+
 ## Real developer mistake
 
 Mistake: save the image URL but no alt text.
@@ -79,6 +99,8 @@ Mistake: save the image URL but no alt text.
 Why it is bad: accessibility suffers, and broken images have no meaningful fallback.
 
 Fix: require useful alt text for meaningful images.
+
+**Quiz:** what is stored in the database: image bytes, image path, alt text, upload status, or bucket policy? Explain each choice.
 
 ## Definition of Done
 
@@ -91,31 +113,5 @@ Fix: require useful alt text for meaningful images.
 - [ ] Signed-out users cannot upload.
 
 > **Log it.** In `learning-log/11-image-storage.md`, explain why storage paths belong in the database but file bytes do not.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Mini assignment:** upload one intentionally oversized image and one broken/unsupported file type in development. Write what the UI should show for each.
-
-**Quiz:** what is stored in the database: image bytes, image path, alt text, upload status, or bucket policy? Explain each choice.
-
-**Storage exercise:** upload an image, replace it, then remove or archive it. Confirm the database path and public rendering stay consistent.
-
-**Accessibility exercise:** temporarily remove image alt text and use that discomfort to write a better description. Restore useful alt text before moving on.
-
-**Comparison:** database row vs object storage file: the row stores facts and paths. Object storage holds the actual image bytes.
-
-**Big word alert:** **metadata** means data about data. For an image, metadata might include path, alt text, file size, content type, and upload time.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  upload[Admin uploads image] --> storage[Supabase Storage stores file]
-  storage --> database["Database stores image_path and image_alt"]
-  database --> publicPage[Public page reads row]
-  publicPage --> browser[Browser loads image from Storage URL]
-```
 
 Next: visitors need to contact the owner. Email alone is not enough; store first, then notify. -> **[Chapter 12 - Contact Edge Function and Brevo](12-contact-edge-function-brevo.md)**

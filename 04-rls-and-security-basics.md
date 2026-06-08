@@ -14,6 +14,8 @@ Authorization answers: *What are you allowed to do?*
 
 Email/password, OAuth, and magic link are login methods. They prove identity. RLS policies decide what that identity can access.
 
+**Related reading:** read [MDN - HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication) for the authentication flow, then read [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management) to understand why identity and session handling are separate from permission checks.
+
 Bad:
 
 ```txt
@@ -28,6 +30,8 @@ Better:
 The database rejects unauthorized reads and writes even if the UI is bypassed.
 ```
 
+**Quick quiz:** explain the difference between "the admin button is hidden" and "the database refuses the row." Which one is user experience, and which one is security?
+
 ### Authentication vs authorization
 
 **Real-life analogy:** showing your ID proves who you are. Having a ticket proves which room you may enter.
@@ -38,6 +42,8 @@ The database rejects unauthorized reads and writes even if the UI is bypassed.
 Authentication: "This is the owner."
 Authorization: "The owner may update projects."
 ```
+
+**Comparison:** authentication vs authorization: authentication proves who someone is. Authorization decides what that person may do after identity is known.
 
 Study more: [Frontend Interview Questions - React and Security](https://resources.devweekends.com/resources/frontend-interview-qs)
 
@@ -55,6 +61,8 @@ using (status = 'published');
 ```
 
 Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
+
+**Big word alert:** **RLS** stands for Row Level Security. It means the database checks access one row at a time, instead of assuming every query can read every row in a table.
 
 ## Daily guideline
 
@@ -110,11 +118,30 @@ $$;
 
 Keep the owner table private. Public users should not be able to read or update the owner id, and the frontend should not decide who counts as owner.
 
+Diagram:
+
+```mermaid
+flowchart TD
+  publicQuery[Public visitor query] --> publicSupabase[Supabase]
+  publicSupabase --> publicPolicy[RLS policy]
+  publicPolicy --> publishedRows["Only rows where status = 'published'"]
+
+  ownerQuery[Owner query] --> ownerSession[Supabase Auth session]
+  ownerSession --> ownerPolicy[RLS policy]
+  ownerPolicy --> ownerActions[Owner-only rows and actions allowed]
+```
+
 ## Build it
 
 Enable RLS on every table. Add policies one table at a time. After each table, test the public case and the owner case before moving on. Prefer explicit policies that call `is_owner()` for owner-only insert, update, delete, and inbox reads.
 
+**Assignment:** write three blocked-case tests in plain English before implementing them: public user reading a draft project, public user reading contact messages, and signed-out user updating an article.
+
 Use draft seed data from Chapter 03. Try to read draft projects as a signed-out user. The correct result is no rows. Then sign in as the owner and confirm owner workflows can see or update the rows they should.
+
+**Database exercise:** open the Supabase SQL editor or local SQL shell and run the same select as a public/anon user and as the owner. Record the difference in your learning log.
+
+**Security exercise:** try to bypass the UI by querying a draft row directly from the browser console or a small script using the anon key. The correct result is no private row.
 
 ## Service-role warning
 
@@ -136,36 +163,5 @@ Read Supabase's official RLS documentation. Also read a short explanation of aut
 - [ ] You can explain why service-role keys never go in frontend code.
 
 > **Log it.** In `learning-log/04-rls-and-security.md`, write the policy map in your own words. Include one blocked case you tested.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [MDN - HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication) for the authentication flow, then read [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management) to understand why identity and session handling are separate from permission checks.
-
-**Quick quiz:** explain the difference between "the admin button is hidden" and "the database refuses the row." Which one is user experience, and which one is security?
-
-**Assignment:** write three blocked-case tests in plain English before implementing them: public user reading a draft project, public user reading contact messages, and signed-out user updating an article.
-
-**Database exercise:** open the Supabase SQL editor or local SQL shell and run the same select as a public/anon user and as the owner. Record the difference in your learning log.
-
-**Security exercise:** try to bypass the UI by querying a draft row directly from the browser console or a small script using the anon key. The correct result is no private row.
-
-**Comparison:** authentication vs authorization: authentication proves who someone is. Authorization decides what that person may do after identity is known.
-
-**Big word alert:** **RLS** stands for Row Level Security. It means the database checks access one row at a time, instead of assuming every query can read every row in a table.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  publicQuery[Public visitor query] --> publicSupabase[Supabase]
-  publicSupabase --> publicPolicy[RLS policy]
-  publicPolicy --> publishedRows["Only rows where status = 'published'"]
-
-  ownerQuery[Owner query] --> ownerSession[Supabase Auth session]
-  ownerSession --> ownerPolicy[RLS policy]
-  ownerPolicy --> ownerActions[Owner-only rows and actions allowed]
-```
 
 Next: the backend is guarded. Now give visitors a public route structure they can actually navigate. -> **[Chapter 05 - Public layout and routing](05-public-layout-and-routing.md)**

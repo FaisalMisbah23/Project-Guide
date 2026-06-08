@@ -45,6 +45,12 @@ flowchart TD
 
 Study more: [Frontend Interview Questions - Interview Tips](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Big word alert:** **architecture** means the high-level structure of the system: parts, responsibilities, and how data moves between them.
+
+**Self-review quiz:** pick one feature and trace it from UI to database to deployment. If you cannot explain one step, revisit that chapter.
+
+**Related reading:** read [Cloudflare - How Cloudflare DNS works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP), and [IBM - Database normalization](https://www.ibm.com/think/topics/database-normalization). Your final README should be able to explain how browser, DNS, HTTPS, frontend, backend, database, and deployment fit together.
+
 ### Maintenance rhythm
 
 **Real-life analogy:** a garden needs watering after it is planted. A portfolio needs updates after it is shipped.
@@ -57,6 +63,10 @@ Quarterly: review dependencies, secrets, RLS policies, analytics
 ```
 
 Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
+
+**Maintenance exercise:** create a monthly maintenance issue template with checkboxes for dependency review, broken links, contact flow, RLS spot checks, and production smoke test.
+
+**Git exercise:** review your commit history and find one commit message that could be clearer. Write the improved message in your learning log and explain why it is better.
 
 ### Error monitoring
 
@@ -77,6 +87,8 @@ flowchart TD
 
 From `Daily_Software_Development_Guidelines.md`: **document important decisions** and **review before merging**. Your README should explain not only what you built, but why: why RLS, why Edge Functions, why store messages before email, why secrets split between Vercel and Supabase.
 
+**Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
+
 ## Build it
 
 Write the project README. Include:
@@ -93,6 +105,8 @@ deployment notes
 known tradeoffs
 future improvements
 ```
+
+**Blog assignment:** write the final case study using this outline: problem, users, architecture, hardest tradeoff, security model, failure handling, deployment, what you would improve next.
 
 Prepare a demo path:
 
@@ -126,6 +140,8 @@ after every incident
   add a test or checklist item
 ```
 
+**Monitoring exercise:** find where Supabase Edge Function logs and Vercel deployment logs live for your project. Add those links or instructions to the README.
+
 ## Human rhythm
 
 When stuck, think on paper. Write what you expected, what happened, what changed recently, and what you tried. Rubber duck debugging means explaining the problem out loud to something or someone that does not solve it for you. The explanation often reveals the missing assumption.
@@ -144,25 +160,5 @@ Remember why you started: this portfolio is not only a site. It is evidence of y
 - [ ] Final production smoke test passes.
 
 > **Log it.** In `learning-log/19-final-review-maintenance.md`, write your final architecture explanation as if answering an interview question.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [Cloudflare - How Cloudflare DNS works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP), and [IBM - Database normalization](https://www.ibm.com/think/topics/database-normalization). Your final README should be able to explain how browser, DNS, HTTPS, frontend, backend, database, and deployment fit together.
-
-**Blog assignment:** write the final case study using this outline: problem, users, architecture, hardest tradeoff, security model, failure handling, deployment, what you would improve next.
-
-**Self-review quiz:** pick one feature and trace it from UI to database to deployment. If you cannot explain one step, revisit that chapter.
-
-**Git exercise:** review your commit history and find one commit message that could be clearer. Write the improved message in your learning log and explain why it is better.
-
-**Maintenance exercise:** create a monthly maintenance issue template with checkboxes for dependency review, broken links, contact flow, RLS spot checks, and production smoke test.
-
-**Monitoring exercise:** find where Supabase Edge Function logs and Vercel deployment logs live for your project. Add those links or instructions to the README.
-
-**Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
-
-**Big word alert:** **architecture** means the high-level structure of the system: parts, responsibilities, and how data moves between them.
 
 Next: close the course by turning the shipped project into a professional habit. -> **[Chapter 20 - Closing](20-closing.md)**

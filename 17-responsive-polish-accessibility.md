@@ -45,6 +45,10 @@ images have alt text
 
 Study more: [Frontend Interview Questions - CSS and Styling](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Comparison:** responsive design vs accessibility: responsive design adapts to screen size. Accessibility makes the interface usable for people with different abilities, tools, and input methods.
+
+**Responsive exercise:** test the homepage, project detail, article detail, contact form, and admin dashboard at mobile, tablet, and desktop widths. Fix the first overflow before adding any new visuals.
+
 ### Accessibility
 
 **Real-life analogy:** a building needs ramps, signs, and usable doors. A website needs labels, keyboard access, contrast, and meaningful structure.
@@ -57,6 +61,8 @@ Study more: [Frontend Interview Questions - CSS and Styling](https://resources.d
 ```
 
 Study more: [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility)
+
+**Big word alert:** **focus state** means the visible indicator showing which button, link, or input is currently selected by keyboard navigation.
 
 ## Build it
 
@@ -78,9 +84,15 @@ contact inbox
 
 Use Tailwind responsive utilities deliberately. Use shadcn/ui components consistently, but do not let a component library make design decisions for you.
 
+**Metadata check:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) for SEO and social previews, and [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata). Then check whether project and article detail pages have meaningful titles and descriptions.
+
 ## Accessibility basics
 
 Every input needs a label. Every meaningful image needs alt text. Buttons should say what they do. Destructive actions need confirmation. Keyboard focus should be visible. Heading order should make sense.
+
+**Assignment:** navigate the public site using only the keyboard. Write down the first three places where focus, labels, or button text feel unclear.
+
+**Accessibility exercise:** run through all forms and confirm every input has a visible label, not only placeholder text.
 
 ## Definition of Done
 
@@ -93,23 +105,5 @@ Every input needs a label. Every meaningful image needs alt text. Buttons should
 - [ ] Destructive actions are confirmed.
 
 > **Log it.** In `learning-log/17-responsive-polish-accessibility.md`, describe one accessibility fix you made and who it helps.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) for SEO and social previews, and [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata). Then check whether project and article detail pages have meaningful titles and descriptions.
-
-**Reading:** study [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility), even if the examples use Angular. The accessibility ideas still apply.
-
-**Assignment:** navigate the public site using only the keyboard. Write down the first three places where focus, labels, or button text feel unclear.
-
-**Responsive exercise:** test the homepage, project detail, article detail, contact form, and admin dashboard at mobile, tablet, and desktop widths. Fix the first overflow before adding any new visuals.
-
-**Accessibility exercise:** run through all forms and confirm every input has a visible label, not only placeholder text.
-
-**Comparison:** responsive design vs accessibility: responsive design adapts to screen size. Accessibility makes the interface usable for people with different abilities, tools, and input methods.
-
-**Big word alert:** **focus state** means the visible indicator showing which button, link, or input is currently selected by keyboard navigation.
 
 Next: the app works locally. Ship it with the right environment boundaries. -> **[Chapter 18 - Deploy with Vercel and Supabase](18-deploy-vercel-supabase.md)**

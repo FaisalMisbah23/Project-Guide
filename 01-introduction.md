@@ -68,6 +68,16 @@ Deployment -> Vercel + Supabase secrets
 
 This course is about that better version.
 
+Diagram:
+
+```mermaid
+flowchart TD
+  visitor[Visitor browser] --> app[React app on Vercel]
+  app --> supabase[Supabase database, Auth, and Storage]
+  app --> functions[Edge Functions]
+  functions --> brevo[Brevo email]
+```
+
 ## New ideas before you build
 
 ### Full-stack application
@@ -84,6 +94,10 @@ Deployment: Vercel hosts the public React app
 ```
 
 Study more: [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx)
+
+**Pause and practice:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
+
+**Quick quiz:** in this portfolio, which parts are the client, which parts are the server, and which parts are third-party services?
 
 ### Static vs dynamic content
 
@@ -146,23 +160,5 @@ If you cannot fill in all four lines, the next step is not more coding. The next
 - [ ] You have created a `learning-log/` folder in the project you will build.
 
 > **Log it.** In `learning-log/01-introduction.md`, answer: why is a database-backed portfolio stronger than a static one for a software engineer? Which part of the system are you most likely to be asked about in an interview?
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
-
-**Quick quiz:** in this portfolio, which parts are the client, which parts are the server, and which parts are third-party services?
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  visitor[Visitor browser] --> app[React app on Vercel]
-  app --> supabase[Supabase database, Auth, and Storage]
-  app --> functions[Edge Functions]
-  functions --> brevo[Brevo email]
-```
 
 Next: the product is clear. Now create the project foundation without leaking secrets or making setup painful. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**

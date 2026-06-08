@@ -146,13 +146,21 @@ Study more: [Database Engineering - Case Studies](https://resources.devweekends.
 
 **Big word alert:** **normalization** means organizing data so each fact has one clear home. It reduces duplicate data and avoids bugs where one copy changes but another copy stays old.
 
+**Related reading:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization), then revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
+
+**Quick quiz:** if an article changes title after comments exist, should old comments disappear, update, or stay linked to the same article id? Explain your answer.
+
 ## Daily guideline
 
 From `Daily_Software_Development_Guidelines.md`: **think about data history**. Before adding or changing a field, ask what happens when that value changes later. This portfolio does not process orders, but the habit matters: in a shop, changing a product's current price must not rewrite old order totals. Store historical facts where history matters.
 
+**Blog prompt:** write a short post draft titled `Why changing today's data should not rewrite yesterday's truth`. Use the price-at-purchase example, then connect it back to this portfolio with drafts, published content, and saved contact messages.
+
 ## Build it
 
 Create the migrations for the tables above. Add constraints where they protect meaning: required titles, unique slugs, allowed statuses, and foreign keys from comments to articles. Add indexes for the queries the public site will run often: published projects/articles, slug lookups, recent articles, and approved comments by article.
+
+**Database exercise:** draw the tables before writing SQL. For each table, mark the primary key, required fields, unique fields, and foreign keys. Then compare the drawing to your migration files.
 
 Seed one published project, one draft project, one published article, one draft article, and one sample contact message. The draft rows are important because RLS will prove public users cannot read them.
 
@@ -172,18 +180,6 @@ Read a database migration guide for the Supabase CLI and one short article on da
 - [ ] You committed the migration files.
 
 > **Log it.** In `learning-log/03-data-model-and-migrations.md`, explain why migrations beat hand-created tables. Then choose one field that should be a column, not hidden in a blob, and explain why.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Reading:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization), then revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
-
-**Blog prompt:** write a short post draft titled `Why changing today's data should not rewrite yesterday's truth`. Use the price-at-purchase example, then connect it back to this portfolio with drafts, published content, and saved contact messages.
-
-**Quiz:** if an article changes title after comments exist, should old comments disappear, update, or stay linked to the same article id? Explain your answer.
-
-**Database exercise:** draw the tables before writing SQL. For each table, mark the primary key, required fields, unique fields, and foreign keys. Then compare the drawing to your migration files.
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Focus on understanding." Data modeling can feel abstract at first; understanding the shape is the win before the SQL is perfect.
 

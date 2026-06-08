@@ -42,6 +42,8 @@ npm run build
 
 Study more: [Frontend Interview Questions - Deployment and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**CI/CD exercise:** add one automated check before deployment: test, lint, or build. Then intentionally break the build locally and confirm the check would catch it.
+
 ## Environment boundary
 
 Vercel should receive:
@@ -74,6 +76,12 @@ Supabase: BREVO_API_KEY, SUPABASE_SERVICE_ROLE_KEY
 ```
 
 Study more: [AWS Core Concepts - Shared Responsibility Model](https://resources.devweekends.com/aws/core-concepts)
+
+**Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
+
+**Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
+
+**Related reading:** read [Cloudflare - What is DNS?](https://www.cloudflare.com/en-in/learning/ddos/glossary/domain-name-system-dns/), [http.dev - HTTPS explained](https://http.dev/https), and [Cloudflare - DNS over TLS vs DNS over HTTPS](https://www.cloudflare.com/en-in/learning/dns/dns-over-tls/). Deployment is easier to understand when DNS, HTTPS, and TLS are not magic words.
 
 ## Daily guideline
 
@@ -121,6 +129,8 @@ If you deploy with Vercel, treat preview deployments as review environments. Ope
 
 Deploy Supabase migrations, storage buckets/policies, and Edge Functions. Set secrets. Then deploy the Vite app to Vercel.
 
+**Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
+
 Test production:
 
 ```txt
@@ -138,6 +148,19 @@ visit tracking
 RLS blocked cases
 ```
 
+**Production smoke test:** after deployment, test public pages, admin login, project CRUD, image upload, contact submit, Brevo email, RLS blocked reads, and newsletter signup.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  visitor[Visitor] --> dns[DNS finds domain]
+  dns --> https[HTTPS connection to Vercel]
+  https --> vercel[Vercel serves React app]
+  vercel --> supabase[React calls Supabase]
+  supabase --> functions[Edge Functions use Supabase and Brevo secrets]
+```
+
 ## Definition of Done
 
 - [ ] Vercel deployment succeeds.
@@ -152,33 +175,6 @@ RLS blocked cases
 - [ ] RLS blocked cases still block in production.
 
 > **Log it.** In `learning-log/18-deploy-vercel-supabase.md`, explain which secrets live in Vercel and which live in Supabase, and why.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [Cloudflare - What is DNS?](https://www.cloudflare.com/en-in/learning/ddos/glossary/domain-name-system-dns/), [http.dev - HTTPS explained](https://http.dev/https), and [Cloudflare - DNS over TLS vs DNS over HTTPS](https://www.cloudflare.com/en-in/learning/dns/dns-over-tls/). Deployment is easier to understand when DNS, HTTPS, and TLS are not magic words.
-
-**Production smoke test:** after deployment, test public pages, admin login, project CRUD, image upload, contact submit, Brevo email, RLS blocked reads, and newsletter signup.
-
-**Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
-
-**CI/CD exercise:** add one automated check before deployment: test, lint, or build. Then intentionally break the build locally and confirm the check would catch it.
-
-**Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
-
-**Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  visitor[Visitor] --> dns[DNS finds domain]
-  dns --> https[HTTPS connection to Vercel]
-  https --> vercel[Vercel serves React app]
-  vercel --> supabase[React calls Supabase]
-  supabase --> functions[Edge Functions use Supabase and Brevo secrets]
-```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Keep shipping, keep improving." Deployment is not a finish line where everything must be flawless; it is the moment your improvement loop becomes real.
 

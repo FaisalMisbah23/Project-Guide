@@ -43,6 +43,10 @@ await supabase.from("page_visits").insert({
 
 Study more: [Frontend Interview Questions - Performance and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Big word alert:** **referrer** means the page or site a visitor came from before landing on your page, when the browser provides it.
+
+**Ethics prompt:** write a short note titled `Analytics I refuse to collect`. Include at least three examples and the reason each one would reduce visitor trust.
+
 ### Aggregates
 
 **Real-life analogy:** a shop owner wants totals, not every receipt one by one.
@@ -57,6 +61,10 @@ order by visits desc;
 ```
 
 Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
+
+**Comparison:** raw data vs aggregate data: raw data is every individual visit row. Aggregate data is a summary, such as total visits per page.
+
+**Quick quiz:** which is more useful for this portfolio: raw visit rows or top-page summaries? When would you need the raw rows?
 
 ## Daily guideline
 
@@ -86,6 +94,8 @@ recent visits
 ```
 
 Add Realtime only if it improves the admin experience. Live updates are fun, but they are not a substitute for correct stored data.
+
+**Privacy exercise:** review every analytics field and mark it as useful, risky, or unnecessary. Remove at least one field you cannot defend.
 
 ### Implementation sketch
 
@@ -175,6 +185,8 @@ flowchart TD
   recent --> refresh[Refresh summaries later if needed]
 ```
 
+**Performance exercise:** insert sample visit rows for several paths, then compare showing raw rows vs grouped counts. The dashboard should prefer summaries for scanning.
+
 ## Performance tuning
 
 **Big word alert:** **performance tuning** means making the app faster and less wasteful after you understand what it actually needs to do.
@@ -212,6 +224,15 @@ const { data, error } = await supabase
 
 Performance is not only speed. It also protects your database from unnecessary reads and keeps the dashboard easy to understand.
 
+Diagram:
+
+```mermaid
+flowchart TD
+  route[Public route loads] --> record[Record page_visits row]
+  record --> grouped[Dashboard query groups visits]
+  grouped --> cards[Insight cards show totals, top pages, and referrers]
+```
+
 ## Definition of Done
 
 - [ ] Public page visits are recorded.
@@ -226,30 +247,5 @@ Performance is not only speed. It also protects your database from unnecessary r
 - [ ] Common dashboard filters have a clear indexing plan.
 
 > **Log it.** In `learning-log/15-analytics-realtime-insights.md`, explain what you chose not to track and why.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Ethics prompt:** write a short note titled `Analytics I refuse to collect`. Include at least three examples and the reason each one would reduce visitor trust.
-
-**Quiz:** which is more useful for this portfolio: raw visit rows or top-page summaries? When would you need the raw rows?
-
-**Performance exercise:** insert sample visit rows for several paths, then compare showing raw rows vs grouped counts. The dashboard should prefer summaries for scanning.
-
-**Privacy exercise:** review every analytics field and mark it as useful, risky, or unnecessary. Remove at least one field you cannot defend.
-
-**Comparison:** raw data vs aggregate data: raw data is every individual visit row. Aggregate data is a summary, such as total visits per page.
-
-**Big word alert:** **referrer** means the page or site a visitor came from before landing on your page, when the browser provides it.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  route[Public route loads] --> record[Record page_visits row]
-  record --> grouped[Dashboard query groups visits]
-  grouped --> cards[Insight cards show totals, top pages, and referrers]
-```
 
 Next: the features exist. Now make every failure state understandable. -> **[Chapter 16 - Validation, errors, and empty states](16-validation-errors-empty-states.md)**

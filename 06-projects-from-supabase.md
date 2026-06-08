@@ -24,6 +24,8 @@ RLS also prevents draft projects from being returned publicly.
 React only receives what visitors are allowed to see.
 ```
 
+**Data check:** seed one published project and one draft project with the same technology tag. Confirm the filter never reveals the draft.
+
 ## New ideas before you build
 
 This chapter is the first place where the page stops being static. Learn the one idea you need before building: the page must fetch data after it appears.
@@ -195,6 +197,8 @@ if (projects.length === 0) return <p>No projects published yet.</p>;
 
 The exact table columns may differ from your migration. If they do, update the select list and mapper deliberately instead of passing raw database rows through your UI.
 
+**Exercise:** render three fake projects first, add a filter button, then replace only the data source with Supabase. The card UI should not need to know which source was used.
+
 ### As you build
 
 Use these React tools when the task asks for them:
@@ -255,6 +259,8 @@ No React projects match this filter yet. Clear filters to see all work.
 
 The page should show loading while the request is in progress and a human-readable error if Supabase fails.
 
+**Quick quiz:** what should the UI show for each state: loading, Supabase error, no projects, and project slug not found?
+
 ## Mandatory read
 
 Read the React topic explanations above and then study the linked `resources.devweekends.com` pages for any topic that still feels unclear. Required: project cards depend on `useEffect`, state, mapped lists, keys, and filter events.
@@ -271,16 +277,6 @@ Read the React topic explanations above and then study the linked `resources.dev
 - [ ] The project card copy explains outcomes, not only tools.
 
 > **Log it.** In `learning-log/06-projects-from-supabase.md`, explain why drafts must be blocked by the database, not only hidden in React.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Quiz:** what should the UI show for each state: loading, Supabase error, no projects, and project slug not found?
-
-**Exercise:** render three fake projects first, add a filter button, then replace only the data source with Supabase. The card UI should not need to know which source was used.
-
-**Data check:** seed one published project and one draft project with the same technology tag. Confirm the filter never reveals the draft.
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Building teaches lessons that theory cannot." Once this page renders real data, the backend stops being an idea and becomes part of your app.
 

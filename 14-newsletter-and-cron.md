@@ -39,6 +39,8 @@ await saveSubscriber(email);
 
 Study more: [Frontend Interview Questions - Forms and Validation](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Assignment:** write the newsletter duplicate-email behavior before coding it. Should the user see an error, a success message, or "already subscribed"? Why?
+
 ### Cron
 
 **Real-life analogy:** an alarm clock runs at a scheduled time even when nobody is watching it.
@@ -51,13 +53,23 @@ Every Monday 09:00 -> find new articles -> send update email
 
 Study more: [Supabase Cron documentation](https://supabase.com/docs/guides/cron) or a beginner-friendly cron syntax reference before scheduling real sends.
 
+**Comparison:** immediate work vs scheduled work: immediate work happens because a user just clicked or submitted something. Scheduled work happens later because a clock or cron rule triggered it.
+
+**Cron exercise:** write a dry-run mode for the newsletter job that reports who would receive the email without sending it.
+
 ## Daily guideline
 
 From `Daily_Software_Development_Guidelines.md`: **think about concurrency**. Two signup requests for the same email may arrive at nearly the same time. Normalize the email, add a unique constraint, and handle the duplicate case gracefully instead of trusting the UI to prevent it.
 
+**Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
+
+**Related reading:** revisit the "Think About Concurrency" section in `Daily_Software_Development_Guidelines.md`.
+
 ## Build it
 
 Create a newsletter signup Edge Function. Validate email, normalize casing, prevent duplicates, and store status such as `active`, `unsubscribed`, or `bounced` if you support it.
+
+**Concurrency exercise:** submit the same email twice quickly. Confirm the database ends with one subscriber and the UI response is friendly.
 
 Create `newsletter_runs` to track scheduled sends:
 
@@ -103,35 +115,7 @@ Chapter 19 maintenance
 
 If a scheduled function needs service-role power, keep that power inside Supabase server-side code. Never move service-role keys into the browser just because a scheduled job needs stronger access.
 
-## Definition of Done
-
-- [ ] Newsletter signup stores validated emails.
-- [ ] Duplicate emails are handled.
-- [ ] Brevo keys remain server-side.
-- [ ] `newsletter_runs` exists or is clearly planned.
-- [ ] Cron workflow is documented.
-- [ ] Migration, RLS, secrets, and logging assumptions were revisited before scheduling.
-- [ ] The owner can explain what triggers an update email.
-
-> **Log it.** In `learning-log/14-newsletter-and-cron.md`, explain why newsletters should be sent by scheduled server work, not by browser code.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Assignment:** write the newsletter duplicate-email behavior before coding it. Should the user see an error, a success message, or "already subscribed"? Why?
-
-**Reading:** revisit the "Think About Concurrency" section in `Daily_Software_Development_Guidelines.md`.
-
-**Concurrency exercise:** submit the same email twice quickly. Confirm the database ends with one subscriber and the UI response is friendly.
-
-**Cron exercise:** write a dry-run mode for the newsletter job that reports who would receive the email without sending it.
-
-**Comparison:** immediate work vs scheduled work: immediate work happens because a user just clicked or submitted something. Scheduled work happens later because a clock or cron rule triggered it.
-
-**Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
-
-**Diagram:**
+Diagram:
 
 ```mermaid
 flowchart TD
@@ -144,5 +128,17 @@ flowchart TD
   content --> brevo[Send via Brevo]
   brevo --> runs[Record newsletter_runs row]
 ```
+
+## Definition of Done
+
+- [ ] Newsletter signup stores validated emails.
+- [ ] Duplicate emails are handled.
+- [ ] Brevo keys remain server-side.
+- [ ] `newsletter_runs` exists or is clearly planned.
+- [ ] Cron workflow is documented.
+- [ ] Migration, RLS, secrets, and logging assumptions were revisited before scheduling.
+- [ ] The owner can explain what triggers an update email.
+
+> **Log it.** In `learning-log/14-newsletter-and-cron.md`, explain why newsletters should be sent by scheduled server work, not by browser code.
 
 Next: the owner has content and messages. Now add lightweight visit insights without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**

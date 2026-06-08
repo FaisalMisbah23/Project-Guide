@@ -18,6 +18,10 @@ Magic link reduces password handling but depends on email deliverability and can
 
 Choose one for the first build. Do not build all three unless the course explicitly needs them.
 
+**Assignment:** write a one-minute explanation of your login choice: email/password, OAuth, or magic link. Include one tradeoff.
+
+**Related reading:** read [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management), and [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview). Pay attention to cookies, sessions, and the idea that HTTP is stateless but not sessionless.
+
 ## The auth trap
 
 Bad:
@@ -36,6 +40,8 @@ Supabase Auth session -> protected route -> RLS-backed queries
 
 The UI protects navigation. The database protects data. You need both.
 
+**Quick quiz:** if a signed-out visitor manually types `/admin`, what should React do? If the same visitor calls Supabase directly, what should the database do?
+
 ## New ideas before you build
 
 ### Protected routes
@@ -53,6 +59,21 @@ function RequireAuth({ children }) {
 ```
 
 Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
+
+**Comparison:** session vs cookie: a cookie is a small value stored by the browser. A session is the user's logged-in state, often represented or refreshed using cookies or tokens.
+
+**Big word alert:** **stateless** means the server does not automatically remember previous requests. Login systems add session mechanisms so the app can still recognize a returning user.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  admin[/admin requested] --> requireAuth[RequireAuth checks Supabase session]
+  requireAuth --> noSession{Session exists?}
+  noSession -- No --> login[Redirect to /admin/login]
+  noSession -- Yes --> dashboard[Render dashboard]
+  dashboard --> rls[RLS still protects database rows]
+```
 
 ### Dashboard summaries
 
@@ -82,6 +103,8 @@ Recent visits
 
 Add sign out. Test direct URL access by opening `/admin` in a signed-out browser session.
 
+**Auth exercise:** test `/admin` in three states: signed out, signed in as owner, and after signing out in another tab. Record what the UI shows while the session is loading.
+
 ## Definition of Done
 
 - [ ] Owner login works with the chosen method.
@@ -92,32 +115,5 @@ Add sign out. Test direct URL access by opening `/admin` in a signed-out browser
 - [ ] RLS still blocks unauthorized data if the route is bypassed.
 
 > **Log it.** In `learning-log/08-owner-auth-and-admin-dashboard.md`, explain the difference between route protection and RLS protection.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management), and [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview). Pay attention to cookies, sessions, and the idea that HTTP is stateless but not sessionless.
-
-**Quick quiz:** if a signed-out visitor manually types `/admin`, what should React do? If the same visitor calls Supabase directly, what should the database do?
-
-**Assignment:** write a one-minute explanation of your login choice: email/password, OAuth, or magic link. Include one tradeoff.
-
-**Auth exercise:** test `/admin` in three states: signed out, signed in as owner, and after signing out in another tab. Record what the UI shows while the session is loading.
-
-**Comparison:** session vs cookie: a cookie is a small value stored by the browser. A session is the user's logged-in state, often represented or refreshed using cookies or tokens.
-
-**Big word alert:** **stateless** means the server does not automatically remember previous requests. Login systems add session mechanisms so the app can still recognize a returning user.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  admin[/admin requested] --> requireAuth[RequireAuth checks Supabase session]
-  requireAuth --> noSession{Session exists?}
-  noSession -- No --> login[Redirect to /admin/login]
-  noSession -- Yes --> dashboard[Render dashboard]
-  dashboard --> rls[RLS still protects database rows]
-```
 
 Next: the owner can enter the dashboard. Now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**

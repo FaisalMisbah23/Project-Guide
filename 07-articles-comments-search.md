@@ -48,6 +48,10 @@ const { data } = await supabase
 
 Study more: [Frontend Interview Questions - JavaScript and React](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Comparison:** filtering in React vs filtering in Supabase: React filtering means the browser already received the rows. Supabase filtering means the database returns only the rows the page needs.
+
+**Search exercise:** search for a word that matches no articles, one article, and many articles. Verify each result state is clear.
+
 ### Pagination
 
 **Real-life analogy:** books use pages so you do not read the whole library at once.
@@ -65,6 +69,10 @@ const { data } = await supabase
 ```
 
 Study more: [Frontend Interview Questions - Performance](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+**Big word alert:** **pagination** means splitting a large result into smaller pages or chunks so the app does not load everything at once.
+
+**Performance exercise:** seed at least 30 articles, then compare loading all rows vs loading one page. Write down what changes in query size, UI speed, and mental model.
 
 ### Sanitizing user content
 
@@ -91,6 +99,18 @@ Use pagination. Cursor pagination is stronger for large changing lists, but page
 
 For comments, public visitors may submit a comment as `pending`. Only approved comments render publicly. This is not just moderation; it is abuse control.
 
+**Quick quiz:** why are pending comments hidden? Choose two answers: moderation, performance, abuse control, prettier UI. Defend your choices.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  controls[Search input, filters, and page number] --> query[Supabase query]
+  query --> published[Published articles only]
+  published --> page[Limited page of rows]
+  page --> list[Article list UI]
+```
+
 ## Rich text
 
 Add a rich text editor in the admin chapter, but decide the storage format now. Store article body in a format you can render safely. Do not blindly inject HTML without sanitizing. If you store Markdown, render it with a trusted parser and safe configuration.
@@ -98,6 +118,8 @@ Add a rich text editor in the admin chapter, but decide the storage format now. 
 ## Mandatory read
 
 Read about React lists/keys if not already done in Chapter 06. Read a short article on pagination and one on sanitizing user-generated content. Required: comments and rich article bodies introduce data that can harm readers if rendered carelessly.
+
+**Blog prompt:** draft an article titled `Why I do not load every row into React`. Explain search, pagination, and the difference between database work and browser work.
 
 ## Definition of Done
 
@@ -110,31 +132,5 @@ Read about React lists/keys if not already done in Chapter 06. Read a short arti
 - [ ] Draft articles are hidden publicly.
 
 > **Log it.** In `learning-log/07-articles-comments-search.md`, explain why pending comments should not appear immediately and why article search should not require loading every row.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog prompt:** draft an article titled `Why I do not load every row into React`. Explain search, pagination, and the difference between database work and browser work.
-
-**Quiz:** why are pending comments hidden? Choose two answers: moderation, performance, abuse control, prettier UI. Defend your choices.
-
-**Performance exercise:** seed at least 30 articles, then compare loading all rows vs loading one page. Write down what changes in query size, UI speed, and mental model.
-
-**Search exercise:** search for a word that matches no articles, one article, and many articles. Verify each result state is clear.
-
-**Comparison:** filtering in React vs filtering in Supabase: React filtering means the browser already received the rows. Supabase filtering means the database returns only the rows the page needs.
-
-**Big word alert:** **pagination** means splitting a large result into smaller pages or chunks so the app does not load everything at once.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  controls[Search input, filters, and page number] --> query[Supabase query]
-  query --> published[Published articles only]
-  published --> page[Limited page of rows]
-  page --> list[Article list UI]
-```
 
 Next: public content works. Now build the private door for the owner. -> **[Chapter 08 - Owner auth and admin dashboard](08-owner-auth-and-admin-dashboard.md)**

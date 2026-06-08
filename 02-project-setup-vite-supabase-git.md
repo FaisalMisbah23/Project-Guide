@@ -61,6 +61,10 @@ BREVO_API_KEY=server_only
 
 Study more: [Frontend Interview Questions - Deployment and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Pause and practice:** which of these may appear in browser code: `VITE_SUPABASE_URL`, `BREVO_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_ANON_KEY`? For each answer, write one sentence explaining why.
+
+**Comparison:** `.env` vs `.env.example`: `.env` contains real local values and stays out of Git. `.env.example` contains only variable names and safe placeholder values so another developer knows what to create.
+
 ### Git commits
 
 **Real-life analogy:** saving a game before a hard level gives you a safe return point. A Git commit is a return point for your code.
@@ -74,6 +78,10 @@ git commit -m "Set up portfolio app"
 ```
 
 Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
+
+**Big word alert:** **baseline** means the first known-good version of the project. When someone says "make a baseline commit," they mean commit the clean starting point before feature work begins.
+
+**Git exercise:** make three tiny commits instead of one large commit: project scaffold, environment/example files, and styling/tooling setup. Run `git log --oneline` and check that each message explains one clear change.
 
 ## Daily guideline
 
@@ -108,7 +116,19 @@ learning-log/
 
 `.env.example` should show the names of required variables without real values. `.gitignore` must ignore `.env`, build output, dependency folders, editor clutter, and local Supabase artifacts that should not be committed.
 
+**Mini assignment:** intentionally add `.env` to your working tree, confirm Git notices it, then fix `.gitignore` so Git ignores it again. Do not commit the secret file.
+
 Commit the baseline once the app starts and builds. Small commits matter because this course will change database schema, policies, Edge Functions, and frontend code. You want rollback points.
+
+Diagram:
+
+```mermaid
+flowchart TD
+  repo[Project repo] --> env[".env: local real values, ignored by Git"]
+  repo --> envExample[".env.example: safe template, committed"]
+  repo --> srcLib["src/lib/: browser-safe Supabase client"]
+  repo --> learningLog["learning-log/: written explanations"]
+```
 
 ## Do and don't
 
@@ -124,6 +144,8 @@ Don't assume a secret is safe because the repo is private.
 
 Read the official Vite environment variables guide and Supabase's note on anon keys and RLS. Required: the rest of the course assumes you understand why some browser variables are acceptable and some secrets must stay server-side.
 
+**Related reading:** read [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP) for the big picture of web requests, then skim [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata) so `index.html`, `<head>`, and metadata do not feel mysterious.
+
 ## Definition of Done
 
 - [ ] Vite React app runs locally.
@@ -134,32 +156,6 @@ Read the official Vite environment variables guide and Supabase's note on anon k
 - [ ] The baseline setup is committed.
 
 > **Log it.** In `learning-log/02-project-setup.md`, explain the difference between a public Vite env var and a server-only secret. Name one mistake that would leak credentials.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Blog links:** read [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP) for the big picture of web requests, then skim [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata) so `index.html`, `<head>`, and metadata do not feel mysterious.
-
-**Quick quiz:** which of these may appear in browser code: `VITE_SUPABASE_URL`, `BREVO_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_ANON_KEY`? For each answer, write one sentence explaining why.
-
-**Mini assignment:** intentionally add `.env` to your working tree, confirm Git notices it, then fix `.gitignore` so Git ignores it again. Do not commit the secret file.
-
-**Git exercise:** make three tiny commits instead of one large commit: project scaffold, environment/example files, and styling/tooling setup. Run `git log --oneline` and check that each message explains one clear change.
-
-**Comparison:** `.env` vs `.env.example`: `.env` contains real local values and stays out of Git. `.env.example` contains only variable names and safe placeholder values so another developer knows what to create.
-
-**Big word alert:** **baseline** means the first known-good version of the project. When someone says "make a baseline commit," they mean commit the clean starting point before feature work begins.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  repo[Project repo] --> env[".env: local real values, ignored by Git"]
-  repo --> envExample[".env.example: safe template, committed"]
-  repo --> srcLib["src/lib/: browser-safe Supabase client"]
-  repo --> learningLog["learning-log/: written explanations"]
-```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Great software starts with small steps." Setup is one of those steps. It may feel basic, but every clean project begins here.
 

@@ -44,6 +44,10 @@ await supabase.from("projects").update(changes).eq("id", id);
 await supabase.from("projects").delete().eq("id", id);
 ```
 
+**Big word alert:** **CRUD** means Create, Read, Update, Delete. It is the basic set of actions most admin tools need.
+
+**Comparison:** create vs update: create makes a new row. Update changes an existing row. A form can look similar for both, but the database operation and edge cases are different.
+
 Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
 
 ### Form state
@@ -73,7 +77,11 @@ Create `/admin/projects`. Load all owner-visible projects, including drafts. Add
 
 Validation should catch missing title, missing slug, duplicate slug, invalid URLs, and weak summaries. A project summary should say what changed, not only what tech was used.
 
+**Validation exercise:** submit the project form with an empty title, bad URL, duplicate slug, and too-short summary. The form should fail before creating broken public content.
+
 Add create and edit flows. Add publish/unpublish as a status update. Add delete with confirmation. If you want a safer production habit, use archive or soft delete instead of hard delete.
+
+**Assignment:** create a manual test checklist for project CRUD: create draft, edit draft, publish, unpublish, delete/archive, invalid URL, duplicate slug, signed-out write attempt.
 
 ### Implementation sketch
 
@@ -231,6 +239,17 @@ export async function updateProject(
 
 This is not advanced locking. It is a practical first safety habit: do not overwrite a record if it changed after you loaded it.
 
+Diagram:
+
+```mermaid
+flowchart TD
+  form[Admin project form] --> validate[Validate input]
+  validate --> draft[Save draft]
+  draft --> preview[Preview]
+  preview --> publish[Publish deliberately]
+  publish --> publicRead[Public site can now read it]
+```
+
 ## Real developer mistake
 
 Mistake: publish automatically after saving.
@@ -238,6 +257,8 @@ Mistake: publish automatically after saving.
 Why it is bad: the owner may save an incomplete draft while still writing.
 
 Fix: save as draft by default, then publish with a separate deliberate action.
+
+**Blog prompt:** write three paragraphs on `Why save does not always mean publish`.
 
 ## Definition of Done
 
@@ -252,32 +273,7 @@ Fix: save as draft by default, then publish with a separate deliberate action.
 
 > **Log it.** In `learning-log/09-admin-project-crud.md`, explain why draft/published status is safer than making every saved project public.
 
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Assignment:** create a manual test checklist for project CRUD: create draft, edit draft, publish, unpublish, delete/archive, invalid URL, duplicate slug, signed-out write attempt.
-
-**Blog prompt:** write three paragraphs on `Why save does not always mean publish`.
-
 **CRUD exercise:** perform the full lifecycle on one project: create draft, preview, publish, edit, unpublish, archive/delete. After each step, check both the admin page and public page.
-
-**Validation exercise:** submit the project form with an empty title, bad URL, duplicate slug, and too-short summary. The form should fail before creating broken public content.
-
-**Comparison:** create vs update: create makes a new row. Update changes an existing row. A form can look similar for both, but the database operation and edge cases are different.
-
-**Big word alert:** **CRUD** means Create, Read, Update, Delete. It is the basic set of actions most admin tools need.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  form[Admin project form] --> validate[Validate input]
-  validate --> draft[Save draft]
-  draft --> preview[Preview]
-  preview --> publish[Publish deliberately]
-  publish --> publicRead[Public site can now read it]
-```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Every project teaches something valuable." CRUD looks ordinary, but this is where you learn how real owner workflows are protected.
 

@@ -42,6 +42,8 @@ if (!email.includes("@")) {
 
 Study more: [Frontend Interview Questions - Forms and Validation](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Comparison:** validation vs error handling: validation tries to stop bad input before work happens. Error handling responds when something still fails.
+
 ### Loading, empty, and error states
 
 **Real-life analogy:** a shop should show "opening soon," "sold out," or "system unavailable" instead of leaving people staring at a blank window.
@@ -55,6 +57,19 @@ if (projects.length === 0) return <p>No projects match this filter.</p>;
 ```
 
 Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+**Quick quiz:** what is worse for a visitor: a clear error message or a blank screen? Why does the blank screen feel less trustworthy?
+
+Diagram:
+
+```mermaid
+flowchart TD
+  request[Data request] --> loading[Loading state]
+  loading --> result{Request result}
+  result -- Success with rows --> content[Render content]
+  result -- Success with no rows --> empty[Render empty state]
+  result -- Failure --> error[Render error state and next action]
+```
 
 ## Build it
 
@@ -75,6 +90,10 @@ dashboard cards
 ```
 
 For each, test loading, empty, error, success, and blocked cases.
+
+**Bug hunt:** intentionally test slow network, invalid email, empty database, missing slug, failed upload, and double submit. Write the expected UI response before checking the actual response.
+
+**UI exercise:** create a checklist for every page with these states: loading, empty, error, success, unauthorized, and not found. Fill it out before polishing visuals.
 
 ## Automated testing
 
@@ -120,6 +139,12 @@ it("rejects a project without a title", () => {
 
 Do not try to test everything at once. Protect the risky parts first: validation, RLS assumptions, contact failure behavior, and anything that could leak private content.
 
+**Big word alert:** **regression** means something that used to work breaks after a change. A regression test checks that old behavior still works.
+
+**Testing exercise:** write one unit test for a validation helper and one smoke-test checklist for the contact form. The goal is not coverage percentage; the goal is protecting behavior that matters.
+
+**Regression exercise:** after fixing one error state, retest one unrelated happy path. This builds the habit of checking that a fix did not break normal use.
+
 ## Empty state examples
 
 Bad:
@@ -162,35 +187,6 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 - [ ] One critical user flow has an integration or smoke test plan.
 
 > **Log it.** In `learning-log/16-validation-errors-empty-states.md`, list three edge cases you tested and how the UI responded.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Bug hunt:** intentionally test slow network, invalid email, empty database, missing slug, failed upload, and double submit. Write the expected UI response before checking the actual response.
-
-**Quiz:** what is worse for a visitor: a clear error message or a blank screen? Why does the blank screen feel less trustworthy?
-
-**UI exercise:** create a checklist for every page with these states: loading, empty, error, success, unauthorized, and not found. Fill it out before polishing visuals.
-
-**Regression exercise:** after fixing one error state, retest one unrelated happy path. This builds the habit of checking that a fix did not break normal use.
-
-**Testing exercise:** write one unit test for a validation helper and one smoke-test checklist for the contact form. The goal is not coverage percentage; the goal is protecting behavior that matters.
-
-**Comparison:** validation vs error handling: validation tries to stop bad input before work happens. Error handling responds when something still fails.
-
-**Big word alert:** **regression** means something that used to work breaks after a change. A regression test checks that old behavior still works.
-
-**Diagram:**
-
-```mermaid
-flowchart TD
-  request[Data request] --> loading[Loading state]
-  loading --> result{Request result}
-  result -- Success with rows --> content[Render content]
-  result -- Success with no rows --> empty[Render empty state]
-  result -- Failure --> error[Render error state and next action]
-```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Progress matters more than perfection." Failure states are easy to avoid because they are messy; designing them is a real sign of growth.
 

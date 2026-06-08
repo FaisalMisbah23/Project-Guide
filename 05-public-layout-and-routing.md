@@ -46,6 +46,8 @@ Better:
 
 Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
 
+**Mini assignment:** sketch your route tree on paper before coding. Mark which routes are public, which are admin-only, and which routes need a slug.
+
 ### Layout components
 
 **Real-life analogy:** a book uses the same margins, header style, and page structure on every page. A layout component gives your app that shared structure.
@@ -65,6 +67,8 @@ function PublicLayout() {
 ```
 
 Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
+
+**Related reading:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
 
 Diagram:
 
@@ -114,6 +118,8 @@ Bad empty copy:
 []
 ```
 
+**Routing exercise:** manually type every planned URL into the browser, including one fake slug and one unknown route. Write the expected page before you build it, then compare after implementation.
+
 ## Definition of Done
 
 - [ ] Public layout exists.
@@ -123,15 +129,5 @@ Bad empty copy:
 - [ ] Admin routes are not mixed into public navigation.
 
 > **Log it.** In `learning-log/05-public-layout-and-routing.md`, explain why project and article detail pages need stable slug URLs.
-
-## Learning bridge
-
-Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
-
-**Reading:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
-
-**Mini assignment:** sketch your route tree on paper before coding. Mark which routes are public, which are admin-only, and which routes need a slug.
-
-**Routing exercise:** manually type every planned URL into the browser, including one fake slug and one unknown route. Write the expected page before you build it, then compare after implementation.
 
 Next: the routes exist. Now replace placeholder project content with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**
