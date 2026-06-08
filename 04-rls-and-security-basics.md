@@ -66,7 +66,7 @@ Study more: [Database Engineering - Case Studies](https://resources.devweekends.
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **principle of least privilege**. Give each user only the access they need. Public visitors need published projects and articles, not drafts, messages, subscribers, or admin data. The safest policy is usually the smallest policy that lets the feature work.
+**principle of least privilege**. Give each user only the access they need. Public visitors need published projects and articles, not drafts, messages, subscribers, or admin data. The safest policy is usually the smallest policy that lets the feature work.
 
 ## The policy map
 

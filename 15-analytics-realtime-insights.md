@@ -68,7 +68,7 @@ Study more: [Database Engineering - Case Studies](https://resources.devweekends.
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **think in systems**. Analytics changes affect users, privacy, database size, dashboard behavior, and production monitoring. Track the smallest useful data, then explain what you deliberately chose not to collect.
+**think in systems**. Analytics changes affect users, privacy, database size, dashboard behavior, and production monitoring. Track the smallest useful data, then explain what you deliberately chose not to collect.
 
 ## Build it
 

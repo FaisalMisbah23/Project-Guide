@@ -75,7 +75,7 @@ Study more: [Database Engineering - Case Studies](https://resources.devweekends.
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **design for failure**. Assume a draft save can fail, an article preview can render badly, and moderation actions can be clicked by mistake. Preserve the owner's text while showing the error, and require confirmation for destructive comment actions.
+**design for failure**. Assume a draft save can fail, an article preview can render badly, and moderation actions can be clicked by mistake. Preserve the owner's text while showing the error, and require confirmation for destructive comment actions.
 
 ## Build it
 

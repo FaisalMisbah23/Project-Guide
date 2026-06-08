@@ -83,7 +83,7 @@ Study more: [Audit Logging for HIPAA - Why Logs Matter](https://resources.devwee
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **protect sensitive information** and **use logging wisely**. Log enough to debug contact failures, but never log Brevo keys, service-role keys, or full private message bodies unnecessarily. A log file can leak data just like committed code can.
+**protect sensitive information** and **use logging wisely**. Log enough to debug contact failures, but never log Brevo keys, service-role keys, or full private message bodies unnecessarily. A log file can leak data just like committed code can.
 
 ## Build it
 

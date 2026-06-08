@@ -90,7 +90,7 @@ flowchart TD
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **keep components focused**. A route file should decide which page appears; a layout should hold shared structure; a card should display one piece of content. If one component starts handling navigation, fetching, filtering, forms, and styling all at once, split it before it becomes hard to understand.
+**keep components focused**. A route file should decide which page appears; a layout should hold shared structure; a card should display one piece of content. If one component starts handling navigation, fetching, filtering, forms, and styling all at once, split it before it becomes hard to understand.
 
 ## Build it
 

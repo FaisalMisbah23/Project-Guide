@@ -69,7 +69,7 @@ Study more: [React Crash Course - Components and Props](https://resources.devwee
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **protect against double submissions** and **think about real users**. Disable the save button while a project is being created or updated. Show success or failure clearly. A user who clicks twice because nothing happened should not accidentally create duplicate projects.
+**protect against double submissions** and **think about real users**. Disable the save button while a project is being created or updated. Show success or failure clearly. A user who clicks twice because nothing happened should not accidentally create duplicate projects.
 
 ## Build it
 

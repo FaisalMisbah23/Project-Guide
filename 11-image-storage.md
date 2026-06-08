@@ -59,7 +59,7 @@ Study more: [Accessibility Overview](https://resources.devweekends.com/courses/a
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **name things clearly**. Image paths and alt text should help future-you understand what the file is. Prefer `projects/<project-id>/dashboard-overview.png` over `image1.png`, and write alt text that describes the image's purpose.
+**name things clearly**. Image paths and alt text should help future-you understand what the file is. Prefer `projects/<project-id>/dashboard-overview.png` over `image1.png`, and write alt text that describes the image's purpose.
 
 ## Public or private?
 

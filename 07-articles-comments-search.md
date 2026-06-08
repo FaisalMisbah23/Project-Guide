@@ -89,7 +89,7 @@ Study more: [Frontend Interview Questions - Security and React](https://resource
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **think about scalability** and **test edge cases**. Search and pagination are not only "nice features"; they prevent the app from loading every article forever. Test empty results, long search terms, no comments, many comments, and deleted article slugs.
+**think about scalability** and **test edge cases**. Search and pagination are not only "nice features"; they prevent the app from loading every article forever. Test empty results, long search terms, no comments, many comments, and deleted article slugs.
 
 ## Build it
 

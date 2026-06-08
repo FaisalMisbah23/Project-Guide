@@ -85,7 +85,7 @@ Study more: [AWS Core Concepts - Shared Responsibility Model](https://resources.
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **monitor production**. Deployment is not done when Vercel turns green. After shipping, open the production app, test the real workflows, check function logs, confirm emails, and watch for failed requests.
+**monitor production**. Deployment is not done when Vercel turns green. After shipping, open the production app, test the real workflows, check function logs, confirm emails, and watch for failed requests.
 
 ## Build it
 

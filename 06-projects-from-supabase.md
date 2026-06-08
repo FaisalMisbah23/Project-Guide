@@ -84,7 +84,7 @@ flowchart TD
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **separate business logic from UI**. Keep Supabase queries in a project data module and keep `ProjectCard` focused on display. The card should not know how to talk to the database; it should receive a project and render it clearly.
+**separate business logic from UI**. Keep Supabase queries in a project data module and keep `ProjectCard` focused on display. The card should not know how to talk to the database; it should receive a project and render it clearly.
 
 ## Build it
 

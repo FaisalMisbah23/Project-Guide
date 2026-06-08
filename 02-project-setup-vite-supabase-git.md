@@ -85,7 +85,7 @@ Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **commit frequently** and **use `.gitignore` correctly**. Before leaving setup, make one clean baseline commit and confirm `.env`, `node_modules/`, build output, logs, and local clutter are ignored. A beginner mistake is thinking "private repo" means secrets are safe; treat every commit as something another person may eventually read.
+**commit frequently** and **use `.gitignore` correctly**. Before leaving setup, make one clean baseline commit and confirm `.env`, `node_modules/`, build output, logs, and local clutter are ignored. A beginner mistake is thinking "private repo" means secrets are safe; treat every commit as something another person may eventually read.
 
 ## Build it
 

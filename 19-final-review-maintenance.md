@@ -85,7 +85,7 @@ flowchart TD
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **document important decisions** and **review before merging**. Your README should explain not only what you built, but why: why RLS, why Edge Functions, why store messages before email, why secrets split between Vercel and Supabase.
+**document important decisions** and **review before merging**. Your README should explain not only what you built, but why: why RLS, why Edge Functions, why store messages before email, why secrets split between Vercel and Supabase.
 
 **Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
 

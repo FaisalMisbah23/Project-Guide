@@ -59,7 +59,7 @@ Study more: [Supabase Cron documentation](https://supabase.com/docs/guides/cron)
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **think about concurrency**. Two signup requests for the same email may arrive at nearly the same time. Normalize the email, add a unique constraint, and handle the duplicate case gracefully instead of trusting the UI to prevent it.
+**think about concurrency**. Two signup requests for the same email may arrive at nearly the same time. Normalize the email, add a unique constraint, and handle the duplicate case gracefully instead of trusting the UI to prevent it.
 
 **Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
 

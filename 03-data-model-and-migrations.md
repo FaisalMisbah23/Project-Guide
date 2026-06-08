@@ -152,7 +152,7 @@ Study more: [Database Engineering - Case Studies](https://resources.devweekends.
 
 ## Daily guideline
 
-From `Daily_Software_Development_Guidelines.md`: **think about data history**. Before adding or changing a field, ask what happens when that value changes later. This portfolio does not process orders, but the habit matters: in a shop, changing a product's current price must not rewrite old order totals. Store historical facts where history matters.
+**think about data history**. Before adding or changing a field, ask what happens when that value changes later. This portfolio does not process orders, but the habit matters: in a shop, changing a product's current price must not rewrite old order totals. Store historical facts where history matters.
 
 **Blog prompt:** write a short post draft titled `Why changing today's data should not rewrite yesterday's truth`. Use the price-at-purchase example, then connect it back to this portfolio with drafts, published content, and saved contact messages.
 
