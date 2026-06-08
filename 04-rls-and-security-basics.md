@@ -92,11 +92,27 @@ page_visits
   owner: read aggregate insight
 ```
 
-For this portfolio, "owner" means the single authenticated portfolio owner. You can store the owner user id in a settings table, compare against `auth.uid()`, or use a small helper function. The important rule is that ownership is enforced in the database, not only in React.
+For this portfolio, use one safe default owner pattern: create an `owner_profile` or `app_settings` row that stores the single owner's Supabase `user_id`, lock that table down with RLS, and create a small SQL helper such as `is_owner()` that compares the stored owner id to `auth.uid()`. Use that helper in owner-only policies.
+
+```sql
+create function is_owner()
+returns boolean
+language sql
+security definer
+as $$
+  select exists (
+    select 1
+    from owner_profile
+    where user_id = auth.uid()
+  );
+$$;
+```
+
+Keep the owner table private. Public users should not be able to read or update the owner id, and the frontend should not decide who counts as owner.
 
 ## Build it
 
-Enable RLS on every table. Add policies one table at a time. After each table, test the public case and the owner case before moving on.
+Enable RLS on every table. Add policies one table at a time. After each table, test the public case and the owner case before moving on. Prefer explicit policies that call `is_owner()` for owner-only insert, update, delete, and inbox reads.
 
 Use draft seed data from Chapter 03. Try to read draft projects as a signed-out user. The correct result is no rows. Then sign in as the owner and confirm owner workflows can see or update the rows they should.
 
@@ -115,11 +131,15 @@ Read Supabase's official RLS documentation. Also read a short explanation of aut
 - [ ] Draft content is hidden from public reads.
 - [ ] Owner-only writes are blocked for signed-out users.
 - [ ] Contact messages are not publicly readable.
+- [ ] Owner-only policies use one consistent owner helper or owner id pattern.
+- [ ] The owner id source is not publicly readable or editable.
 - [ ] You can explain why service-role keys never go in frontend code.
 
 > **Log it.** In `learning-log/04-rls-and-security.md`, write the policy map in your own words. Include one blocked case you tested.
 
 ## Between chapters
+
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication) for the authentication flow, then read [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management) to understand why identity and session handling are separate from permission checks.
 
@@ -134,5 +154,19 @@ Read Supabase's official RLS documentation. Also read a short explanation of aut
 **Comparison:** authentication vs authorization: authentication proves who someone is. Authorization decides what that person may do after identity is known.
 
 **Big word alert:** **RLS** stands for Row Level Security. It means the database checks access one row at a time, instead of assuming every query can read every row in a table.
+
+**Diagram:**
+
+```txt
+Public visitor query
+  -> Supabase
+  -> RLS policy
+  -> only rows where status = 'published'
+
+Owner query
+  -> Supabase Auth session
+  -> RLS policy
+  -> owner-only rows/actions allowed
+```
 
 Next: the backend is guarded. Now give visitors a public route structure they can actually navigate. -> **[Chapter 05 - Public layout and routing](05-public-layout-and-routing.md)**

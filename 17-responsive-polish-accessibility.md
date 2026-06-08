@@ -96,6 +96,8 @@ Every input needs a label. Every meaningful image needs alt text. Buttons should
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) for SEO and social previews, and [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata). Then check whether project and article detail pages have meaningful titles and descriptions.
 
 **Reading:** study [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility), even if the examples use Angular. The accessibility ideas still apply.

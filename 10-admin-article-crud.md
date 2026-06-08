@@ -94,6 +94,8 @@ Don't create a tag system that requires editing code.
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Reading:** review [Frontend Interview Questions](https://resources.devweekends.com/resources/frontend-interview-qs), focusing on HTML, React, and security questions.
 
 **Quiz:** what is safer to render by default: raw HTML from a user, sanitized HTML, Markdown through a trusted renderer, or plain text? Explain the tradeoff.
@@ -105,5 +107,20 @@ Don't create a tag system that requires editing code.
 **Comparison:** Markdown vs HTML: Markdown is easier for writing and can be rendered safely with the right tools. HTML is more flexible but dangerous if user-submitted content is injected without sanitizing.
 
 **Big word alert:** **XSS** means cross-site scripting. It is when unsafe content lets an attacker run JavaScript in someone else's browser.
+
+**Diagram:**
+
+```txt
+Article draft
+  -> safe body format
+  -> preview renderer
+  -> publish action
+  -> public article page
+
+Comment submit
+  -> pending
+  -> owner moderates
+  -> approved comments render
+```
 
 Next: content exists, but it needs images that do not live in database rows. -> **[Chapter 11 - Image storage](11-image-storage.md)**

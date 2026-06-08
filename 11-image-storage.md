@@ -94,6 +94,8 @@ Fix: require useful alt text for meaningful images.
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Mini assignment:** upload one intentionally oversized image and one broken/unsupported file type in development. Write what the UI should show for each.
 
 **Quiz:** what is stored in the database: image bytes, image path, alt text, upload status, or bucket policy? Explain each choice.
@@ -105,5 +107,15 @@ Fix: require useful alt text for meaningful images.
 **Comparison:** database row vs object storage file: the row stores facts and paths. Object storage holds the actual image bytes.
 
 **Big word alert:** **metadata** means data about data. For an image, metadata might include path, alt text, file size, content type, and upload time.
+
+**Diagram:**
+
+```txt
+Admin uploads image
+  -> Supabase Storage stores file
+  -> database stores image_path + image_alt
+  -> public page reads row
+  -> browser loads image from Storage URL
+```
 
 Next: visitors need to contact the owner. Email alone is not enough; store first, then notify. -> **[Chapter 12 - Contact Edge Function and Brevo](12-contact-edge-function-brevo.md)**

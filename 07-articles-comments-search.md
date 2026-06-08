@@ -113,6 +113,8 @@ Read about React lists/keys if not already done in Chapter 06. Read a short arti
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog prompt:** draft an article titled `Why I do not load every row into React`. Explain search, pagination, and the difference between database work and browser work.
 
 **Quiz:** why are pending comments hidden? Choose two answers: moderation, performance, abuse control, prettier UI. Defend your choices.
@@ -124,5 +126,15 @@ Read about React lists/keys if not already done in Chapter 06. Read a short arti
 **Comparison:** filtering in React vs filtering in Supabase: React filtering means the browser already received the rows. Supabase filtering means the database returns only the rows the page needs.
 
 **Big word alert:** **pagination** means splitting a large result into smaller pages or chunks so the app does not load everything at once.
+
+**Diagram:**
+
+```txt
+Search input + filters + page number
+  -> Supabase query
+  -> published articles only
+  -> limited page of rows
+  -> article list UI
+```
 
 Next: public content works. Now build the private door for the owner. -> **[Chapter 08 - Owner auth and admin dashboard](08-owner-auth-and-admin-dashboard.md)**

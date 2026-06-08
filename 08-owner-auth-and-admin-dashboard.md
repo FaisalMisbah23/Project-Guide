@@ -95,6 +95,8 @@ Add sign out. Test direct URL access by opening `/admin` in a signed-out browser
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management), and [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview). Pay attention to cookies, sessions, and the idea that HTTP is stateless but not sessionless.
 
 **Quick quiz:** if a signed-out visitor manually types `/admin`, what should React do? If the same visitor calls Supabase directly, what should the database do?
@@ -106,5 +108,15 @@ Add sign out. Test direct URL access by opening `/admin` in a signed-out browser
 **Comparison:** session vs cookie: a cookie is a small value stored by the browser. A session is the user's logged-in state, often represented or refreshed using cookies or tokens.
 
 **Big word alert:** **stateless** means the server does not automatically remember previous requests. Login systems add session mechanisms so the app can still recognize a returning user.
+
+**Diagram:**
+
+```txt
+/admin requested
+  -> RequireAuth checks Supabase session
+    -> no session: redirect to /admin/login
+    -> session exists: render dashboard
+  -> RLS still protects database rows
+```
 
 Next: the owner can enter the dashboard. Now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**

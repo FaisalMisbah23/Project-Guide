@@ -89,6 +89,8 @@ Realtime is convenience, not the source of truth. If the socket disconnects, the
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Quiz:** if Realtime disconnects, should the inbox become empty, stay with existing loaded messages, or block the owner completely? Explain why.
 
 **Assignment:** write a cleanup checklist for every subscription or event listener you add: where it starts, where it stops, and how you know it stopped.
@@ -100,5 +102,15 @@ Realtime is convenience, not the source of truth. If the socket disconnects, the
 **Comparison:** initial load vs Realtime update: initial load fetches the messages that already exist. Realtime listens for new changes after the page is open.
 
 **Big word alert:** **subscription** means the app starts listening for future events. It should also unsubscribe when the component no longer needs those events.
+
+**Diagram:**
+
+```txt
+Admin inbox opens
+  -> load existing messages
+  -> subscribe to new contact_messages inserts
+  -> update unread count/list
+  -> cleanup subscription on unmount
+```
 
 Next: contact is handled. Now let visitors subscribe and send scheduled updates thoughtfully. -> **[Chapter 14 - Newsletter and Cron](14-newsletter-and-cron.md)**

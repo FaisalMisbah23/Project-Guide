@@ -49,7 +49,7 @@ Study more: [Frontend Interview Questions - Forms and Validation](https://resour
 Every Monday 09:00 -> find new articles -> send update email
 ```
 
-Study more: [System Calls and POSIX - Time and Environment](https://resources.devweekends.com/courses/c-programming/system-calls)
+Study more: [Supabase Cron documentation](https://supabase.com/docs/guides/cron) or a beginner-friendly cron syntax reference before scheduling real sends.
 
 ## Daily guideline
 
@@ -86,6 +86,8 @@ If implementing Cron now, schedule a Supabase function that looks for new publis
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Assignment:** write the newsletter duplicate-email behavior before coding it. Should the user see an error, a success message, or "already subscribed"? Why?
 
 **Reading:** revisit the "Think About Concurrency" section in `Daily_Software_Development_Guidelines.md`.
@@ -97,5 +99,20 @@ If implementing Cron now, schedule a Supabase function that looks for new publis
 **Comparison:** immediate work vs scheduled work: immediate work happens because a user just clicked or submitted something. Scheduled work happens later because a clock or cron rule triggered it.
 
 **Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
+
+**Diagram:**
+
+```txt
+Newsletter signup
+  -> Edge Function
+  -> normalize email
+  -> insert subscriber or handle duplicate
+
+Scheduled digest
+  -> Cron trigger
+  -> query new content
+  -> send via Brevo
+  -> record newsletter_runs row
+```
 
 Next: the owner has content and messages. Now add lightweight visit insights without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**

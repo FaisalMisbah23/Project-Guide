@@ -100,6 +100,8 @@ Add Realtime only if it improves the admin experience. Live updates are fun, but
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Ethics prompt:** write a short note titled `Analytics I refuse to collect`. Include at least three examples and the reason each one would reduce visitor trust.
 
 **Quiz:** which is more useful for this portfolio: raw visit rows or top-page summaries? When would you need the raw rows?
@@ -111,5 +113,14 @@ Add Realtime only if it improves the admin experience. Live updates are fun, but
 **Comparison:** raw data vs aggregate data: raw data is every individual visit row. Aggregate data is a summary, such as total visits per page.
 
 **Big word alert:** **referrer** means the page or site a visitor came from before landing on your page, when the browser provides it.
+
+**Diagram:**
+
+```txt
+Public route loads
+  -> record page_visits row
+  -> dashboard query groups visits
+  -> insight cards show totals, top pages, referrers
+```
 
 Next: the features exist. Now make every failure state understandable. -> **[Chapter 16 - Validation, errors, and empty states](16-validation-errors-empty-states.md)**

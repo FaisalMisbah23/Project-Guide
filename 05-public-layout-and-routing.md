@@ -66,6 +66,24 @@ function PublicLayout() {
 
 Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
 
+Diagram:
+
+```txt
+PublicLayout
+  Header
+  main
+    /               HomePage
+    /projects       ProjectsPage
+    /projects/:slug ProjectDetailPage
+    /articles       ArticlesPage
+    /contact        ContactPage
+  Footer
+```
+
+**Comparison:** route vs component: a route is the URL rule, like `/projects/:slug`. A component is the React function that renders what the visitor sees for that URL.
+
+**Big word alert:** **slug** means a human-readable URL identifier, such as `react-portfolio-site`, instead of a random database id.
+
 ## Daily guideline
 
 From `Daily_Software_Development_Guidelines.md`: **keep components focused**. A route file should decide which page appears; a layout should hold shared structure; a card should display one piece of content. If one component starts handling navigation, fetching, filtering, forms, and styling all at once, split it before it becomes hard to understand.
@@ -108,16 +126,12 @@ Bad empty copy:
 
 ## Between chapters
 
-**Blog links:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
-**Reading:** study [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props), focusing on component composition.
+**Reading:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
 
 **Mini assignment:** sketch your route tree on paper before coding. Mark which routes are public, which are admin-only, and which routes need a slug.
 
 **Routing exercise:** manually type every planned URL into the browser, including one fake slug and one unknown route. Write the expected page before you build it, then compare after implementation.
-
-**Comparison:** route vs component: a route is the URL rule, like `/projects/:slug`. A component is the React function that renders what the visitor sees for that URL.
-
-**Big word alert:** **slug** means a human-readable URL identifier, such as `react-portfolio-site`, instead of a random database id.
 
 Next: the routes exist. Now replace placeholder project content with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**

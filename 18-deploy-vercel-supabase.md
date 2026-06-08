@@ -117,19 +117,28 @@ RLS blocked cases
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [Cloudflare - What is DNS?](https://www.cloudflare.com/en-in/learning/ddos/glossary/domain-name-system-dns/), [http.dev - HTTPS explained](https://http.dev/https), and [Cloudflare - DNS over TLS vs DNS over HTTPS](https://www.cloudflare.com/en-in/learning/dns/dns-over-tls/). Deployment is easier to understand when DNS, HTTPS, and TLS are not magic words.
 
 **Production smoke test:** after deployment, test public pages, admin login, project CRUD, image upload, contact submit, Brevo email, RLS blocked reads, and newsletter signup.
 
-**Quick quiz:** if production contact form saves the message but email fails, is the deployment broken, partially degraded, or successful with warning? Explain how the UI should communicate it.
-
 **Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
-
-**Performance exercise:** run the production build and note the bundle size warnings, if any. Do not optimize blindly; write down what you would measure first.
 
 **Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
 
 **Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
+
+**Diagram:**
+
+```txt
+Visitor
+  -> DNS finds domain
+  -> HTTPS connection to Vercel
+  -> Vercel serves React app
+  -> React calls Supabase
+  -> Edge Functions use Supabase/Brevo secrets
+```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Keep shipping, keep improving." Deployment is not a finish line where everything must be flawless; it is the moment your improvement loop becomes real.
 

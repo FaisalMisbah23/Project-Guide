@@ -53,8 +53,9 @@ Better:
 validate input
 insert contact message
 send Brevo notification
-return success if message is stored
-record email failure separately if needed
+if Brevo succeeds: mark notification_sent
+if Brevo fails: keep message and mark notification_failed
+return a response that tells the frontend what happened
 ```
 
 Email is a notification. The database is the source of truth.
@@ -84,6 +85,24 @@ Store `BREVO_API_KEY`, sender email, and recipient email as Supabase secrets. Ne
 
 After insertion, call Brevo's transactional email API. The message should include enough context for the owner to reply quickly: visitor name, email, subject, message, and page/source if available.
 
+Use a precise response contract:
+
+```txt
+201 Created
+{ "ok": true, "messageStored": true, "notificationSent": true }
+
+202 Accepted
+{ "ok": true, "messageStored": true, "notificationSent": false }
+
+400 Bad Request
+{ "ok": false, "error": "validation_failed" }
+
+500 Internal Server Error
+{ "ok": false, "error": "message_not_stored" }
+```
+
+If Brevo fails after the message is stored, do not lose the message and do not pretend the email succeeded. Store `notification_status = 'failed'` or an `email_error` field so the admin inbox can surface the problem.
+
 ## Mandatory read
 
 Read Brevo's transactional email API docs and Supabase Edge Function secrets docs. Required: this chapter depends on knowing where provider credentials belong.
@@ -94,6 +113,8 @@ Read Brevo's transactional email API docs and Supabase Edge Function secrets doc
 - [ ] Input is validated server-side.
 - [ ] Contact message is saved before email is attempted.
 - [ ] Brevo sends an owner notification.
+- [ ] Brevo failure after storage returns a degraded-but-saved response.
+- [ ] Notification success or failure is stored for owner visibility.
 - [ ] Brevo key is stored as a Supabase secret.
 - [ ] Brevo key is not present in frontend code or Vite env vars.
 - [ ] Failure states tell the visitor what happened.
@@ -101,6 +122,8 @@ Read Brevo's transactional email API docs and Supabase Edge Function secrets doc
 > **Log it.** In `learning-log/12-contact-edge-function-brevo.md`, explain why the database is the source of truth and Brevo is only the notification channel.
 
 ## Between chapters
+
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) again with Edge Functions in mind, then read [Cloudflare - DNS Encryption Explained](https://blog.cloudflare.com/dns-encryption-explained/) to see how much infrastructure sits underneath one "send contact form" action.
 
@@ -115,6 +138,17 @@ Read Brevo's transactional email API docs and Supabase Edge Function secrets doc
 **Comparison:** source of truth vs notification: the database is the source of truth because it stores the message. Brevo is a notification channel because it tells the owner that the message exists.
 
 **Big word alert:** **server-side** means code runs on a server or platform function, not in the visitor's browser. Server-side code can safely use secrets when configured correctly.
+
+**Diagram:**
+
+```txt
+Contact form
+  -> Supabase Edge Function
+  -> validate input
+  -> insert contact_messages row
+  -> send Brevo notification
+  -> return result to visitor
+```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Every bug solved is a lesson earned." Contact forms are full of edge cases; each one you handle makes the system more trustworthy.
 

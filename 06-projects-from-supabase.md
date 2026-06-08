@@ -26,7 +26,7 @@ React only receives what visitors are allowed to see.
 
 ## New ideas before you build
 
-This chapter is the first place where the page stops being static. If the learner is new to React, pause here and learn these topics before building the project list.
+This chapter is the first place where the page stops being static. Learn the one idea you need before building: the page must fetch data after it appears.
 
 ### `useEffect` for loading data
 
@@ -67,65 +67,18 @@ function ProjectsPage() {
 
 Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
 
-### `useState` for changing screen data
+Diagram:
 
-**Real-life analogy:** think of a whiteboard beside your desk. When something changes, you update the whiteboard and everyone can see the latest status. `useState` is the component's whiteboard: it stores values that can change and tells React to redraw the screen when they do.
-
-**General idea:** use state for data the user can change or data that arrives later, such as selected filters, loading flags, errors, and fetched projects. Do not use normal variables for screen data that should cause the UI to update.
-
-```tsx
-const [selectedTag, setSelectedTag] = useState("all");
-
-function handleTagClick(tag: string) {
-  setSelectedTag(tag);
-}
+```txt
+ProjectsPage mounts
+  -> useEffect runs
+  -> getPublishedProjects()
+  -> Supabase returns rows
+  -> setProjects(rows)
+  -> ProjectList renders ProjectCard items
 ```
 
-Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
-
-### Lists and `key`
-
-**Real-life analogy:** imagine a teacher checking attendance. Names alone may repeat, but each student has a roll number. React needs the same kind of stable identity when rendering many items, so it can tell which card is which after filtering or reordering.
-
-**General idea:** use `.map()` to turn an array into UI. Give each rendered item a stable `key`, usually the database `id` or slug. Do not use the array index when the list can be filtered, reordered, inserted into, or deleted from.
-
-```tsx
-function ProjectList({ projects }) {
-  return (
-    <ul>
-      {projects.map((project) => (
-        <li key={project.id}>
-          <ProjectCard project={project} />
-        </li>
-      ))}
-    </ul>
-  );
-}
-```
-
-Study more: [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx)
-
-### Events for filters and buttons
-
-**Real-life analogy:** a doorbell does nothing until someone presses it. An event handler is the function React runs when the learner clicks a button, types in a search box, submits a form, or changes a filter.
-
-**General idea:** pass a function to an event prop such as `onClick`, `onChange`, or `onSubmit`. That function usually updates state, starts a request, or validates user input.
-
-```tsx
-function ProjectFilters({ selectedTag, onSelectTag }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selectedTag === "react"}
-      onClick={() => onSelectTag("react")}
-    >
-      React
-    </button>
-  );
-}
-```
-
-Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
+**Big word alert:** **side effect** means work React does outside pure rendering, such as fetching from Supabase, setting up a subscription, reading from the browser, or starting a timer.
 
 ## Daily guideline
 
@@ -134,6 +87,57 @@ From `Daily_Software_Development_Guidelines.md`: **separate business logic from 
 ## Build it
 
 Create a project data module in `src/features/projects/`. Keep Supabase query logic out of the visual card component. The list query should request published projects, order featured projects first, and then order by a stable display field or creation date.
+
+Use clear function contracts:
+
+```ts
+type Project = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  status: "published";
+  featured: boolean;
+  imagePath: string | null;
+  imageAlt: string | null;
+};
+
+async function getPublishedProjects(): Promise<Project[]> {}
+
+async function getPublishedProjectBySlug(
+  slug: string,
+): Promise<Project | null> {}
+```
+
+The UI should not know how the Supabase query is written. It should only know whether it received projects, loading, an error, or no matching row.
+
+### As you build
+
+Use these React tools when the task asks for them:
+
+**`useState`:** stores changing screen data such as filters, loading flags, errors, and fetched projects.
+
+```tsx
+const [selectedTag, setSelectedTag] = useState("all");
+```
+
+**Lists and `key`:** `.map()` turns rows into UI, and `key` gives each item a stable identity.
+
+```tsx
+{projects.map((project) => (
+  <ProjectCard key={project.id} project={project} />
+))}
+```
+
+**Events:** `onClick`, `onChange`, and `onSubmit` run code after the user does something.
+
+```tsx
+<button type="button" onClick={() => setSelectedTag("react")}>
+  React
+</button>
+```
+
+**Comparison:** state belongs to a component and can change over time. Props are values passed into a component by its parent.
 
 Render cards that answer:
 
@@ -176,6 +180,8 @@ Read the React topic explanations above and then study the linked `resources.dev
 - [ ] Published projects render from Supabase.
 - [ ] Draft projects do not appear publicly.
 - [ ] Featured projects can appear first.
+- [ ] Project data fetching lives outside visual card components.
+- [ ] List and detail data functions have clear return types.
 - [ ] Project detail pages load by slug.
 - [ ] Missing, loading, error, and empty states are visible and useful.
 - [ ] The project card copy explains outcomes, not only tools.
@@ -184,19 +190,13 @@ Read the React topic explanations above and then study the linked `resources.dev
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Quiz:** what should the UI show for each state: loading, Supabase error, no projects, and project slug not found?
 
-**Assignment:** build the projects page first with fake data, then replace only the data source with Supabase. The card UI should not need to know which source was used.
+**Exercise:** render three fake projects first, add a filter button, then replace only the data source with Supabase. The card UI should not need to know which source was used.
 
-**Reading:** review [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx), especially lists and `key`.
-
-**React exercise:** render three fake projects first, then add a filter button. Only after the UI works should you replace the fake array with Supabase data.
-
-**Data exercise:** seed one published project and one draft project with the same technology tag. Confirm the filter never reveals the draft.
-
-**Comparison:** state vs props: state belongs to a component and can change over time. Props are values passed into a component by its parent.
-
-**Big word alert:** **side effect** means work React does outside pure rendering, such as fetching from Supabase, setting up a subscription, reading from the browser, or starting a timer.
+**Data check:** seed one published project and one draft project with the same technology tag. Confirm the filter never reveals the draft.
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Building teaches lessons that theory cannot." Once this page renders real data, the backend stops being an idea and becomes part of your app.
 

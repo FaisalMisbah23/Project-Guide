@@ -33,6 +33,22 @@ profile_settings(display_name, headline, location, links)
 
 This model lets the public site read published content, the owner manage drafts, and server workflows store messages before trying external email.
 
+Diagram:
+
+```txt
+articles
+  id
+  title
+  status
+    ^
+    |
+article_comments
+  id
+  article_id
+  status
+  body
+```
+
 ## New ideas before you build
 
 ### Database tables
@@ -83,6 +99,19 @@ slug text unique
 
 For money or historical values, snapshot the value at the time it matters. This portfolio does not sell products, but the habit matters: if a future app stores orders, do not rely only on the current product price. Save the purchased price inside the order item so old orders stay true when product prices change.
 
+Minimum constraints to include:
+
+```txt
+required text fields use not null
+status fields use check constraints, such as draft/published/archived
+public slugs are unique per table
+comments reference articles with a foreign key
+email fields are normalized before insert
+common public queries have indexes, such as status, slug, and created_at
+```
+
+For `updated_at`, choose one strategy and use it consistently: update it in application code on every edit, or add a database trigger that updates it automatically. Do not leave it stale while pretending it means "last changed."
+
 ### Migrations
 
 **Real-life analogy:** a recipe lets another person cook the same meal in the same order. A migration lets another machine build the same database in the same order.
@@ -109,13 +138,17 @@ article_id uuid references articles(id)
 
 Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
 
+**Comparison:** migration vs seed data: a migration changes the database structure, such as creating a table. Seed data fills that structure with sample rows for development and testing.
+
+**Big word alert:** **normalization** means organizing data so each fact has one clear home. It reduces duplicate data and avoids bugs where one copy changes but another copy stays old.
+
 ## Daily guideline
 
 From `Daily_Software_Development_Guidelines.md`: **think about data history**. Before adding or changing a field, ask what happens when that value changes later. This portfolio does not process orders, but the habit matters: in a shop, changing a product's current price must not rewrite old order totals. Store historical facts where history matters.
 
 ## Build it
 
-Create the migrations for the tables above. Add constraints where they protect meaning: required titles, unique slugs, allowed statuses, and foreign keys from comments to articles.
+Create the migrations for the tables above. Add constraints where they protect meaning: required titles, unique slugs, allowed statuses, and foreign keys from comments to articles. Add indexes for the queries the public site will run often: published projects/articles, slug lookups, recent articles, and approved comments by article.
 
 Seed one published project, one draft project, one published article, one draft article, and one sample contact message. The draft rows are important because RLS will prove public users cannot read them.
 
@@ -129,6 +162,8 @@ Read a database migration guide for the Supabase CLI and one short article on da
 - [ ] Published and draft seed rows exist.
 - [ ] Slugs are unique where needed.
 - [ ] Comments reference articles with a foreign key.
+- [ ] Status fields have allowed-value checks.
+- [ ] Public read paths have useful indexes.
 - [ ] You can explain why contact messages belong in the database before email is sent.
 - [ ] You committed the migration files.
 
@@ -136,21 +171,15 @@ Read a database migration guide for the Supabase CLI and one short article on da
 
 ## Between chapters
 
-**Blog links:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization) and [Microsoft - Database normalization description](https://learn.microsoft.com/en-us/troubleshoot/office/access/database-normalization-description). Focus on redundancy, update anomalies, and why related data belongs in related tables.
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
-**Reading:** revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
+**Reading:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization), then revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
 
 **Blog prompt:** write a short post draft titled `Why changing today's data should not rewrite yesterday's truth`. Use the price-at-purchase example, then connect it back to this portfolio with drafts, published content, and saved contact messages.
 
 **Quiz:** if an article changes title after comments exist, should old comments disappear, update, or stay linked to the same article id? Explain your answer.
 
 **Database exercise:** draw the tables before writing SQL. For each table, mark the primary key, required fields, unique fields, and foreign keys. Then compare the drawing to your migration files.
-
-**Migration exercise:** create a throwaway local migration that adds a harmless column, run it, inspect the database, then write the next migration that removes or replaces it. The goal is to feel how schema history moves forward.
-
-**Comparison:** migration vs seed data: a migration changes the database structure, such as creating a table. Seed data fills that structure with sample rows for development and testing.
-
-**Big word alert:** **normalization** means organizing data so each fact has one clear home. It reduces duplicate data and avoids bugs where one copy changes but another copy stays old.
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Focus on understanding." Data modeling can feel abstract at first; understanding the shape is the win before the SQL is perfect.
 

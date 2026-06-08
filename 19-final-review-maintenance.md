@@ -114,6 +114,8 @@ Remember why you started: this portfolio is not only a site. It is evidence of y
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [Cloudflare - How Cloudflare DNS works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP), and [IBM - Database normalization](https://www.ibm.com/think/topics/database-normalization). Your final README should be able to explain how browser, DNS, HTTPS, frontend, backend, database, and deployment fit together.
 
 **Blog assignment:** write the final case study using this outline: problem, users, architecture, hardest tradeoff, security model, failure handling, deployment, what you would improve next.

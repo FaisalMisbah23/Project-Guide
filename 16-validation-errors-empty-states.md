@@ -119,6 +119,8 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Bug hunt:** intentionally test slow network, invalid email, empty database, missing slug, failed upload, and double submit. Write the expected UI response before checking the actual response.
 
 **Quiz:** what is worse for a visitor: a clear error message or a blank screen? Why does the blank screen feel less trustworthy?
@@ -130,6 +132,19 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 **Comparison:** validation vs error handling: validation tries to stop bad input before work happens. Error handling responds when something still fails.
 
 **Big word alert:** **regression** means something that used to work breaks after a change. A regression test checks that old behavior still works.
+
+**Diagram:**
+
+```txt
+Data request
+  -> loading state
+  -> success with rows
+    -> render content
+  -> success with no rows
+    -> render empty state
+  -> failure
+    -> render error state + next action
+```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Progress matters more than perfection." Failure states are easy to avoid because they are messy; designing them is a real sign of growth.
 

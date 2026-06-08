@@ -97,6 +97,8 @@ Fix: save as draft by default, then publish with a separate deliberate action.
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Assignment:** create a manual test checklist for project CRUD: create draft, edit draft, publish, unpublish, delete/archive, invalid URL, duplicate slug, signed-out write attempt.
 
 **Blog prompt:** write three paragraphs on `Why save does not always mean publish`.
@@ -108,6 +110,17 @@ Fix: save as draft by default, then publish with a separate deliberate action.
 **Comparison:** create vs update: create makes a new row. Update changes an existing row. A form can look similar for both, but the database operation and edge cases are different.
 
 **Big word alert:** **CRUD** means Create, Read, Update, Delete. It is the basic set of actions most admin tools need.
+
+**Diagram:**
+
+```txt
+Admin project form
+  -> validate input
+  -> save draft
+  -> preview
+  -> publish deliberately
+  -> public site can now read it
+```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Every project teaches something valuable." CRUD looks ordinary, but this is where you learn how real owner workflows are protected.
 

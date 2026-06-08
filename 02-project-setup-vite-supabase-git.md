@@ -137,6 +137,8 @@ Read the official Vite environment variables guide and Supabase's note on anon k
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP) for the big picture of web requests, then skim [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata) so `index.html`, `<head>`, and metadata do not feel mysterious.
 
 **Quick quiz:** which of these may appear in browser code: `VITE_SUPABASE_URL`, `BREVO_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_ANON_KEY`? For each answer, write one sentence explaining why.
@@ -148,6 +150,16 @@ Read the official Vite environment variables guide and Supabase's note on anon k
 **Comparison:** `.env` vs `.env.example`: `.env` contains real local values and stays out of Git. `.env.example` contains only variable names and safe placeholder values so another developer knows what to create.
 
 **Big word alert:** **baseline** means the first known-good version of the project. When someone says "make a baseline commit," they mean commit the clean starting point before feature work begins.
+
+**Diagram:**
+
+```txt
+project repo
+  .env            local real values, ignored by Git
+  .env.example    safe template, committed
+  src/lib/        browser-safe Supabase client
+  learning-log/   written explanations
+```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Great software starts with small steps." Setup is one of those steps. It may feel basic, but every clean project begins here.
 

@@ -10,6 +10,8 @@ The finished app answers a human question first: *Can someone trust this enginee
 
 By the end you will have a deployed portfolio with public pages, projects, articles, comments, contact form persistence, Brevo email notifications, newsletter subscriptions, page visit tracking, image uploads, owner login, admin CRUD, a contact inbox, RLS policies, and a production deployment.
 
+You are not expected to understand all of those pieces yet. This list names the destination. Each chapter introduces one small part, gives you a gate, and then lets you move forward.
+
 ## The tempting version, and why it is too small
 
 The tempting version is a static portfolio:
@@ -91,6 +93,19 @@ Study more: [Frontend Interview Questions - React Fundamentals](https://resource
 - Complex analytics that require a third-party tracking platform.
 - Giving the learner solution code to copy. The guide names what to build and why; the learner writes the implementation.
 
+## When you get stuck
+
+Getting stuck is part of the course, not a sign that you are behind. Use this four-line reset before asking for help or moving on:
+
+```txt
+I expected...
+Actually happened...
+I checked...
+My smallest next test is...
+```
+
+If you cannot fill in all four lines, the next step is not more coding. The next step is to make the problem smaller.
+
 ## Definition of Done
 
 - [ ] You can describe the finished product in one minute.
@@ -103,8 +118,20 @@ Study more: [Frontend Interview Questions - React Fundamentals](https://resource
 
 ## Between chapters
 
+Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+
 **Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
 
 **Quick quiz:** in this portfolio, which parts are the client, which parts are the server, and which parts are third-party services?
+
+**Diagram:**
+
+```txt
+Visitor browser
+  -> React app on Vercel
+  -> Supabase database/Auth/Storage
+  -> Edge Functions
+  -> Brevo email
+```
 
 Next: the product is clear. Now create the project foundation without leaking secrets or making setup painful. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**
