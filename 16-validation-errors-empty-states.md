@@ -163,9 +163,9 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 
 > **Log it.** In `learning-log/16-validation-errors-empty-states.md`, list three edge cases you tested and how the UI responded.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Bug hunt:** intentionally test slow network, invalid email, empty database, missing slug, failed upload, and double submit. Write the expected UI response before checking the actual response.
 

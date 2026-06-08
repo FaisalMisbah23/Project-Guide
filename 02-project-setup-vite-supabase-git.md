@@ -135,9 +135,9 @@ Read the official Vite environment variables guide and Supabase's note on anon k
 
 > **Log it.** In `learning-log/02-project-setup.md`, explain the difference between a public Vite env var and a server-only secret. Name one mistake that would leak credentials.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP) for the big picture of web requests, then skim [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata) so `index.html`, `<head>`, and metadata do not feel mysterious.
 

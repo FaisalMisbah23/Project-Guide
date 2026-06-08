@@ -187,9 +187,9 @@ Don't create a tag system that requires editing code.
 
 > **Log it.** In `learning-log/10-admin-article-crud.md`, explain the risk of rendering article/comment content unsafely and how your approach reduces it.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Reading:** review [Frontend Interview Questions](https://resources.devweekends.com/resources/frontend-interview-qs), focusing on HTML, React, and security questions.
 

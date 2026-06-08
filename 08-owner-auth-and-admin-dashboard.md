@@ -93,9 +93,9 @@ Add sign out. Test direct URL access by opening `/admin` in a signed-out browser
 
 > **Log it.** In `learning-log/08-owner-auth-and-admin-dashboard.md`, explain the difference between route protection and RLS protection.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management), and [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview). Pay attention to cookies, sessions, and the idea that HTTP is stateless but not sessionless.
 

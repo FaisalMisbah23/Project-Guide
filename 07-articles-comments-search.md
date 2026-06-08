@@ -111,9 +111,9 @@ Read about React lists/keys if not already done in Chapter 06. Read a short arti
 
 > **Log it.** In `learning-log/07-articles-comments-search.md`, explain why pending comments should not appear immediately and why article search should not require loading every row.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog prompt:** draft an article titled `Why I do not load every row into React`. Explain search, pagination, and the difference between database work and browser work.
 

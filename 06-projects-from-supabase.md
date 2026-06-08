@@ -272,9 +272,9 @@ Read the React topic explanations above and then study the linked `resources.dev
 
 > **Log it.** In `learning-log/06-projects-from-supabase.md`, explain why drafts must be blocked by the database, not only hidden in React.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Quiz:** what should the UI show for each state: loading, Supabase error, no projects, and project slug not found?
 

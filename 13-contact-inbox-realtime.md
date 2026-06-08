@@ -87,9 +87,9 @@ Realtime is convenience, not the source of truth. If the socket disconnects, the
 
 > **Log it.** In `learning-log/13-contact-inbox-realtime.md`, explain why the app loads existing messages before subscribing to new ones.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Quiz:** if Realtime disconnects, should the inbox become empty, stay with existing loaded messages, or block the owner completely? Explain why.
 

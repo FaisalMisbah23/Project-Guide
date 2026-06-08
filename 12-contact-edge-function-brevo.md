@@ -121,9 +121,9 @@ Read Brevo's transactional email API docs and Supabase Edge Function secrets doc
 
 > **Log it.** In `learning-log/12-contact-edge-function-brevo.md`, explain why the database is the source of truth and Brevo is only the notification channel.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) again with Edge Functions in mind, then read [Cloudflare - DNS Encryption Explained](https://blog.cloudflare.com/dns-encryption-explained/) to see how much infrastructure sits underneath one "send contact form" action.
 

@@ -94,9 +94,9 @@ Every input needs a label. Every meaningful image needs alt text. Buttons should
 
 > **Log it.** In `learning-log/17-responsive-polish-accessibility.md`, describe one accessibility fix you made and who it helps.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) for SEO and social previews, and [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata). Then check whether project and article detail pages have meaningful titles and descriptions.
 

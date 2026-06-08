@@ -227,9 +227,9 @@ Performance is not only speed. It also protects your database from unnecessary r
 
 > **Log it.** In `learning-log/15-analytics-realtime-insights.md`, explain what you chose not to track and why.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Ethics prompt:** write a short note titled `Analytics I refuse to collect`. Include at least three examples and the reason each one would reduce visitor trust.
 

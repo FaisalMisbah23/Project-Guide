@@ -92,9 +92,9 @@ Fix: require useful alt text for meaningful images.
 
 > **Log it.** In `learning-log/11-image-storage.md`, explain why storage paths belong in the database but file bytes do not.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Mini assignment:** upload one intentionally oversized image and one broken/unsupported file type in development. Write what the UI should show for each.
 

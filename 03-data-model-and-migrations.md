@@ -173,9 +173,9 @@ Read a database migration guide for the Supabase CLI and one short article on da
 
 > **Log it.** In `learning-log/03-data-model-and-migrations.md`, explain why migrations beat hand-created tables. Then choose one field that should be a column, not hidden in a blob, and explain why.
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Reading:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization), then revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
 

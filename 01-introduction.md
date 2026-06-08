@@ -12,6 +12,8 @@ By the end you will have a deployed portfolio with public pages, projects, artic
 
 You are not expected to understand all of those pieces yet. This list names the destination. Each chapter introduces one small part, gives you a gate, and then lets you move forward.
 
+You will also see **Learning bridge** prompts. These are optional pauses you can use at natural transition points inside the work: before a new concept, after a tricky implementation step, or when you want to check whether you can explain what just changed. They are not extra requirements and they do not have to happen only after a chapter is finished.
+
 ## Effort map
 
 These estimates assume you know moderate HTML, CSS, and JavaScript, but are still new to React, Supabase, deployment, and production habits. Use them as planning ranges, not promises. If a chapter touches a tool you have never used, give yourself the high end of the estimate.
@@ -145,9 +147,9 @@ If you cannot fill in all four lines, the next step is not more coding. The next
 
 > **Log it.** In `learning-log/01-introduction.md`, answer: why is a database-backed portfolio stronger than a static one for a software engineer? Which part of the system are you most likely to be asked about in an interview?
 
-## Between chapters
+## Learning bridge
 
-Optional pause. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
+Use this as a flexible pause point before, during, or after the chapter work. Pick **one or two**, not all of them. Skip the rest without guilt if your Definition of Done is complete.
 
 **Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
 
