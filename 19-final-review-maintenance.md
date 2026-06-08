@@ -26,6 +26,42 @@ Here is how contact works.
 Here is what I would improve next.
 ```
 
+## New ideas before you build
+
+### System walkthrough
+
+**Real-life analogy:** a mechanic can trace how fuel, electricity, and controls move through a car. A developer should trace how data moves through an app.
+
+**General idea:** explain what happens when a visitor opens a page, submits a contact form, or when the owner publishes a project.
+
+```txt
+Contact submit
+-> React form
+-> Edge Function
+-> contact_messages insert
+-> Brevo notification
+-> admin inbox
+```
+
+Study more: [Frontend Interview Questions - Interview Tips](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+### Maintenance rhythm
+
+**Real-life analogy:** a garden needs watering after it is planted. A portfolio needs updates after it is shipped.
+
+**General idea:** keep adding real project writeups, checking production workflows, reviewing secrets, and updating dependencies.
+
+```txt
+Monthly: test contact flow, update content, check broken links
+Quarterly: review dependencies, secrets, RLS policies, analytics
+```
+
+Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **document important decisions** and **review before merging**. Your README should explain not only what you built, but why: why RLS, why Edge Functions, why store messages before email, why secrets split between Vercel and Supabase.
+
 ## Build it
 
 Write the project README. Include:
@@ -75,5 +111,21 @@ Remember why you started: this portfolio is not only a site. It is evidence of y
 - [ ] Final production smoke test passes.
 
 > **Log it.** In `learning-log/19-final-review-maintenance.md`, write your final architecture explanation as if answering an interview question.
+
+## Between chapters
+
+**Blog links:** read [Cloudflare - How Cloudflare DNS works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP), and [IBM - Database normalization](https://www.ibm.com/think/topics/database-normalization). Your final README should be able to explain how browser, DNS, HTTPS, frontend, backend, database, and deployment fit together.
+
+**Blog assignment:** write the final case study using this outline: problem, users, architecture, hardest tradeoff, security model, failure handling, deployment, what you would improve next.
+
+**Self-review quiz:** pick one feature and trace it from UI to database to deployment. If you cannot explain one step, revisit that chapter.
+
+**Git exercise:** review your commit history and find one commit message that could be clearer. Write the improved message in your learning log and explain why it is better.
+
+**Maintenance exercise:** create a monthly maintenance issue template with checkboxes for dependency review, broken links, contact flow, RLS spot checks, and production smoke test.
+
+**Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
+
+**Big word alert:** **architecture** means the high-level structure of the system: parts, responsibilities, and how data moves between them.
 
 Next: close the course by turning the shipped project into a professional habit. -> **[Chapter 20 - Closing](20-closing.md)**

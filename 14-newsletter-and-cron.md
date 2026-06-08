@@ -24,6 +24,37 @@ scheduled function -> query new content -> Brevo send
 newsletter_runs records result
 ```
 
+## New ideas before you build
+
+### Newsletter signup
+
+**Real-life analogy:** signing a clipboard should not create three copies of your name. The organizer checks whether you already signed up and keeps one clean entry.
+
+**General idea:** normalize email addresses, prevent duplicates, and keep subscriber status. Do not send provider secrets to the browser.
+
+```ts
+const email = input.email.trim().toLowerCase();
+await saveSubscriber(email);
+```
+
+Study more: [Frontend Interview Questions - Forms and Validation](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+### Cron
+
+**Real-life analogy:** an alarm clock runs at a scheduled time even when nobody is watching it.
+
+**General idea:** Cron is scheduled server work. Use it for planned newsletter sends, cleanups, and recurring jobs.
+
+```txt
+Every Monday 09:00 -> find new articles -> send update email
+```
+
+Study more: [System Calls and POSIX - Time and Environment](https://resources.devweekends.com/courses/c-programming/system-calls)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **think about concurrency**. Two signup requests for the same email may arrive at nearly the same time. Normalize the email, add a unique constraint, and handle the duplicate case gracefully instead of trusting the UI to prevent it.
+
 ## Build it
 
 Create a newsletter signup Edge Function. Validate email, normalize casing, prevent duplicates, and store status such as `active`, `unsubscribed`, or `bounced` if you support it.
@@ -52,5 +83,19 @@ If implementing Cron now, schedule a Supabase function that looks for new publis
 - [ ] The owner can explain what triggers an update email.
 
 > **Log it.** In `learning-log/14-newsletter-and-cron.md`, explain why newsletters should be sent by scheduled server work, not by browser code.
+
+## Between chapters
+
+**Assignment:** write the newsletter duplicate-email behavior before coding it. Should the user see an error, a success message, or "already subscribed"? Why?
+
+**Reading:** revisit the "Think About Concurrency" section in `Daily_Software_Development_Guidelines.md`.
+
+**Concurrency exercise:** submit the same email twice quickly. Confirm the database ends with one subscriber and the UI response is friendly.
+
+**Cron exercise:** write a dry-run mode for the newsletter job that reports who would receive the email without sending it.
+
+**Comparison:** immediate work vs scheduled work: immediate work happens because a user just clicked or submitted something. Scheduled work happens later because a clock or cron rule triggered it.
+
+**Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
 
 Next: the owner has content and messages. Now add lightweight visit insights without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**

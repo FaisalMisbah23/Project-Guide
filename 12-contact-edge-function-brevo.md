@@ -24,6 +24,18 @@ React form -> Supabase Edge Function -> contact_messages -> Brevo
 
 The Edge Function is server-side. It can use secrets safely.
 
+### Edge Functions
+
+**Real-life analogy:** a front desk clerk receives a visitor message, writes it down, and calls the right person. The visitor never sees the private phone list.
+
+**General idea:** an Edge Function runs server-side code. Use it when work needs secrets or protected database access.
+
+```txt
+React form -> Supabase Edge Function -> database + Brevo
+```
+
+Study more: [AWS Core Concepts - Compute and Security Basics](https://resources.devweekends.com/aws/core-concepts)
+
 ## Store first, email second
 
 Bad:
@@ -46,6 +58,23 @@ record email failure separately if needed
 ```
 
 Email is a notification. The database is the source of truth.
+
+### Source of truth
+
+**Real-life analogy:** write a message in the logbook before trying to call someone. If the call fails, the message still exists.
+
+**General idea:** the database should keep the contact message. Brevo only notifies the owner that a message arrived.
+
+```ts
+await saveContactMessage(input);
+await sendBrevoNotification(input);
+```
+
+Study more: [Audit Logging for HIPAA - Why Logs Matter](https://resources.devweekends.com/courses/hipaa-compliance/audit-logging)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **protect sensitive information** and **use logging wisely**. Log enough to debug contact failures, but never log Brevo keys, service-role keys, or full private message bodies unnecessarily. A log file can leak data just like committed code can.
 
 ## Build it
 
@@ -70,5 +99,23 @@ Read Brevo's transactional email API docs and Supabase Edge Function secrets doc
 - [ ] Failure states tell the visitor what happened.
 
 > **Log it.** In `learning-log/12-contact-edge-function-brevo.md`, explain why the database is the source of truth and Brevo is only the notification channel.
+
+## Between chapters
+
+**Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) again with Edge Functions in mind, then read [Cloudflare - DNS Encryption Explained](https://blog.cloudflare.com/dns-encryption-explained/) to see how much infrastructure sits underneath one "send contact form" action.
+
+**Incident exercise:** imagine Brevo is down for one hour. What does the visitor see? What does the owner see later? What data is still saved?
+
+**Quick quiz:** why is calling Brevo directly from React dangerous? Name the exact secret that would leak.
+
+**Failure exercise:** temporarily make the Brevo call fail in development. Confirm the contact message is still stored and the UI explains the notification problem.
+
+**Validation exercise:** submit missing name, invalid email, empty message, and oversized message. The Edge Function should reject bad input even if the frontend misses it.
+
+**Comparison:** source of truth vs notification: the database is the source of truth because it stores the message. Brevo is a notification channel because it tells the owner that the message exists.
+
+**Big word alert:** **server-side** means code runs on a server or platform function, not in the visitor's browser. Server-side code can safely use secrets when configured correctly.
+
+**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Every bug solved is a lesson earned." Contact forms are full of edge cases; each one you handle makes the system more trustworthy.
 
 Next: messages are stored. Now give the owner a place to read and manage them. -> **[Chapter 13 - Contact inbox and Realtime](13-contact-inbox-realtime.md)**

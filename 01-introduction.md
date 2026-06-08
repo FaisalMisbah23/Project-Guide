@@ -35,6 +35,39 @@ Deployment -> Vercel + Supabase secrets
 
 This course is about that better version.
 
+## New ideas before you build
+
+### Full-stack application
+
+**Real-life analogy:** a restaurant has a dining room and a kitchen. Visitors see the dining room, but ordering, storing ingredients, and preparing food happen in the kitchen.
+
+**General idea:** the frontend is what visitors see in the browser. The backend stores data, protects private actions, handles secrets, and runs server-side workflows.
+
+```txt
+Frontend: React pages visitors use
+Backend: Supabase database, Auth, Storage, Edge Functions
+Email: Brevo notifications from server-side code
+Deployment: Vercel hosts the public React app
+```
+
+Study more: [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx)
+
+### Static vs dynamic content
+
+**Real-life analogy:** a printed poster cannot update itself. A notice board can be changed whenever there is new information.
+
+**General idea:** hard-coded portfolio content is static. Database-backed content is dynamic because the owner can add, edit, publish, and unpublish without changing source code.
+
+```tsx
+// Static
+const projects = [{ title: "Portfolio" }];
+
+// Dynamic
+const projects = await getPublishedProjects();
+```
+
+Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
+
 ## The people who use it
 
 - **Visitor.** Wants to quickly understand who you are, what you can build, whether your work is credible, and how to contact you.
@@ -67,5 +100,11 @@ This course is about that better version.
 - [ ] You have created a `learning-log/` folder in the project you will build.
 
 > **Log it.** In `learning-log/01-introduction.md`, answer: why is a database-backed portfolio stronger than a static one for a software engineer? Which part of the system are you most likely to be asked about in an interview?
+
+## Between chapters
+
+**Blog links:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
+
+**Quick quiz:** in this portfolio, which parts are the client, which parts are the server, and which parts are third-party services?
 
 Next: the product is clear. Now create the project foundation without leaking secrets or making setup painful. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**

@@ -28,6 +28,38 @@ Better:
 The database rejects unauthorized reads and writes even if the UI is bypassed.
 ```
 
+### Authentication vs authorization
+
+**Real-life analogy:** showing your ID proves who you are. Having a ticket proves which room you may enter.
+
+**General idea:** authentication proves identity. Authorization decides permissions. A signed-in user still should not automatically see every row.
+
+```txt
+Authentication: "This is the owner."
+Authorization: "The owner may update projects."
+```
+
+Study more: [Frontend Interview Questions - React and Security](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+### Row Level Security
+
+**Real-life analogy:** a filing cabinet checks each folder before handing it over. Even if someone asks directly, the cabinet refuses folders they are not allowed to see.
+
+**General idea:** RLS makes the database enforce access per row. React can hide buttons, but the database must protect the data.
+
+```sql
+create policy "Public can read published projects"
+on projects
+for select
+using (status = 'published');
+```
+
+Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **principle of least privilege**. Give each user only the access they need. Public visitors need published projects and articles, not drafts, messages, subscribers, or admin data. The safest policy is usually the smallest policy that lets the feature work.
+
 ## The policy map
 
 Write the policy map before writing policies:
@@ -86,5 +118,21 @@ Read Supabase's official RLS documentation. Also read a short explanation of aut
 - [ ] You can explain why service-role keys never go in frontend code.
 
 > **Log it.** In `learning-log/04-rls-and-security.md`, write the policy map in your own words. Include one blocked case you tested.
+
+## Between chapters
+
+**Blog links:** read [MDN - HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication) for the authentication flow, then read [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management) to understand why identity and session handling are separate from permission checks.
+
+**Quick quiz:** explain the difference between "the admin button is hidden" and "the database refuses the row." Which one is user experience, and which one is security?
+
+**Assignment:** write three blocked-case tests in plain English before implementing them: public user reading a draft project, public user reading contact messages, and signed-out user updating an article.
+
+**Database exercise:** open the Supabase SQL editor or local SQL shell and run the same select as a public/anon user and as the owner. Record the difference in your learning log.
+
+**Security exercise:** try to bypass the UI by querying a draft row directly from the browser console or a small script using the anon key. The correct result is no private row.
+
+**Comparison:** authentication vs authorization: authentication proves who someone is. Authorization decides what that person may do after identity is known.
+
+**Big word alert:** **RLS** stands for Row Level Security. It means the database checks access one row at a time, instead of assuming every query can read every row in a table.
 
 Next: the backend is guarded. Now give visitors a public route structure they can actually navigate. -> **[Chapter 05 - Public layout and routing](05-public-layout-and-routing.md)**

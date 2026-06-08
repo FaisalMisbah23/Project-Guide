@@ -28,6 +28,20 @@ set Vercel public env vars
 test every workflow on production
 ```
 
+## New ideas before you build
+
+### Production build
+
+**Real-life analogy:** a rehearsal catches problems before opening night. A production build catches errors before users see them.
+
+**General idea:** run a production build locally before deploying. Development mode can hide problems that the production build reveals.
+
+```txt
+npm run build
+```
+
+Study more: [Frontend Interview Questions - Deployment and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
+
 ## Environment boundary
 
 Vercel should receive:
@@ -47,6 +61,23 @@ SUPABASE_SERVICE_ROLE_KEY if required server-side
 ```
 
 Never put Brevo or service-role secrets in Vercel frontend variables.
+
+### Deployment boundaries
+
+**Real-life analogy:** a public reception desk and a locked office cabinet hold different information. Vercel gets browser-safe values; Supabase stores server secrets.
+
+**General idea:** frontend env vars go to Vercel. Edge Function secrets go to Supabase.
+
+```txt
+Vercel: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+Supabase: BREVO_API_KEY, SUPABASE_SERVICE_ROLE_KEY
+```
+
+Study more: [AWS Core Concepts - Shared Responsibility Model](https://resources.devweekends.com/aws/core-concepts)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **monitor production**. Deployment is not done when Vercel turns green. After shipping, open the production app, test the real workflows, check function logs, confirm emails, and watch for failed requests.
 
 ## Build it
 
@@ -83,5 +114,23 @@ RLS blocked cases
 - [ ] RLS blocked cases still block in production.
 
 > **Log it.** In `learning-log/18-deploy-vercel-supabase.md`, explain which secrets live in Vercel and which live in Supabase, and why.
+
+## Between chapters
+
+**Blog links:** read [Cloudflare - What is DNS?](https://www.cloudflare.com/en-in/learning/ddos/glossary/domain-name-system-dns/), [http.dev - HTTPS explained](https://http.dev/https), and [Cloudflare - DNS over TLS vs DNS over HTTPS](https://www.cloudflare.com/en-in/learning/dns/dns-over-tls/). Deployment is easier to understand when DNS, HTTPS, and TLS are not magic words.
+
+**Production smoke test:** after deployment, test public pages, admin login, project CRUD, image upload, contact submit, Brevo email, RLS blocked reads, and newsletter signup.
+
+**Quick quiz:** if production contact form saves the message but email fails, is the deployment broken, partially degraded, or successful with warning? Explain how the UI should communicate it.
+
+**Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
+
+**Performance exercise:** run the production build and note the bundle size warnings, if any. Do not optimize blindly; write down what you would measure first.
+
+**Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
+
+**Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
+
+**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Keep shipping, keep improving." Deployment is not a finish line where everything must be flawless; it is the moment your improvement loop becomes real.
 
 Next: the app is deployed. Now prove you understand it and plan how to keep it alive. -> **[Chapter 19 - Final review and maintenance](19-final-review-maintenance.md)**

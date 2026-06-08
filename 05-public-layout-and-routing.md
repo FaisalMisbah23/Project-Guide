@@ -31,6 +31,45 @@ Better:
 /contact          contact form
 ```
 
+## New ideas before you build
+
+### Routing
+
+**Real-life analogy:** rooms in a building have addresses. Routes give screens in your app addresses.
+
+**General idea:** React Router connects URLs to components. A stable URL lets visitors open, bookmark, and share one exact page.
+
+```tsx
+<Route path="/projects" element={<ProjectsPage />} />
+<Route path="/projects/:slug" element={<ProjectDetailPage />} />
+```
+
+Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+### Layout components
+
+**Real-life analogy:** a book uses the same margins, header style, and page structure on every page. A layout component gives your app that shared structure.
+
+**General idea:** put common UI like header, footer, and page wrapper in one component so every route feels consistent.
+
+```tsx
+function PublicLayout() {
+  return (
+    <>
+      <Header />
+      <main><Outlet /></main>
+      <Footer />
+    </>
+  );
+}
+```
+
+Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **keep components focused**. A route file should decide which page appears; a layout should hold shared structure; a card should display one piece of content. If one component starts handling navigation, fetching, filtering, forms, and styling all at once, split it before it becomes hard to understand.
+
 ## Build it
 
 Install and configure React Router. Create the public layout with header, main content, footer, and navigation. Keep the layout quiet and work-focused: a software engineer portfolio should be easy to scan, not a maze of decorative sections.
@@ -66,5 +105,19 @@ Bad empty copy:
 - [ ] Admin routes are not mixed into public navigation.
 
 > **Log it.** In `learning-log/05-public-layout-and-routing.md`, explain why project and article detail pages need stable slug URLs.
+
+## Between chapters
+
+**Blog links:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
+
+**Reading:** study [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props), focusing on component composition.
+
+**Mini assignment:** sketch your route tree on paper before coding. Mark which routes are public, which are admin-only, and which routes need a slug.
+
+**Routing exercise:** manually type every planned URL into the browser, including one fake slug and one unknown route. Write the expected page before you build it, then compare after implementation.
+
+**Comparison:** route vs component: a route is the URL rule, like `/projects/:slug`. A component is the React function that renders what the visitor sees for that URL.
+
+**Big word alert:** **slug** means a human-readable URL identifier, such as `react-portfolio-site`, instead of a random database id.
 
 Next: the routes exist. Now replace placeholder project content with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**

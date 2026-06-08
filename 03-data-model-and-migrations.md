@@ -33,6 +33,25 @@ profile_settings(display_name, headline, location, links)
 
 This model lets the public site read published content, the owner manage drafts, and server workflows store messages before trying external email.
 
+## New ideas before you build
+
+### Database tables
+
+**Real-life analogy:** a spreadsheet can have separate sheets for projects, articles, messages, and subscribers. A database table is like one of those sheets, but with stronger rules.
+
+**General idea:** each table stores one type of thing. Each row is one record. Each column is one fact about that record.
+
+```sql
+create table projects (
+  id uuid primary key,
+  title text not null,
+  slug text unique not null,
+  status text not null
+);
+```
+
+Study more: [Database Engineering - Transactions and ACID](https://resources.devweekends.com/courses/database-engineering/transactions)
+
 ## Migrations are the source of truth
 
 Creating tables by hand in the Supabase dashboard feels quick. The cost appears later: no history, no repeatable setup, and no reliable way to rebuild the database.
@@ -64,6 +83,36 @@ slug text unique
 
 For money or historical values, snapshot the value at the time it matters. This portfolio does not sell products, but the habit matters: if a future app stores orders, do not rely only on the current product price. Save the purchased price inside the order item so old orders stay true when product prices change.
 
+### Migrations
+
+**Real-life analogy:** a recipe lets another person cook the same meal in the same order. A migration lets another machine build the same database in the same order.
+
+**General idea:** a migration is a committed database change. Use migrations instead of clicking tables into existence only in the dashboard.
+
+```txt
+supabase/migrations/
+  202606080001_create_projects.sql
+  202606080002_create_articles.sql
+```
+
+Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
+
+### Foreign keys
+
+**Real-life analogy:** a library loan must point to a real book. A foreign key makes sure a comment points to a real article.
+
+**General idea:** use foreign keys when one table depends on another table.
+
+```sql
+article_id uuid references articles(id)
+```
+
+Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
+
+## Daily guideline
+
+From `Daily_Software_Development_Guidelines.md`: **think about data history**. Before adding or changing a field, ask what happens when that value changes later. This portfolio does not process orders, but the habit matters: in a shop, changing a product's current price must not rewrite old order totals. Store historical facts where history matters.
+
 ## Build it
 
 Create the migrations for the tables above. Add constraints where they protect meaning: required titles, unique slugs, allowed statuses, and foreign keys from comments to articles.
@@ -84,5 +133,25 @@ Read a database migration guide for the Supabase CLI and one short article on da
 - [ ] You committed the migration files.
 
 > **Log it.** In `learning-log/03-data-model-and-migrations.md`, explain why migrations beat hand-created tables. Then choose one field that should be a column, not hidden in a blob, and explain why.
+
+## Between chapters
+
+**Blog links:** read [IBM - What is database normalization?](https://www.ibm.com/think/topics/database-normalization) and [Microsoft - Database normalization description](https://learn.microsoft.com/en-us/troubleshoot/office/access/database-normalization-description). Focus on redundancy, update anomalies, and why related data belongs in related tables.
+
+**Reading:** revisit the "Think About Data History" section in `Daily_Software_Development_Guidelines.md`.
+
+**Blog prompt:** write a short post draft titled `Why changing today's data should not rewrite yesterday's truth`. Use the price-at-purchase example, then connect it back to this portfolio with drafts, published content, and saved contact messages.
+
+**Quiz:** if an article changes title after comments exist, should old comments disappear, update, or stay linked to the same article id? Explain your answer.
+
+**Database exercise:** draw the tables before writing SQL. For each table, mark the primary key, required fields, unique fields, and foreign keys. Then compare the drawing to your migration files.
+
+**Migration exercise:** create a throwaway local migration that adds a harmless column, run it, inspect the database, then write the next migration that removes or replaces it. The goal is to feel how schema history moves forward.
+
+**Comparison:** migration vs seed data: a migration changes the database structure, such as creating a table. Seed data fills that structure with sample rows for development and testing.
+
+**Big word alert:** **normalization** means organizing data so each fact has one clear home. It reduces duplicate data and avoids bugs where one copy changes but another copy stays old.
+
+**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Focus on understanding." Data modeling can feel abstract at first; understanding the shape is the win before the SQL is perfect.
 
 Next: the data exists. Now stop the wrong people from reading or changing it. -> **[Chapter 04 - RLS and security basics](04-rls-and-security-basics.md)**

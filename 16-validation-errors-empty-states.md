@@ -26,6 +26,36 @@ offer next action
 log enough for debugging
 ```
 
+## New ideas before you build
+
+### Validation
+
+**Real-life analogy:** an office form is checked before it is accepted. Missing names, bad emails, and oversized messages are sent back for correction.
+
+**General idea:** validate user input before saving or sending it. Browser validation helps, but important rules also belong on the server.
+
+```ts
+if (!email.includes("@")) {
+  return { error: "Enter a valid email address." };
+}
+```
+
+Study more: [Frontend Interview Questions - Forms and Validation](https://resources.devweekends.com/resources/frontend-interview-qs)
+
+### Loading, empty, and error states
+
+**Real-life analogy:** a shop should show "opening soon," "sold out," or "system unavailable" instead of leaving people staring at a blank window.
+
+**General idea:** every data screen needs clear states for waiting, no results, failure, and success.
+
+```tsx
+if (isLoading) return <p>Loading...</p>;
+if (error) return <p>Something went wrong. Try again.</p>;
+if (projects.length === 0) return <p>No projects match this filter.</p>;
+```
+
+Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
+
 ## Build it
 
 Audit every major surface:
@@ -86,5 +116,21 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 - [ ] Edge cases were tested and logged.
 
 > **Log it.** In `learning-log/16-validation-errors-empty-states.md`, list three edge cases you tested and how the UI responded.
+
+## Between chapters
+
+**Bug hunt:** intentionally test slow network, invalid email, empty database, missing slug, failed upload, and double submit. Write the expected UI response before checking the actual response.
+
+**Quiz:** what is worse for a visitor: a clear error message or a blank screen? Why does the blank screen feel less trustworthy?
+
+**UI exercise:** create a checklist for every page with these states: loading, empty, error, success, unauthorized, and not found. Fill it out before polishing visuals.
+
+**Regression exercise:** after fixing one error state, retest one unrelated happy path. This builds the habit of checking that a fix did not break normal use.
+
+**Comparison:** validation vs error handling: validation tries to stop bad input before work happens. Error handling responds when something still fails.
+
+**Big word alert:** **regression** means something that used to work breaks after a change. A regression test checks that old behavior still works.
+
+**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Progress matters more than perfection." Failure states are easy to avoid because they are messy; designing them is a real sign of growth.
 
 Next: the app behaves correctly. Now make it feel good on real devices and assistive technology. -> **[Chapter 17 - Responsive polish and accessibility](17-responsive-polish-accessibility.md)**
