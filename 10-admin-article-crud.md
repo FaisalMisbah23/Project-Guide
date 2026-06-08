@@ -42,6 +42,14 @@ HTML: <h2>Heading</h2>
 JSON: { "type": "heading", "level": 2 }
 ```
 
+Use this decision guide before choosing an editor:
+
+| Format | Good for | Trade-off | Beginner recommendation |
+| --- | --- | --- | --- |
+| Markdown | Articles with headings, links, lists, quotes, and code blocks | Less visual control, but easier to store, edit, diff, and render safely | Best first choice |
+| Sanitized HTML | More flexible formatting from a WYSIWYG editor | Raw HTML is dangerous unless cleaned before rendering | Use only with a sanitizer |
+| Structured JSON | Block editors, drag/drop sections, custom embeds | Powerful, but harder to query, migrate, and render | Advanced option |
+
 Study more: [Frontend Interview Questions - HTML and React](https://resources.devweekends.com/resources/frontend-interview-qs)
 
 ### Draft and published states
@@ -69,6 +77,91 @@ Create `/admin/articles`. Add list, create, edit, and preview flows. Store title
 
 Integrate a rich text editor, but do not let the editor decision hide the data decision. Know what format you store: Markdown, sanitized HTML, or structured JSON. The learner should be able to explain how it renders safely.
 
+### Implementation options
+
+Option 1: store Markdown.
+
+Choose this if the article editor can be simple: a textarea, preview pane, and toolbar buttons for common Markdown snippets. Store the body as plain text in `articles.body`.
+
+```tsx
+import ReactMarkdown from "react-markdown";
+
+type ArticleBodyProps = {
+  body: string;
+};
+
+const allowedArticleElements = [
+  "h2",
+  "h3",
+  "p",
+  "a",
+  "ul",
+  "ol",
+  "li",
+  "blockquote",
+  "code",
+  "pre",
+];
+
+function ArticleBody({ body }: ArticleBodyProps) {
+  return (
+    <ReactMarkdown allowedElements={allowedArticleElements}>
+      {body}
+    </ReactMarkdown>
+  );
+}
+```
+
+Why it helps beginners: the database stores readable text, the owner can preview before publishing, and the renderer decides which elements are allowed. If you add Markdown plugins later, review their security settings before publishing.
+
+Option 2: store sanitized HTML.
+
+Choose this if you use an editor that outputs HTML. Do not render raw editor output directly. Sanitize it first, then render only the cleaned result.
+
+```tsx
+import DOMPurify from "dompurify";
+
+type ArticleHtmlProps = {
+  html: string;
+};
+
+function sanitizeArticleHtml(html: string) {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["h2", "h3", "p", "a", "ul", "ol", "li", "blockquote", "code", "pre"],
+    ALLOWED_ATTR: ["href"],
+  });
+}
+
+function ArticleHtml({ html }: ArticleHtmlProps) {
+  const safeHtml = sanitizeArticleHtml(html);
+
+  return <article dangerouslySetInnerHTML={{ __html: safeHtml }} />;
+}
+```
+
+`dangerouslySetInnerHTML` has a scary name on purpose. It means React is letting you put HTML directly into the page. Only use it after sanitizing.
+
+Option 3: store structured JSON.
+
+Choose this if you want block-style editing later: headings, paragraphs, images, callouts, code blocks, and embeds as separate objects.
+
+```ts
+type ArticleBlock =
+  | { type: "heading"; level: 2 | 3; text: string }
+  | { type: "paragraph"; text: string }
+  | { type: "code"; language: string; code: string };
+
+function renderArticleBlock(block: ArticleBlock) {
+  if (block.type === "heading") return <h2>{block.text}</h2>;
+  if (block.type === "paragraph") return <p>{block.text}</p>;
+  if (block.type === "code") return <pre><code>{block.code}</code></pre>;
+
+  return null;
+}
+```
+
+JSON gives you control, but it also means you must build or use a renderer for every block type. For this guide, Markdown is the recommended starting point unless you deliberately want the extra editor complexity.
+
 Add comment moderation. Pending comments can be approved, hidden, or deleted. Approved comments appear publicly; hidden/deleted ones do not.
 
 ## Do and don't
@@ -86,6 +179,8 @@ Don't create a tag system that requires editing code.
 - [ ] Owner can create and edit article drafts.
 - [ ] Owner can publish and unpublish articles.
 - [ ] Article body uses a clear storage/rendering strategy.
+- [ ] The chosen article body format has a documented trade-off.
+- [ ] Preview uses the same safe rendering path as the public article page.
 - [ ] Category and tags are editable.
 - [ ] Comments can be moderated.
 - [ ] Draft articles are hidden from public reads.
@@ -110,17 +205,16 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Article draft
-  -> safe body format
-  -> preview renderer
-  -> publish action
-  -> public article page
+```mermaid
+flowchart TD
+  articleDraft[Article draft] --> safeBody[Safe body format]
+  safeBody --> preview[Preview renderer]
+  preview --> publish[Publish action]
+  publish --> publicArticle[Public article page]
 
-Comment submit
-  -> pending
-  -> owner moderates
-  -> approved comments render
+  commentSubmit[Comment submit] --> pending[Pending]
+  pending --> moderation[Owner moderates]
+  moderation --> approved[Approved comments render]
 ```
 
 Next: content exists, but it needs images that do not live in database rows. -> **[Chapter 11 - Image storage](11-image-storage.md)**

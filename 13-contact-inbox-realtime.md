@@ -105,12 +105,12 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Admin inbox opens
-  -> load existing messages
-  -> subscribe to new contact_messages inserts
-  -> update unread count/list
-  -> cleanup subscription on unmount
+```mermaid
+flowchart TD
+  inbox[Admin inbox opens] --> load[Load existing messages]
+  load --> subscribe[Subscribe to new contact_messages inserts]
+  subscribe --> update[Update unread count or list]
+  update --> cleanup[Cleanup subscription on unmount]
 ```
 
 Next: contact is handled. Now let visitors subscribe and send scheduled updates thoughtfully. -> **[Chapter 14 - Newsletter and Cron](14-newsletter-and-cron.md)**

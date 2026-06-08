@@ -110,12 +110,12 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Admin uploads image
-  -> Supabase Storage stores file
-  -> database stores image_path + image_alt
-  -> public page reads row
-  -> browser loads image from Storage URL
+```mermaid
+flowchart TD
+  upload[Admin uploads image] --> storage[Supabase Storage stores file]
+  storage --> database["Database stores image_path and image_alt"]
+  database --> publicPage[Public page reads row]
+  publicPage --> browser[Browser loads image from Storage URL]
 ```
 
 Next: visitors need to contact the owner. Email alone is not enough; store first, then notify. -> **[Chapter 12 - Contact Edge Function and Brevo](12-contact-edge-function-brevo.md)**

@@ -12,6 +12,35 @@ By the end you will have a deployed portfolio with public pages, projects, artic
 
 You are not expected to understand all of those pieces yet. This list names the destination. Each chapter introduces one small part, gives you a gate, and then lets you move forward.
 
+## Effort map
+
+These estimates assume you know moderate HTML, CSS, and JavaScript, but are still new to React, Supabase, deployment, and production habits. Use them as planning ranges, not promises. If a chapter touches a tool you have never used, give yourself the high end of the estimate.
+
+| Chapter | Estimated time | Prerequisites before starting |
+| --- | --- | --- |
+| 01 - Introduction | 30-45 min | Basic web app vocabulary: frontend, backend, database |
+| 02 - Project setup | 1-2 hours | Terminal basics, npm, Git basics |
+| 03 - Data model and migrations | 2-4 hours | Tables, rows, primary keys, basic SQL |
+| 04 - RLS and security | 2-4 hours | Auth vs authorization, public vs private data |
+| 05 - Public layout and routing | 2-3 hours | React components, basic routing idea |
+| 06 - Projects from Supabase | 3-5 hours | `useState`, `useEffect`, async functions, Supabase reads |
+| 07 - Articles, comments, search | 4-6 hours | Lists, filters, pagination, safe rendering idea |
+| 08 - Owner auth and dashboard | 3-5 hours | Supabase Auth, protected routes, dashboard layout |
+| 09 - Admin project CRUD | 4-7 hours | Forms, validation, create/update/delete, RLS rules |
+| 10 - Admin article CRUD | 4-7 hours | Rich text decision, draft/publish states, comment moderation |
+| 11 - Image storage | 3-5 hours | File inputs, storage paths, public vs private assets |
+| 12 - Contact Edge Function and Brevo | 4-6 hours | Edge Functions, secrets, request/response flow |
+| 13 - Contact inbox and Realtime | 3-5 hours | Admin reads, `useEffect` cleanup, subscriptions |
+| 14 - Newsletter and Cron | 4-6 hours | Migrations, RLS, Edge Functions, server-side secrets |
+| 15 - Analytics and Realtime | 4-6 hours | Inserts, grouped queries, privacy trade-offs |
+| 16 - Validation, errors, empty states | 2-4 hours | Form validation, loading/error UI states |
+| 17 - Responsive polish and accessibility | 3-5 hours | Responsive CSS, semantic HTML, keyboard basics |
+| 18 - Deploy with Vercel and Supabase | 3-6 hours | Environment variables, build commands, production testing |
+| 19 - Final review and maintenance | 2-4 hours | README writing, logs, monitoring, test checklist |
+| 20 - Closing | 30-60 min | A working project and learning log |
+
+The full project is realistically a **50-90 hour build** for a motivated learner. A fast learner may finish sooner by cutting optional features. A careful learner may take longer and understand it better. Do not measure success only by speed; measure it by whether you can explain the decisions.
+
 ## The tempting version, and why it is too small
 
 The tempting version is a static portfolio:
@@ -126,12 +155,12 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Visitor browser
-  -> React app on Vercel
-  -> Supabase database/Auth/Storage
-  -> Edge Functions
-  -> Brevo email
+```mermaid
+flowchart TD
+  visitor[Visitor browser] --> app[React app on Vercel]
+  app --> supabase[Supabase database, Auth, and Storage]
+  app --> functions[Edge Functions]
+  functions --> brevo[Brevo email]
 ```
 
 Next: the product is clear. Now create the project foundation without leaking secrets or making setup painful. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**

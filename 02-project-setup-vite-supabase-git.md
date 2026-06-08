@@ -153,12 +153,12 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-project repo
-  .env            local real values, ignored by Git
-  .env.example    safe template, committed
-  src/lib/        browser-safe Supabase client
-  learning-log/   written explanations
+```mermaid
+flowchart TD
+  repo[Project repo] --> env[".env: local real values, ignored by Git"]
+  repo --> envExample[".env.example: safe template, committed"]
+  repo --> srcLib["src/lib/: browser-safe Supabase client"]
+  repo --> learningLog["learning-log/: written explanations"]
 ```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Great software starts with small steps." Setup is one of those steps. It may feel basic, but every clean project begins here.

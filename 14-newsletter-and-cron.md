@@ -73,6 +73,36 @@ error_message
 
 If implementing Cron now, schedule a Supabase function that looks for new published articles or projects and sends a digest through Brevo. If this is too much for the first pass, write the contract and leave the function as a planned advanced feature, but keep the schema ready.
 
+## Revisit earlier decisions before Cron
+
+Scheduled functions are not magic background code. They still depend on the database shape, RLS rules, secrets, and logging decisions you made earlier.
+
+Before enabling a newsletter schedule, revisit:
+
+```txt
+Chapter 03 migrations
+  -> newsletter_subscribers table exists
+  -> newsletter_runs table exists
+  -> unique normalized email constraint exists
+  -> useful indexes exist for status and created_at
+
+Chapter 04 RLS
+  -> public visitors can subscribe only through the intended path
+  -> subscribers are not publicly readable
+  -> scheduled/server work uses server-side privileges carefully
+
+Chapter 12 Edge Function habits
+  -> Brevo key is a Supabase secret
+  -> function responses are predictable
+  -> failures are stored or logged
+
+Chapter 19 maintenance
+  -> newsletter_runs gives you a place to inspect success/failure
+  -> dry-run mode exists before real sending
+```
+
+If a scheduled function needs service-role power, keep that power inside Supabase server-side code. Never move service-role keys into the browser just because a scheduled job needs stronger access.
+
 ## Definition of Done
 
 - [ ] Newsletter signup stores validated emails.
@@ -80,6 +110,7 @@ If implementing Cron now, schedule a Supabase function that looks for new publis
 - [ ] Brevo keys remain server-side.
 - [ ] `newsletter_runs` exists or is clearly planned.
 - [ ] Cron workflow is documented.
+- [ ] Migration, RLS, secrets, and logging assumptions were revisited before scheduling.
 - [ ] The owner can explain what triggers an update email.
 
 > **Log it.** In `learning-log/14-newsletter-and-cron.md`, explain why newsletters should be sent by scheduled server work, not by browser code.
@@ -102,17 +133,16 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Newsletter signup
-  -> Edge Function
-  -> normalize email
-  -> insert subscriber or handle duplicate
+```mermaid
+flowchart TD
+  signup[Newsletter signup] --> edge[Edge Function]
+  edge --> normalize[Normalize email]
+  normalize --> subscriber[Insert subscriber or handle duplicate]
 
-Scheduled digest
-  -> Cron trigger
-  -> query new content
-  -> send via Brevo
-  -> record newsletter_runs row
+  cron[Scheduled digest] --> trigger[Cron trigger]
+  trigger --> content[Query new content]
+  content --> brevo[Send via Brevo]
+  brevo --> runs[Record newsletter_runs row]
 ```
 
 Next: the owner has content and messages. Now add lightweight visit insights without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**

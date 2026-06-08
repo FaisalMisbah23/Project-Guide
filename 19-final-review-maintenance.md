@@ -34,13 +34,13 @@ Here is what I would improve next.
 
 **General idea:** explain what happens when a visitor opens a page, submits a contact form, or when the owner publishes a project.
 
-```txt
-Contact submit
--> React form
--> Edge Function
--> contact_messages insert
--> Brevo notification
--> admin inbox
+```mermaid
+flowchart TD
+  contact[Contact submit] --> form[React form]
+  form --> edge[Edge Function]
+  edge --> store[contact_messages insert]
+  store --> brevo[Brevo notification]
+  brevo --> inbox[Admin inbox]
 ```
 
 Study more: [Frontend Interview Questions - Interview Tips](https://resources.devweekends.com/resources/frontend-interview-qs)
@@ -57,6 +57,21 @@ Quarterly: review dependencies, secrets, RLS policies, analytics
 ```
 
 Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
+
+### Error monitoring
+
+**Real-life analogy:** a smoke alarm does not fix a fire, but it tells you something needs attention before the whole building is damaged.
+
+**General idea:** production systems need places to look when something fails. For this project, start with Vercel deployment/function logs, Supabase API and Edge Function logs, browser console errors, and failed contact/newsletter records in the database.
+
+```mermaid
+flowchart TD
+  report[Visitor reports broken contact form] --> console[Check browser console]
+  console --> logs[Check Edge Function logs]
+  logs --> row[Check contact_messages row]
+  row --> notification["Check notification_status/email_error"]
+  notification --> fix[Write the fix and add a regression test]
+```
 
 ## Daily guideline
 
@@ -95,6 +110,22 @@ deployment/secrets explanation
 
 Create a maintenance rhythm. Monthly: check messages, update articles/projects, review broken links. Quarterly: review dependencies, secrets, RLS policies, and analytics.
 
+Add a monitoring routine:
+
+```txt
+weekly
+  review Supabase Edge Function errors
+  review Vercel deployment/runtime errors
+  check failed contact notifications
+  check newsletter_runs failures
+
+after every incident
+  write what happened
+  write user impact
+  fix the cause
+  add a test or checklist item
+```
+
 ## Human rhythm
 
 When stuck, think on paper. Write what you expected, what happened, what changed recently, and what you tried. Rubber duck debugging means explaining the problem out loud to something or someone that does not solve it for you. The explanation often reveals the missing assumption.
@@ -106,6 +137,8 @@ Remember why you started: this portfolio is not only a site. It is evidence of y
 - [ ] README explains the full-stack system.
 - [ ] Demo script exists.
 - [ ] Maintenance rhythm exists.
+- [ ] Monitoring routine names where errors are checked.
+- [ ] Failed contact/newsletter states are reviewable by the owner.
 - [ ] Learner can explain Supabase Auth, RLS, Storage, Edge Functions, Brevo, and Vercel env vars.
 - [ ] Learning log is complete.
 - [ ] Final production smoke test passes.
@@ -125,6 +158,8 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 **Git exercise:** review your commit history and find one commit message that could be clearer. Write the improved message in your learning log and explain why it is better.
 
 **Maintenance exercise:** create a monthly maintenance issue template with checkboxes for dependency review, broken links, contact flow, RLS spot checks, and production smoke test.
+
+**Monitoring exercise:** find where Supabase Edge Function logs and Vercel deployment logs live for your project. Add those links or instructions to the README.
 
 **Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
 

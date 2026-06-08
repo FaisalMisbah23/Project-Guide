@@ -68,16 +68,16 @@ Study more: [React Crash Course - Components and Props](https://resources.devwee
 
 Diagram:
 
-```txt
-PublicLayout
-  Header
-  main
-    /               HomePage
-    /projects       ProjectsPage
-    /projects/:slug ProjectDetailPage
-    /articles       ArticlesPage
-    /contact        ContactPage
-  Footer
+```mermaid
+flowchart TD
+  layout[PublicLayout] --> header[Header]
+  layout --> main[main]
+  layout --> footer[Footer]
+  main --> home["/ -> HomePage"]
+  main --> projects["/projects -> ProjectsPage"]
+  main --> projectDetail["/projects/:slug -> ProjectDetailPage"]
+  main --> articles["/articles -> ArticlesPage"]
+  main --> contact["/contact -> ContactPage"]
 ```
 
 **Comparison:** route vs component: a route is the URL rule, like `/projects/:slug`. A component is the React function that renders what the visitor sees for that URL.

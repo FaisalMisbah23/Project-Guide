@@ -141,13 +141,13 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Contact form
-  -> Supabase Edge Function
-  -> validate input
-  -> insert contact_messages row
-  -> send Brevo notification
-  -> return result to visitor
+```mermaid
+flowchart TD
+  form[Contact form] --> edge[Supabase Edge Function]
+  edge --> validate[Validate input]
+  validate --> store[Insert contact_messages row]
+  store --> brevo[Send Brevo notification]
+  brevo --> result[Return result to visitor]
 ```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Every bug solved is a lesson earned." Contact forms are full of edge cases; each one you handle makes the system more trustworthy.

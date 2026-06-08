@@ -157,16 +157,15 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Public visitor query
-  -> Supabase
-  -> RLS policy
-  -> only rows where status = 'published'
+```mermaid
+flowchart TD
+  publicQuery[Public visitor query] --> publicSupabase[Supabase]
+  publicSupabase --> publicPolicy[RLS policy]
+  publicPolicy --> publishedRows["Only rows where status = 'published'"]
 
-Owner query
-  -> Supabase Auth session
-  -> RLS policy
-  -> owner-only rows/actions allowed
+  ownerQuery[Owner query] --> ownerSession[Supabase Auth session]
+  ownerSession --> ownerPolicy[RLS policy]
+  ownerPolicy --> ownerActions[Owner-only rows and actions allowed]
 ```
 
 Next: the backend is guarded. Now give visitors a public route structure they can actually navigate. -> **[Chapter 05 - Public layout and routing](05-public-layout-and-routing.md)**

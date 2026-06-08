@@ -76,6 +76,50 @@ dashboard cards
 
 For each, test loading, empty, error, success, and blocked cases.
 
+## Automated testing
+
+Manual testing teaches you what should happen. Automated testing helps you prove it still happens after the next change.
+
+Start with three levels:
+
+```txt
+unit tests
+  small functions: validation, mappers, formatters
+
+integration tests
+  feature behavior: project API module, auth guards, form submit flow
+
+end-to-end smoke tests
+  critical paths: public read, admin login, contact submit
+```
+
+Good first tests for this portfolio:
+
+```txt
+validateProjectInput rejects empty title and bad URLs
+mapProjectRow converts snake_case database rows to camelCase UI data
+getPublishedProjects never returns draft projects
+contact form shows stored-but-email-failed message clearly
+RequireAuth redirects signed-out users
+```
+
+Example unit test shape:
+
+```ts
+it("rejects a project without a title", () => {
+  const errors = validateProjectInput({
+    title: "",
+    slug: "portfolio",
+    summary: "A useful summary that explains the project outcome.",
+    demoUrl: "https://example.com",
+  });
+
+  expect(errors.title).toBe("Title is required.");
+});
+```
+
+Do not try to test everything at once. Protect the risky parts first: validation, RLS assumptions, contact failure behavior, and anything that could leak private content.
+
 ## Empty state examples
 
 Bad:
@@ -114,6 +158,8 @@ Read the "Think About Real Users" and "Test Edge Cases" sections in `Daily_Softw
 - [ ] Error states offer a next step.
 - [ ] Success states confirm what changed.
 - [ ] Edge cases were tested and logged.
+- [ ] Validation helpers or mappers have at least one unit test.
+- [ ] One critical user flow has an integration or smoke test plan.
 
 > **Log it.** In `learning-log/16-validation-errors-empty-states.md`, list three edge cases you tested and how the UI responded.
 
@@ -129,21 +175,21 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Regression exercise:** after fixing one error state, retest one unrelated happy path. This builds the habit of checking that a fix did not break normal use.
 
+**Testing exercise:** write one unit test for a validation helper and one smoke-test checklist for the contact form. The goal is not coverage percentage; the goal is protecting behavior that matters.
+
 **Comparison:** validation vs error handling: validation tries to stop bad input before work happens. Error handling responds when something still fails.
 
 **Big word alert:** **regression** means something that used to work breaks after a change. A regression test checks that old behavior still works.
 
 **Diagram:**
 
-```txt
-Data request
-  -> loading state
-  -> success with rows
-    -> render content
-  -> success with no rows
-    -> render empty state
-  -> failure
-    -> render error state + next action
+```mermaid
+flowchart TD
+  request[Data request] --> loading[Loading state]
+  loading --> result{Request result}
+  result -- Success with rows --> content[Render content]
+  result -- Success with no rows --> empty[Render empty state]
+  result -- Failure --> error[Render error state and next action]
 ```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Progress matters more than perfection." Failure states are easy to avoid because they are messy; designing them is a real sign of growth.

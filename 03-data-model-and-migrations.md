@@ -35,18 +35,22 @@ This model lets the public site read published content, the owner manage drafts,
 
 Diagram:
 
-```txt
-articles
-  id
-  title
-  status
-    ^
-    |
-article_comments
-  id
-  article_id
-  status
-  body
+```mermaid
+erDiagram
+  articles {
+    uuid id
+    text title
+    text status
+  }
+
+  article_comments {
+    uuid id
+    uuid article_id
+    text status
+    text body
+  }
+
+  articles ||--o{ article_comments : has
 ```
 
 ## New ideas before you build

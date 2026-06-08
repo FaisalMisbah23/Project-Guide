@@ -129,12 +129,12 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Search input + filters + page number
-  -> Supabase query
-  -> published articles only
-  -> limited page of rows
-  -> article list UI
+```mermaid
+flowchart TD
+  controls[Search input, filters, and page number] --> query[Supabase query]
+  query --> published[Published articles only]
+  published --> page[Limited page of rows]
+  page --> list[Article list UI]
 ```
 
 Next: public content works. Now build the private door for the owner. -> **[Chapter 08 - Owner auth and admin dashboard](08-owner-auth-and-admin-dashboard.md)**

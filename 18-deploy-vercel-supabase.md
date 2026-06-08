@@ -83,6 +83,42 @@ From `Daily_Software_Development_Guidelines.md`: **monitor production**. Deploym
 
 Run a production build locally first. Fix build errors before deployment.
 
+Before deploying, add a basic CI check. If using GitHub, a small GitHub Actions workflow should run on pull requests or pushes:
+
+```txt
+checkout repo
+install dependencies
+run lint if configured
+run tests
+run production build
+```
+
+Example workflow shape:
+
+```yaml
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --run
+      - run: npm run build
+```
+
+If you deploy with Vercel, treat preview deployments as review environments. Open the preview URL, test the public pages, and confirm it is using the correct Supabase project and browser-safe environment variables.
+
 Deploy Supabase migrations, storage buckets/policies, and Edge Functions. Set secrets. Then deploy the Vite app to Vercel.
 
 Test production:
@@ -109,6 +145,8 @@ RLS blocked cases
 - [ ] Edge Functions are deployed.
 - [ ] Supabase secrets are set.
 - [ ] Vercel env vars contain only browser-safe values.
+- [ ] CI or Vercel checks run tests/build before production deploy.
+- [ ] Preview deployment was manually smoke-tested before production.
 - [ ] Contact form stores messages and triggers Brevo.
 - [ ] Admin workflows work in production.
 - [ ] RLS blocked cases still block in production.
@@ -125,19 +163,21 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
 
+**CI/CD exercise:** add one automated check before deployment: test, lint, or build. Then intentionally break the build locally and confirm the check would catch it.
+
 **Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
 
 **Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
 
 **Diagram:**
 
-```txt
-Visitor
-  -> DNS finds domain
-  -> HTTPS connection to Vercel
-  -> Vercel serves React app
-  -> React calls Supabase
-  -> Edge Functions use Supabase/Brevo secrets
+```mermaid
+flowchart TD
+  visitor[Visitor] --> dns[DNS finds domain]
+  dns --> https[HTTPS connection to Vercel]
+  https --> vercel[Vercel serves React app]
+  vercel --> supabase[React calls Supabase]
+  supabase --> functions[Edge Functions use Supabase and Brevo secrets]
 ```
 
 **Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Keep shipping, keep improving." Deployment is not a finish line where everything must be flawless; it is the moment your improvement loop becomes real.

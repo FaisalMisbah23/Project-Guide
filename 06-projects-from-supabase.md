@@ -69,13 +69,13 @@ Study more: [React Crash Course - Components and Props](https://resources.devwee
 
 Diagram:
 
-```txt
-ProjectsPage mounts
-  -> useEffect runs
-  -> getPublishedProjects()
-  -> Supabase returns rows
-  -> setProjects(rows)
-  -> ProjectList renders ProjectCard items
+```mermaid
+flowchart TD
+  mount[ProjectsPage mounts] --> effect[useEffect runs]
+  effect --> fetch[getPublishedProjects]
+  fetch --> rows[Supabase returns rows]
+  rows --> state["setProjects(rows)"]
+  state --> list[ProjectList renders ProjectCard items]
 ```
 
 **Big word alert:** **side effect** means work React does outside pure rendering, such as fetching from Supabase, setting up a subscription, reading from the browser, or starting a timer.
@@ -110,6 +110,90 @@ async function getPublishedProjectBySlug(
 ```
 
 The UI should not know how the Supabase query is written. It should only know whether it received projects, loading, an error, or no matching row.
+
+### Implementation sketch
+
+Use this as a shape, not a copy-paste answer. The important idea is that the data module owns Supabase details and the page owns UI states.
+
+```txt
+src/features/projects/
+  projectTypes.ts
+  projectApi.ts
+  ProjectCard.tsx
+  ProjectsPage.tsx
+  ProjectDetailPage.tsx
+```
+
+`projectApi.ts` should translate database rows into the `Project` shape your UI expects:
+
+```ts
+import { supabase } from "../../lib/supabaseClient";
+import type { Project } from "./projectTypes";
+
+type ProjectRow = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  status: "published";
+  featured: boolean;
+  image_path: string | null;
+  image_alt: string | null;
+};
+
+function mapProjectRow(row: ProjectRow): Project {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    summary: row.summary,
+    status: row.status,
+    featured: row.featured,
+    imagePath: row.image_path,
+    imageAlt: row.image_alt,
+  };
+}
+
+export async function getPublishedProjects(): Promise<Project[]> {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("id, slug, title, summary, status, featured, image_path, image_alt")
+    .eq("status", "published")
+    .order("featured", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+  return (data ?? []).map(mapProjectRow);
+}
+```
+
+For the detail page, use the same pattern but return `null` when no row exists:
+
+```ts
+export async function getPublishedProjectBySlug(
+  slug: string,
+): Promise<Project | null> {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("id, slug, title, summary, status, featured, image_path, image_alt")
+    .eq("status", "published")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data ? mapProjectRow(data) : null;
+}
+```
+
+In the page component, keep the states explicit:
+
+```tsx
+if (isLoading) return <p>Loading projects...</p>;
+if (error) return <p>Projects could not be loaded.</p>;
+if (projects.length === 0) return <p>No projects published yet.</p>;
+```
+
+The exact table columns may differ from your migration. If they do, update the select list and mapper deliberately instead of passing raw database rows through your UI.
 
 ### As you build
 

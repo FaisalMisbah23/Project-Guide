@@ -111,12 +111,13 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-/admin requested
-  -> RequireAuth checks Supabase session
-    -> no session: redirect to /admin/login
-    -> session exists: render dashboard
-  -> RLS still protects database rows
+```mermaid
+flowchart TD
+  admin[/admin requested] --> requireAuth[RequireAuth checks Supabase session]
+  requireAuth --> noSession{Session exists?}
+  noSession -- No --> login[Redirect to /admin/login]
+  noSession -- Yes --> dashboard[Render dashboard]
+  dashboard --> rls[RLS still protects database rows]
 ```
 
 Next: the owner can enter the dashboard. Now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**

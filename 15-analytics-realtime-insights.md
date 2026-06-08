@@ -87,6 +87,131 @@ recent visits
 
 Add Realtime only if it improves the admin experience. Live updates are fun, but they are not a substitute for correct stored data.
 
+### Implementation sketch
+
+Keep analytics in a small feature folder so tracking, dashboard queries, and Realtime do not get mixed into random components:
+
+```txt
+src/features/analytics/
+  analyticsApi.ts
+  trackPageVisit.ts
+  useAnalyticsSummary.ts
+  useRecentVisitsRealtime.ts
+  AnalyticsDashboard.tsx
+```
+
+The page tracker should be boring and defensive:
+
+```ts
+export async function trackPageVisit(path: string) {
+  if (path.startsWith("/admin")) return;
+
+  await supabase.from("page_visits").insert({
+    path,
+    referrer: document.referrer || null,
+  });
+}
+```
+
+The dashboard should ask the database for summaries, not load every row and count in React:
+
+```ts
+export async function getTopPages() {
+  const { data, error } = await supabase.rpc("get_top_pages");
+
+  if (error) throw error;
+
+  return data;
+}
+```
+
+The database function can group rows close to where the data lives:
+
+```sql
+create or replace function get_top_pages()
+returns table(path text, visits bigint)
+language sql
+stable
+as $$
+  select page_visits.path, count(*) as visits
+  from page_visits
+  where created_at >= now() - interval '30 days'
+  group by page_visits.path
+  order by visits desc
+  limit 10;
+$$;
+```
+
+Realtime should update recent activity, not replace the normal load:
+
+```tsx
+useEffect(() => {
+  const channel = supabase
+    .channel("analytics-recent-visits")
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "page_visits" },
+      (payload) => {
+        prependRecentVisit(payload.new);
+      },
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
+```
+
+Think of it as two lanes:
+
+```mermaid
+flowchart TD
+  initial[Initial dashboard load] --> summaries[Query stored summaries]
+  summaries --> stable[Render stable numbers]
+
+  realtime[Realtime update] --> listen[Listen for new rows]
+  listen --> recent[Update recent activity or unread-style count]
+  recent --> refresh[Refresh summaries later if needed]
+```
+
+## Performance tuning
+
+**Big word alert:** **performance tuning** means making the app faster and less wasteful after you understand what it actually needs to do.
+
+**Real-life analogy:** if a shop owner wants today's best-selling items, they should not reread every receipt from the last five years every time they open the dashboard.
+
+For this project, tune the analytics feature in small, understandable steps:
+
+```txt
+query less data
+  -> select only columns the dashboard renders
+
+limit rows
+  -> show recent visits with .limit(20), not every visit ever
+
+summarize on the database side
+  -> use grouped counts for top pages/referrers
+
+index common filters
+  -> created_at, path, referrer where useful
+
+avoid noisy Realtime
+  -> subscribe only on admin dashboard pages, unsubscribe on cleanup
+```
+
+Example query shape:
+
+```ts
+const { data, error } = await supabase
+  .from("page_visits")
+  .select("path, referrer, created_at")
+  .order("created_at", { ascending: false })
+  .limit(20);
+```
+
+Performance is not only speed. It also protects your database from unnecessary reads and keeps the dashboard easy to understand.
+
 ## Definition of Done
 
 - [ ] Public page visits are recorded.
@@ -95,6 +220,10 @@ Add Realtime only if it improves the admin experience. Live updates are fun, but
 - [ ] Referrers are tracked where available.
 - [ ] Location data is coarse or omitted.
 - [ ] Realtime is used only where it helps.
+- [ ] Analytics code is isolated in a feature folder or clearly named module.
+- [ ] Dashboard summaries are produced by database queries or RPC functions, not browser-only counting.
+- [ ] Analytics queries limit rows and select only needed columns.
+- [ ] Common dashboard filters have a clear indexing plan.
 
 > **Log it.** In `learning-log/15-analytics-realtime-insights.md`, explain what you chose not to track and why.
 
@@ -116,11 +245,11 @@ Optional pause. Pick **one or two**, not all of them. Skip the rest without guil
 
 **Diagram:**
 
-```txt
-Public route loads
-  -> record page_visits row
-  -> dashboard query groups visits
-  -> insight cards show totals, top pages, referrers
+```mermaid
+flowchart TD
+  route[Public route loads] --> record[Record page_visits row]
+  record --> grouped[Dashboard query groups visits]
+  grouped --> cards[Insight cards show totals, top pages, and referrers]
 ```
 
 Next: the features exist. Now make every failure state understandable. -> **[Chapter 16 - Validation, errors, and empty states](16-validation-errors-empty-states.md)**
