@@ -1,181 +1,50 @@
 # Chapter 18 - Deploy with Vercel and Supabase
 
-Local success is not shipping. Deployment is where environment variables, migrations, storage policies, Edge Functions, and frontend builds meet reality.
+Deployment is where local assumptions meet reality. A green Vercel build proves only that the frontend compiled. It does not prove RLS, Edge Function secrets, Storage policies, Brevo, Cron, or production routes work.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, the frontend is deployed to Vercel, Supabase backend pieces are deployed, secrets are set in the right places, and the production app works end to end.
+A production deployment where Vercel hosts the Vite frontend, Supabase hosts backend pieces, secrets live in the right platform, and a production smoke test proves critical workflows.
 
-## The deployment trap
+## Step 1 - Build locally first
 
-Bad:
+Run the production build before deploying. If it fails locally, it will not magically become clearer in Vercel logs.
 
-```txt
-works locally
-push to Vercel
-hope Supabase functions and secrets are fine
-```
+## Step 2 - Add a small CI gate
 
-Problem: frontend deployment does not automatically prove database policies, Edge Functions, Storage, Cron, or Brevo secrets are correct.
+A basic GitHub Actions workflow should install dependencies, run tests if configured, and build. CI catches mistakes before deployment.
 
-Better:
+## Step 3 - Deploy Supabase pieces
 
-```txt
-run production build
-deploy Supabase migrations/functions
-set Supabase secrets
-set Vercel public env vars
-test every workflow on production
-```
+Deploy migrations, storage buckets/policies, Edge Functions, and scheduled jobs or planned Cron pieces. Set Supabase function secrets there.
 
-## New ideas before you build
+## Step 4 - Keep env boundaries strict
 
-### Production build
+Vercel gets browser-safe values: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Supabase Edge Functions get server secrets such as Brevo keys. Service-role belongs only in controlled server-side code when truly required, because it bypasses RLS.
 
-**Real-life analogy:** a rehearsal catches problems before opening night. A production build catches errors before users see them.
+## Step 5 - Smoke test production
 
-**General idea:** run a production build locally before deploying. Development mode can hide problems that the production build reveals.
+Test public pages, admin login, CRUD, image upload, contact, Brevo, inbox, newsletter, analytics, direct route refresh, and RLS blocked cases on the production URL.
 
-```txt
-npm run build
-```
+> **📖 Mandatory read.** Read [Vercel Vite deployment](https://vercel.com/docs/frameworks/vite), [Vercel environment variables](https://vercel.com/docs/environment-variables), [Supabase CLI](https://supabase.com/docs/guides/cli), [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), and [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart). Required: deployment is frontend, backend, secrets, and checks together.
 
-Study more: [Frontend Interview Questions - Deployment and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**CI/CD exercise:** add one automated check before deployment: test, lint, or build. Then intentionally break the build locally and confirm the check would catch it.
-
-## Environment boundary
-
-Vercel should receive:
-
-```txt
-VITE_SUPABASE_URL
-VITE_SUPABASE_ANON_KEY
-```
-
-Supabase Edge Function secrets should receive:
-
-```txt
-BREVO_API_KEY
-BREVO_SENDER_EMAIL
-CONTACT_RECIPIENT_EMAIL
-SUPABASE_SERVICE_ROLE_KEY if required server-side
-```
-
-Never put Brevo or service-role secrets in Vercel frontend variables.
-
-### Deployment boundaries
-
-**Real-life analogy:** a public reception desk and a locked office cabinet hold different information. Vercel gets browser-safe values; Supabase stores server secrets.
-
-**General idea:** frontend env vars go to Vercel. Edge Function secrets go to Supabase.
-
-```txt
-Vercel: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
-Supabase: BREVO_API_KEY, SUPABASE_SERVICE_ROLE_KEY
-```
-
-Study more: [AWS Core Concepts - Shared Responsibility Model](https://resources.devweekends.com/aws/core-concepts)
-
-**Comparison:** DNS vs HTTPS: DNS helps the browser find the server for a domain. HTTPS protects the connection between the browser and server.
-
-**Big word alert:** **TLS** means Transport Layer Security. It is the security layer behind HTTPS that helps encrypt traffic and verify the server.
-
-**Related reading:** read [Cloudflare - What is DNS?](https://www.cloudflare.com/en-in/learning/ddos/glossary/domain-name-system-dns/), [http.dev - HTTPS explained](https://http.dev/https), and [Cloudflare - DNS over TLS vs DNS over HTTPS](https://www.cloudflare.com/en-in/learning/dns/dns-over-tls/). Deployment is easier to understand when DNS, HTTPS, and TLS are not magic words.
-
-## Daily guideline
-
-**monitor production**. Deployment is not done when Vercel turns green. After shipping, open the production app, test the real workflows, check function logs, confirm emails, and watch for failed requests.
-
-## Build it
-
-Run a production build locally first. Fix build errors before deployment.
-
-Before deploying, add a basic CI check. If using GitHub, a small GitHub Actions workflow should run on pull requests or pushes:
-
-```txt
-checkout repo
-install dependencies
-run lint if configured
-run tests
-run production build
-```
-
-Example workflow shape:
-
-```yaml
-name: CI
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
-jobs:
-  checks:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm test -- --run
-      - run: npm run build
-```
-
-If you deploy with Vercel, treat preview deployments as review environments. Open the preview URL, test the public pages, and confirm it is using the correct Supabase project and browser-safe environment variables.
-
-Deploy Supabase migrations, storage buckets/policies, and Edge Functions. Set secrets. Then deploy the Vite app to Vercel.
-
-**Deployment exercise:** make a production checklist with three columns: Vercel, Supabase, and Brevo. Put each environment variable, migration, function, and manual test under the correct owner.
-
-Test production:
-
-```txt
-public pages
-project/article reads
-admin login
-project CRUD
-article CRUD
-image upload
-contact form
-Brevo notification
-contact inbox
-newsletter signup
-visit tracking
-RLS blocked cases
-```
-
-**Production smoke test:** after deployment, test public pages, admin login, project CRUD, image upload, contact submit, Brevo email, RLS blocked reads, and newsletter signup.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  visitor[Visitor] --> dns[DNS finds domain]
-  dns --> https[HTTPS connection to Vercel]
-  https --> vercel[Vercel serves React app]
-  vercel --> supabase[React calls Supabase]
-  supabase --> functions[Edge Functions use Supabase and Brevo secrets]
-```
+> **💡 Hint.** If an admin write fails in production, inspect RLS and owner identity before reaching for service-role. Service-role is power, not a bandage.
 
 ## Definition of Done
 
-- [ ] Vercel deployment succeeds.
-- [ ] Supabase migrations are applied.
-- [ ] Edge Functions are deployed.
-- [ ] Supabase secrets are set.
-- [ ] Vercel env vars contain only browser-safe values.
-- [ ] CI or Vercel checks run tests/build before production deploy.
-- [ ] Preview deployment was manually smoke-tested before production.
-- [ ] Contact form stores messages and triggers Brevo.
-- [ ] Admin workflows work in production.
-- [ ] RLS blocked cases still block in production.
+- [ ] Production frontend is deployed.
+- [ ] Supabase migrations are deployed.
+- [ ] Storage buckets and policies are deployed.
+- [ ] Edge Functions and secrets are deployed.
+- [ ] Vercel contains only browser-safe Vite variables.
+- [ ] Brevo keys and service-role keys are not in frontend variables or shipped assets.
+- [ ] Production smoke test covers public, admin, contact, newsletter, analytics, and RLS blocked cases.
+- [ ] Direct route refresh works.
 
-> **Log it.** In `learning-log/18-deploy-vercel-supabase.md`, explain which secrets live in Vercel and which live in Supabase, and why.
+> **✍️ Log it (mandatory).** In `learning-log/18-deploy-vercel-supabase.md`: list which values live in Vercel, which live in Supabase secrets, and why service-role is dangerous.
 
-**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Keep shipping, keep improving." Deployment is not a finish line where everything must be flawless; it is the moment your improvement loop becomes real.
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
 
-Next: the app is deployed. Now prove you understand it and plan how to keep it alive. -> **[Chapter 19 - Final review and maintenance](19-final-review-maintenance.md)**
+---
+
+Next: the app is deployed; now prove you understand it and can keep it alive. -> **[Chapter 19 - Final review and maintenance](19-final-review-maintenance.md)**

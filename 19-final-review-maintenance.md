@@ -1,164 +1,48 @@
 # Chapter 19 - Final review and maintenance
 
-Shipping is not the end of the course. The final test is whether you can explain the system you built: the data model, security rules, frontend routes, admin flows, email path, deployment boundary, and tradeoffs.
+A portfolio becomes evidence when you can explain it and keep it alive. The last engineering task is not another feature; it is turning the system into something readable, demoable, reviewable, and maintainable.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, the portfolio has a final README, a maintenance rhythm, a demo script, and a self-review that proves understanding.
+A project README, case study, demo script, security checklist, production smoke-test checklist, and maintenance rhythm.
 
-## The final-review trap
+## Step 1 - Write the project README
 
-Bad:
+Explain what the app does, the stack, setup commands, safe env vars, server-only secrets, scripts, deployment, and core architecture. Do not paste real secret values.
 
-```txt
-Here is my link.
-```
+## Step 2 - Write the case study
 
-Problem: a link shows the result, not the thinking.
+Use: problem, decision, tradeoff, result, next improvement. The portfolio itself is now one of your best projects.
 
-Better:
+## Step 3 - Rehearse the demo
 
-```txt
-Here is my link.
-Here is the architecture.
-Here is what is public/private.
-Here is how contact works.
-Here is what I would improve next.
-```
+Public pages, admin login, project publish, article preview, image upload, contact stored-before-email, inbox, analytics, and deployment boundaries.
 
-## New ideas before you build
+## Step 4 - Review security
 
-### System walkthrough
+Check RLS, service-role usage, storage policies, public reads, private messages, subscribers, and logs.
 
-**Real-life analogy:** a mechanic can trace how fuel, electricity, and controls move through a car. A developer should trace how data moves through an app.
+## Step 5 - Schedule maintenance
 
-**General idea:** explain what happens when a visitor opens a page, submits a contact form, or when the owner publishes a project.
+Monthly: content, messages, broken links, smoke test. Quarterly: dependencies, secrets, RLS spot checks, analytics fields, and deployment review.
 
-```mermaid
-flowchart TD
-  contact[Contact submit] --> form[React form]
-  form --> edge[Edge Function]
-  edge --> store[contact_messages insert]
-  store --> brevo[Brevo notification]
-  brevo --> inbox[Admin inbox]
-```
+> **📖 Mandatory read.** Read [GitHub README docs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes), [Vercel observability](https://vercel.com/docs/observability), [Supabase logs](https://supabase.com/docs/guides/platform/logs), and [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart). Required: a deployed app still needs explanation and care.
 
-Study more: [Frontend Interview Questions - Interview Tips](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Big word alert:** **architecture** means the high-level structure of the system: parts, responsibilities, and how data moves between them.
-
-**Self-review quiz:** pick one feature and trace it from UI to database to deployment. If you cannot explain one step, revisit that chapter.
-
-**Related reading:** read [Cloudflare - How Cloudflare DNS works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP), and [IBM - Database normalization](https://www.ibm.com/think/topics/database-normalization). Your final README should be able to explain how browser, DNS, HTTPS, frontend, backend, database, and deployment fit together.
-
-### Maintenance rhythm
-
-**Real-life analogy:** a garden needs watering after it is planted. A portfolio needs updates after it is shipped.
-
-**General idea:** keep adding real project writeups, checking production workflows, reviewing secrets, and updating dependencies.
-
-```txt
-Monthly: test contact flow, update content, check broken links
-Quarterly: review dependencies, secrets, RLS policies, analytics
-```
-
-Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
-
-**Maintenance exercise:** create a monthly maintenance issue template with checkboxes for dependency review, broken links, contact flow, RLS spot checks, and production smoke test.
-
-**Git exercise:** review your commit history and find one commit message that could be clearer. Write the improved message in your learning log and explain why it is better.
-
-### Error monitoring
-
-**Real-life analogy:** a smoke alarm does not fix a fire, but it tells you something needs attention before the whole building is damaged.
-
-**General idea:** production systems need places to look when something fails. For this project, start with Vercel deployment/function logs, Supabase API and Edge Function logs, browser console errors, and failed contact/newsletter records in the database.
-
-```mermaid
-flowchart TD
-  report[Visitor reports broken contact form] --> console[Check browser console]
-  console --> logs[Check Edge Function logs]
-  logs --> row[Check contact_messages row]
-  row --> notification["Check notification_status/email_error"]
-  notification --> fix[Write the fix and add a regression test]
-```
-
-## Daily guideline
-
-**document important decisions** and **review before merging**. Your README should explain not only what you built, but why: why RLS, why Edge Functions, why store messages before email, why secrets split between Vercel and Supabase.
-
-**Comparison:** README vs learning log: the README explains the finished project to others. The learning log records how your understanding developed while building it.
-
-## Build it
-
-Write the project README. Include:
-
-```txt
-product summary
-tech stack
-features
-architecture overview
-database tables
-security/RLS summary
-environment variable guide
-deployment notes
-known tradeoffs
-future improvements
-```
-
-**Blog assignment:** write the final case study using this outline: problem, users, architecture, hardest tradeoff, security model, failure handling, deployment, what you would improve next.
-
-Prepare a demo path:
-
-```txt
-public homepage
-projects
-articles
-contact submission
-admin login
-message inbox
-project/article edit
-image upload
-deployment/secrets explanation
-```
-
-Create a maintenance rhythm. Monthly: check messages, update articles/projects, review broken links. Quarterly: review dependencies, secrets, RLS policies, and analytics.
-
-Add a monitoring routine:
-
-```txt
-weekly
-  review Supabase Edge Function errors
-  review Vercel deployment/runtime errors
-  check failed contact notifications
-  check newsletter_runs failures
-
-after every incident
-  write what happened
-  write user impact
-  fix the cause
-  add a test or checklist item
-```
-
-**Monitoring exercise:** find where Supabase Edge Function logs and Vercel deployment logs live for your project. Add those links or instructions to the README.
-
-## Human rhythm
-
-When stuck, think on paper. Write what you expected, what happened, what changed recently, and what you tried. Rubber duck debugging means explaining the problem out loud to something or someone that does not solve it for you. The explanation often reveals the missing assumption.
-
-Remember why you started: this portfolio is not only a site. It is evidence of your judgment.
+> **💡 Hint.** If your README only says how to run the app, it is incomplete. It should also explain why the app is shaped the way it is.
 
 ## Definition of Done
 
-- [ ] README explains the full-stack system.
-- [ ] Demo script exists.
-- [ ] Maintenance rhythm exists.
-- [ ] Monitoring routine names where errors are checked.
-- [ ] Failed contact/newsletter states are reviewable by the owner.
-- [ ] Learner can explain Supabase Auth, RLS, Storage, Edge Functions, Brevo, and Vercel env vars.
-- [ ] Learning log is complete.
-- [ ] Final production smoke test passes.
+- [ ] Project README exists and is safe to share.
+- [ ] Case study exists.
+- [ ] Demo script covers public and owner workflows.
+- [ ] Security checklist covers RLS, secrets, service-role, storage, and private data.
+- [ ] Production smoke-test checklist exists.
+- [ ] Monthly and quarterly maintenance rhythm exists.
 
-> **Log it.** In `learning-log/19-final-review-maintenance.md`, write your final architecture explanation as if answering an interview question.
+> **✍️ Log it (mandatory).** In `learning-log/19-final-review-maintenance.md`: explain how you will keep the portfolio alive after launch and which workflow you will test monthly.
 
-Next: close the course by turning the shipped project into a professional habit. -> **[Chapter 20 - Closing](20-closing.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: the system is documented; now turn it into a story you can defend. -> **[Chapter 20 - Closing](20-closing.md)**

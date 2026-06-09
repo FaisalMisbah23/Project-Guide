@@ -1,117 +1,44 @@
 # Chapter 11 - Image storage
 
-Projects and articles need images. The tempting path is to paste image URLs or store files as database blobs. The production-shaped path is object storage: the database stores metadata and paths; storage holds the file.
+Projects and articles need images, but images are not normal row data. A screenshot can be large; a database row should store facts and references, not a pile of bytes.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, project and article images upload to Supabase Storage, paths are saved in database rows, alt text is stored, and public pages render images with fallbacks.
+Supabase Storage bucket, owner-only upload policies, database image paths, public rendering, and meaningful alt text.
 
-## Why files do not belong in rows
+## Step 1 - Separate file bytes from row metadata
 
-Bad:
+Store the file in object storage. Store the path, alt text, and related metadata in the database. That split keeps rows light and files manageable.
 
-```txt
-projects.image_base64 = giant encoded file
-```
+## Step 2 - Decide public read, owner write
 
-Problem: rows become huge, queries get heavier, backups bloat, and the database starts doing file storage work badly.
+Portfolio images are usually public to read. Upload, replace, and delete should be owner-only. Storage policies are separate from table RLS, so configure both.
 
-Better:
+## Step 3 - Connect uploads to admin forms
 
-```txt
-Supabase Storage bucket stores the file
-projects.image_path stores the path
-projects.image_alt stores the human description
-```
+The admin form uploads an image, receives or stores the path, and saves that path on the project or article record. Public pages render from the saved path.
 
-## New ideas before you build
+## Step 4 - Treat alt text as content
 
-### Object storage
+A meaningful screenshot needs meaningful alt text. Decorative images can be empty, but portfolio evidence is rarely decorative.
 
-**Real-life analogy:** keep customer records in a filing cabinet, but keep large posters in a storage room. The record only needs to know where the poster is.
+> **📖 Mandatory read.** Read [Supabase Storage](https://supabase.com/docs/guides/storage), [Supabase Storage access control](https://supabase.com/docs/guides/storage/security/access-control), and [MDN accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility). Required: storage has its own access rules and images need accessible descriptions.
 
-**General idea:** the database should store image metadata and paths. Supabase Storage should store the actual files.
-
-```txt
-Storage: projects/portfolio-dashboard.png
-Database: image_path = "projects/portfolio-dashboard.png"
-```
-
-Study more: [AWS Core Concepts - Storage and Cloud Basics](https://resources.devweekends.com/aws/core-concepts)
-
-**Comparison:** database row vs object storage file: the row stores facts and paths. Object storage holds the actual image bytes.
-
-**Big word alert:** **metadata** means data about data. For an image, metadata might include path, alt text, file size, content type, and upload time.
-
-### Alt text
-
-**Real-life analogy:** alt text is a spoken description of an image for someone who cannot see it.
-
-**General idea:** meaningful images need useful alt text. Decorative images can be marked decorative, but project screenshots usually need descriptions.
-
-```tsx
-<img src={project.imageUrl} alt="Dashboard showing project analytics" />
-```
-
-Study more: [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility)
-
-**Accessibility exercise:** temporarily remove image alt text and use that discomfort to write a better description. Restore useful alt text before moving on.
-
-## Daily guideline
-
-**name things clearly**. Image paths and alt text should help future-you understand what the file is. Prefer `projects/<project-id>/dashboard-overview.png` over `image1.png`, and write alt text that describes the image's purpose.
-
-## Public or private?
-
-Portfolio project/article images are meant to be public. A public bucket is reasonable if only the owner can upload and paths are safe. Private files, such as invoices or personal documents, would need signed URLs. Do not use private complexity where public content is intended.
-
-## Build it
-
-Create buckets for project images and article images, or one organized public content bucket with prefixes:
-
-```txt
-projects/<project-id>/<filename>
-articles/<article-id>/<filename>
-```
-
-Add storage policies so only the authenticated owner can upload/update/delete. Public users can read public images.
-
-Add upload controls in project and article admin forms. Show selected filename, loading state, upload error, preview, and saved path. Store alt text with the content record.
-
-**Mini assignment:** upload one intentionally oversized image and one broken/unsupported file type in development. Write what the UI should show for each.
-
-**Storage exercise:** upload an image, replace it, then remove or archive it. Confirm the database path and public rendering stay consistent.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  upload[Admin uploads image] --> storage[Supabase Storage stores file]
-  storage --> database["Database stores image_path and image_alt"]
-  database --> publicPage[Public page reads row]
-  publicPage --> browser[Browser loads image from Storage URL]
-```
-
-## Real developer mistake
-
-Mistake: save the image URL but no alt text.
-
-Why it is bad: accessibility suffers, and broken images have no meaningful fallback.
-
-Fix: require useful alt text for meaningful images.
-
-**Quiz:** what is stored in the database: image bytes, image path, alt text, upload status, or bucket policy? Explain each choice.
+> **💡 Hint.** Signed-out users should be able to view public images but fail to upload one. Test both cases.
 
 ## Definition of Done
 
-- [ ] Supabase Storage bucket exists.
-- [ ] Owner can upload project images.
-- [ ] Owner can upload article images.
-- [ ] Public pages render images from saved paths.
-- [ ] Upload loading and error states exist.
-- [ ] Alt text is stored and rendered.
-- [ ] Signed-out users cannot upload.
+- [ ] Storage bucket exists.
+- [ ] Owner can upload project/article images.
+- [ ] Signed-out users cannot upload or replace images.
+- [ ] Database rows store image paths and alt text, not image bytes.
+- [ ] Public pages render stored images.
+- [ ] Meaningful images have useful alt text.
 
-> **Log it.** In `learning-log/11-image-storage.md`, explain why storage paths belong in the database but file bytes do not.
+> **✍️ Log it (mandatory).** In `learning-log/11-image-storage.md`: explain why files belong in object storage and paths belong in database rows.
 
-Next: visitors need to contact the owner. Email alone is not enough; store first, then notify. -> **[Chapter 12 - Contact Edge Function and Brevo](12-contact-edge-function-brevo.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: images are handled; now build a contact flow that does not lose messages. -> **[Chapter 12 - Contact Edge Function and Brevo](12-contact-edge-function-brevo.md)**

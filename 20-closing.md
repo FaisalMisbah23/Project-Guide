@@ -1,59 +1,42 @@
 # Chapter 20 - Closing
 
-You built a full-stack portfolio: public pages, Supabase data, RLS, owner auth, admin CRUD, articles, comments, image storage, contact persistence, Brevo notifications, newsletter workflow, analytics, Realtime, and deployment.
+You built more than a portfolio. You built a small system with public reading, owner writing, protected data, server-side workflows, storage, analytics, deployment, and a story behind every important decision.
 
-That is more than a portfolio. It is a small system with boundaries you can explain.
+## The point of this chapter
 
-## New ideas before you finish
+Turn the finished project into a final case study, a confident demo, and a habit of continued improvement.
 
-### Case study thinking
+## Section 1 - What you can now defend
 
-**Real-life analogy:** showing a finished building is useful, but explaining the blueprint proves you understand how it stands.
+You should be able to explain why the app needed a database, what RLS protects, why the anon key can be public, why service-role cannot, why contact stores before email, how images are stored, and how deployment splits between Vercel and Supabase.
 
-**General idea:** turn the finished portfolio into evidence. Explain the problem, your decisions, tradeoffs, result, and what you would improve next.
+## Section 2 - Write the final story
 
-```txt
-Problem -> Decision -> Tradeoff -> Result -> Next improvement
-```
+The story is not `I used React and Supabase`. The story is: problem, decision, tradeoff, result, next improvement. That is how engineering work becomes understandable.
 
-Study more: [MLH Fellowship - Preparing Your Profile](https://resources.devweekends.com/resources/open-source-programs/mlh-fellowship)
+## Section 3 - Keep the portfolio alive
 
-## What you can now defend
+Add one real project writeup. Publish one article about a tradeoff. Improve one UI detail. Review one security rule. A living portfolio gets stronger over time.
 
-You should be able to answer:
+## Section 4 - Rehearse without notes
 
-```txt
-Why did this app need a database?
-What data is public?
-What data is owner-only?
-How does RLS protect rows?
-Why is the anon key allowed in the browser?
-Why are Brevo keys server-only?
-What happens when contact email fails?
-How are images stored?
-How do admin routes differ from database policies?
-How does deployment split between Vercel and Supabase?
-```
+Open the production app and demo it as if a senior engineer is watching. Trace one request. Explain one failure. Show one blocked access case.
 
-## The real next step
+> **📖 Mandatory read.** Read [GitHub profile docs](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/about-your-profile), [Vercel domains](https://vercel.com/docs/domains), and [Supabase platform overview](https://supabase.com/docs/guides/platform). Required: the project now connects to your public developer identity.
 
-Do not let the portfolio freeze. Add one good project writeup. Add one article about a tradeoff you actually faced. Improve one UI detail. Review one security rule. The project gets stronger when it stays alive.
+> **💡 Hint.** If you cannot explain a feature without reading notes, that is not failure. It is the next learning target.
 
-## Final Definition of Done
+## Definition of Done
 
 - [ ] Production URL works.
 - [ ] Admin login works.
 - [ ] Public content is polished.
-- [ ] Contact flow works.
-- [ ] Brevo notification works.
+- [ ] Contact flow works and failure behavior is understood.
 - [ ] No private secret appears in frontend code.
 - [ ] Learning log is complete.
-- [ ] You can demo and explain the system without reading notes.
+- [ ] Final case study exists.
+- [ ] You can demo and defend the system without reading notes.
 
-> **Final log.** In `learning-log/20-closing.md`, write the story of what you built, what you understand now that you did not understand before, and what you will improve next.
+> **✍️ Log it (mandatory).** In `learning-log/20-closing.md`: write what you built, what you understand now that you did not understand before, and what you will improve next.
 
-## Motivation pause
-
-From `Software_Engineering_Community_Affirmations.md`: "Learn with humility. Build with purpose. Share with generosity. Grow with consistency."
-
-You now have the kind of portfolio that does not merely say "I am a software engineer." It shows the work.
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.

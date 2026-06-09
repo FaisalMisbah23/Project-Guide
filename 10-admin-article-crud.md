@@ -1,216 +1,45 @@
 # Chapter 10 - Admin article CRUD
 
-Articles are the portfolio owner's public thinking. Managing them needs more than a title and textarea. Articles need drafts, categories, tags, rich body content, preview, publishing, and comment moderation.
+Article admin looks like project admin until you notice the dangerous part: bodies and comments are content that become HTML on a page. The editor decision is a security decision wearing a writing-tool costume.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, the owner can create, edit, publish, unpublish, tag, categorize, and manage comments for articles.
+Owner-only article drafts, editing, preview, publishing, unpublishing, tag/category management, safe rendering, and comment moderation.
 
-## The article trap
+## Step 1 - Choose Markdown first
 
-Bad:
+Markdown is the required beginner choice for this course unless you deliberately document another path. It stores readable text and can be rendered without raw HTML.
 
-```txt
-title + raw HTML body
-publish immediately
-no preview
-comments appear instantly
-```
+## Step 2 - Make preview honest
 
-Problem: unsafe rendering can become an XSS risk, drafts can leak, and comments can become an abuse path.
+Preview must use the same renderer as the public page. A preview that lies is worse than no preview because it hides publication bugs.
 
-Better:
+## Step 3 - Keep draft visibility boring
 
-```txt
-draft body stored clearly
-safe rendering path
-explicit publish action
-pending comment moderation
-```
+Draft means private. Published means public. Queries and RLS should agree. Do not invent extra visibility rules in the UI.
 
-## New ideas before you build
+## Step 4 - Moderate comments in admin
 
-### Rich text storage
+Pending comments can be approved, hidden, archived, or deleted. Only approved comments render publicly.
 
-**Real-life analogy:** the same document can be saved as plain text, Markdown, HTML, or a design file. The format decides how easy it is to edit and safely display.
+> **📖 Mandatory read.** Read [react-markdown](https://github.com/remarkjs/react-markdown), [DOMPurify](https://github.com/cure53/DOMPurify) if considering HTML, [Supabase updates](https://supabase.com/docs/reference/javascript/update), and [MDN XSS](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting). Required: the body format must be a deliberate safety choice.
 
-**General idea:** choose how article bodies are stored before choosing the editor. Markdown is simpler. HTML must be sanitized. Structured JSON is powerful but more complex.
-
-```txt
-Markdown: ## Heading
-HTML: <h2>Heading</h2>
-JSON: { "type": "heading", "level": 2 }
-```
-
-Use this decision guide before choosing an editor:
-
-| Format | Good for | Trade-off | Beginner recommendation |
-| --- | --- | --- | --- |
-| Markdown | Articles with headings, links, lists, quotes, and code blocks | Less visual control, but easier to store, edit, diff, and render safely | Best first choice |
-| Sanitized HTML | More flexible formatting from a WYSIWYG editor | Raw HTML is dangerous unless cleaned before rendering | Use only with a sanitizer |
-| Structured JSON | Block editors, drag/drop sections, custom embeds | Powerful, but harder to query, migrate, and render | Advanced option |
-
-Study more: [Frontend Interview Questions - HTML and React](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Related reading:** review [Frontend Interview Questions](https://resources.devweekends.com/resources/frontend-interview-qs), focusing on HTML, React, and security questions.
-
-**Comparison:** Markdown vs HTML: Markdown is easier for writing and can be rendered safely with the right tools. HTML is more flexible but dangerous if user-submitted content is injected without sanitizing.
-
-**Big word alert:** **XSS** means cross-site scripting. It is when unsafe content lets an attacker run JavaScript in someone else's browser.
-
-### Draft and published states
-
-**Real-life analogy:** writers keep drafts private until the article is ready.
-
-**General idea:** status fields let the owner save unfinished work without showing it publicly. Queries and RLS should both respect the status.
-
-```ts
-await supabase
-  .from("articles")
-  .select("*")
-  .eq("status", "published");
-```
-
-Study more: [Database Engineering - Case Studies](https://resources.devweekends.com/courses/database-engineering/case-studies)
-
-## Daily guideline
-
-**design for failure**. Assume a draft save can fail, an article preview can render badly, and moderation actions can be clicked by mistake. Preserve the owner's text while showing the error, and require confirmation for destructive comment actions.
-
-## Build it
-
-Create `/admin/articles`. Add list, create, edit, and preview flows. Store title, slug, excerpt, body, category, tags, status, and image path.
-
-Integrate a rich text editor, but do not let the editor decision hide the data decision. Know what format you store: Markdown, sanitized HTML, or structured JSON. The learner should be able to explain how it renders safely.
-
-### Implementation options
-
-Option 1: store Markdown.
-
-Choose this if the article editor can be simple: a textarea, preview pane, and toolbar buttons for common Markdown snippets. Store the body as plain text in `articles.body`.
-
-```tsx
-import ReactMarkdown from "react-markdown";
-
-type ArticleBodyProps = {
-  body: string;
-};
-
-const allowedArticleElements = [
-  "h2",
-  "h3",
-  "p",
-  "a",
-  "ul",
-  "ol",
-  "li",
-  "blockquote",
-  "code",
-  "pre",
-];
-
-function ArticleBody({ body }: ArticleBodyProps) {
-  return (
-    <ReactMarkdown allowedElements={allowedArticleElements}>
-      {body}
-    </ReactMarkdown>
-  );
-}
-```
-
-Why it helps beginners: the database stores readable text, the owner can preview before publishing, and the renderer decides which elements are allowed. If you add Markdown plugins later, review their security settings before publishing.
-
-**Quick quiz:** what is safer to render by default: raw HTML from a user, sanitized HTML, Markdown through a trusted renderer, or plain text? Explain the tradeoff.
-
-Option 2: store sanitized HTML.
-
-Choose this if you use an editor that outputs HTML. Do not render raw editor output directly. Sanitize it first, then render only the cleaned result.
-
-```tsx
-import DOMPurify from "dompurify";
-
-type ArticleHtmlProps = {
-  html: string;
-};
-
-function sanitizeArticleHtml(html: string) {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ["h2", "h3", "p", "a", "ul", "ol", "li", "blockquote", "code", "pre"],
-    ALLOWED_ATTR: ["href"],
-  });
-}
-
-function ArticleHtml({ html }: ArticleHtmlProps) {
-  const safeHtml = sanitizeArticleHtml(html);
-
-  return <article dangerouslySetInnerHTML={{ __html: safeHtml }} />;
-}
-```
-
-`dangerouslySetInnerHTML` has a scary name on purpose. It means React is letting you put HTML directly into the page. Only use it after sanitizing.
-
-Option 3: store structured JSON.
-
-Choose this if you want block-style editing later: headings, paragraphs, images, callouts, code blocks, and embeds as separate objects.
-
-```ts
-type ArticleBlock =
-  | { type: "heading"; level: 2 | 3; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "code"; language: string; code: string };
-
-function renderArticleBlock(block: ArticleBlock) {
-  if (block.type === "heading") return <h2>{block.text}</h2>;
-  if (block.type === "paragraph") return <p>{block.text}</p>;
-  if (block.type === "code") return <pre><code>{block.code}</code></pre>;
-
-  return null;
-}
-```
-
-JSON gives you control, but it also means you must build or use a renderer for every block type. For this guide, Markdown is the recommended starting point unless you deliberately want the extra editor complexity.
-
-**Content exercise:** create an article with headings, links, code, and an intentionally suspicious HTML snippet. Confirm the final rendering is readable and safe.
-
-Add comment moderation. Pending comments can be approved, hidden, or deleted. Approved comments appear publicly; hidden/deleted ones do not.
-
-**Moderation exercise:** submit three comments: helpful, empty, and abusive. Confirm only approved comments appear publicly.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  articleDraft[Article draft] --> safeBody[Safe body format]
-  safeBody --> preview[Preview renderer]
-  preview --> publish[Publish action]
-  publish --> publicArticle[Public article page]
-
-  commentSubmit[Comment submit] --> pending[Pending]
-  pending --> moderation[Owner moderates]
-  moderation --> approved[Approved comments render]
-```
-
-## Do and don't
-
-Do save drafts.
-
-Don't trust raw HTML from users.
-
-Do make tags useful and limited.
-
-Don't create a tag system that requires editing code.
+> **💡 Hint.** Use the same `ArticleBody` component in preview and public detail. Duplication here is how unsafe rendering sneaks in.
 
 ## Definition of Done
 
 - [ ] Owner can create and edit article drafts.
 - [ ] Owner can publish and unpublish articles.
-- [ ] Article body uses a clear storage/rendering strategy.
-- [ ] The chosen article body format has a documented trade-off.
-- [ ] Preview uses the same safe rendering path as the public article page.
-- [ ] Category and tags are editable.
+- [ ] Markdown-first or another documented safe body strategy is used.
+- [ ] Preview and public pages share the same safe renderer.
+- [ ] Tags and category are editable.
 - [ ] Comments can be moderated.
-- [ ] Draft articles are hidden from public reads.
+- [ ] Draft articles remain hidden from public reads.
 
-> **Log it.** In `learning-log/10-admin-article-crud.md`, explain the risk of rendering article/comment content unsafely and how your approach reduces it.
+> **✍️ Log it (mandatory).** In `learning-log/10-admin-article-crud.md`: explain why raw HTML is risky, why Markdown is the beginner default, and why preview must match public rendering.
 
-Next: content exists, but it needs images that do not live in database rows. -> **[Chapter 11 - Image storage](11-image-storage.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: content exists; now add images without stuffing files into database rows. -> **[Chapter 11 - Image storage](11-image-storage.md)**

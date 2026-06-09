@@ -1,164 +1,75 @@
 # Chapter 01 - Introduction
 
-You're building a real, deployed **full-stack software engineer portfolio**. Not a static page. Not a template with your name dropped into it. A small production-shaped system where the public site shows your work, the owner manages content from an admin dashboard, visitors can contact you, and the backend protects what should not be public.
+You're going to build a portfolio that behaves like a small production system. That sentence matters. A static portfolio can show taste, but this one also shows judgment: where data lives, who can change it, how private rows stay private, what happens when email fails, and how the finished app ships without leaking secrets.
 
-The stack is deliberately modern but not magical: **Vite + React + TailwindCSS + shadcn/ui** for the frontend, **Supabase** for Postgres, Auth, Row Level Security, Storage, Edge Functions, Realtime, and Cron, **Brevo** for email notifications, and **Vercel** for deployment.
+This first chapter does not ask you to code yet. It asks you to understand the shape of the thing you are about to build, because beginners often get pushed straight into tools before they know what problem those tools are solving.
 
-The finished app answers a human question first: *Can someone trust this engineer enough to start a conversation?* Then it answers the engineering questions hiding underneath: *Where does the data live? Who can change it? Where do secrets live? What happens if email fails? What does the owner see that a visitor cannot?*
+## The point of this chapter
 
-## Where we're headed
+By the end, you can describe the product, the two people who use it, the major system pieces, and why a database-backed portfolio is stronger evidence than a static page.
 
-By the end you will have a deployed portfolio with public pages, projects, articles, comments, contact form persistence, Brevo email notifications, newsletter subscriptions, page visit tracking, image uploads, owner login, admin CRUD, a contact inbox, RLS policies, and a production deployment.
+## Section 1 - The product, in plain language
 
-You are not expected to understand all of those pieces yet. This list names the destination. Each chapter introduces one small part, gives you a gate, and then lets you move forward.
+The public site helps a visitor answer: *should I talk to this engineer?* It needs a strong home page, credible projects, thoughtful articles, and a contact path that does not silently lose messages.
 
-You will also see **Learning bridge** prompts. These are optional pauses you can use at natural transition points inside the work: before a new concept, after a tricky implementation step, or when you want to check whether you can explain what just changed. They are not extra requirements and they do not have to happen only after a chapter is finished.
+The admin side helps the owner answer: *can I keep this portfolio alive without editing source code every time?* It needs login, content management, messages, image uploads, newsletter workflows, and basic insight into what people read.
 
-## Effort map
-
-These estimates assume you know moderate HTML, CSS, and JavaScript, but are still new to React, Supabase, deployment, and production habits. Use them as planning ranges, not promises. If a chapter touches a tool you have never used, give yourself the high end of the estimate.
-
-| Chapter | Estimated time | Prerequisites before starting |
-| --- | --- | --- |
-| 01 - Introduction | 30-45 min | Basic web app vocabulary: frontend, backend, database |
-| 02 - Project setup | 1-2 hours | Terminal basics, npm, Git basics |
-| 03 - Data model and migrations | 2-4 hours | Tables, rows, primary keys, basic SQL |
-| 04 - RLS and security | 2-4 hours | Auth vs authorization, public vs private data |
-| 05 - Public layout and routing | 2-3 hours | React components, basic routing idea |
-| 06 - Projects from Supabase | 3-5 hours | `useState`, `useEffect`, async functions, Supabase reads |
-| 07 - Articles, comments, search | 4-6 hours | Lists, filters, pagination, safe rendering idea |
-| 08 - Owner auth and dashboard | 3-5 hours | Supabase Auth, protected routes, dashboard layout |
-| 09 - Admin project CRUD | 4-7 hours | Forms, validation, create/update/delete, RLS rules |
-| 10 - Admin article CRUD | 4-7 hours | Rich text decision, draft/publish states, comment moderation |
-| 11 - Image storage | 3-5 hours | File inputs, storage paths, public vs private assets |
-| 12 - Contact Edge Function and Brevo | 4-6 hours | Edge Functions, secrets, request/response flow |
-| 13 - Contact inbox and Realtime | 3-5 hours | Admin reads, `useEffect` cleanup, subscriptions |
-| 14 - Newsletter and Cron | 4-6 hours | Migrations, RLS, Edge Functions, server-side secrets |
-| 15 - Analytics and Realtime | 4-6 hours | Inserts, grouped queries, privacy trade-offs |
-| 16 - Validation, errors, empty states | 2-4 hours | Form validation, loading/error UI states |
-| 17 - Responsive polish and accessibility | 3-5 hours | Responsive CSS, semantic HTML, keyboard basics |
-| 18 - Deploy with Vercel and Supabase | 3-6 hours | Environment variables, build commands, production testing |
-| 19 - Final review and maintenance | 2-4 hours | README writing, logs, monitoring, test checklist |
-| 20 - Closing | 30-60 min | A working project and learning log |
-
-The full project is realistically a **50-90 hour build** for a motivated learner. A fast learner may finish sooner by cutting optional features. A careful learner may take longer and understand it better. Do not measure success only by speed; measure it by whether you can explain the decisions.
-
-## The tempting version, and why it is too small
-
-The tempting version is a static portfolio:
+That gives you the real shape:
 
 ```txt
-React pages
-Hard-coded project cards
-mailto: contact link
-manual updates in source code
-```
-
-That is fine for a weekend demo, but it avoids the decisions employers actually care about. It does not show how you model data, protect private records, handle failure, store images, deploy secrets, or build owner workflows.
-
-The better version is still small, but it has real system boundaries:
-
-```txt
-Public visitor -> React pages -> Supabase public reads
-Owner -> Supabase Auth -> protected admin dashboard
-Contact form -> Edge Function -> contact_messages + Brevo notification
+Visitor -> React public pages -> Supabase public reads
+Owner -> Supabase Auth -> protected admin routes -> RLS-backed writes
+Contact form -> Edge Function -> database first -> Brevo second
 Images -> Supabase Storage
-Deployment -> Vercel + Supabase secrets
+Deployment -> Vercel frontend + Supabase backend pieces
 ```
 
-This course is about that better version.
+## Section 2 - Why not a static portfolio?
 
-Diagram:
-
-```mermaid
-flowchart TD
-  visitor[Visitor browser] --> app[React app on Vercel]
-  app --> supabase[Supabase database, Auth, and Storage]
-  app --> functions[Edge Functions]
-  functions --> brevo[Brevo email]
-```
-
-## New ideas before you build
-
-### Full-stack application
-
-**Real-life analogy:** a restaurant has a dining room and a kitchen. Visitors see the dining room, but ordering, storing ingredients, and preparing food happen in the kitchen.
-
-**General idea:** the frontend is what visitors see in the browser. The backend stores data, protects private actions, handles secrets, and runs server-side workflows.
+A static version is tempting:
 
 ```txt
-Frontend: React pages visitors use
-Backend: Supabase database, Auth, Storage, Edge Functions
-Email: Brevo notifications from server-side code
-Deployment: Vercel hosts the public React app
+hard-coded project cards
+hard-coded articles
+mailto link
+manual updates in source files
 ```
 
-Study more: [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx)
+That can be fine for a weekend. It is not enough for this course. The moment you want drafts, contact persistence, admin editing, image management, newsletter subscribers, or security rules, static content stops being the right model.
 
-**Pause and practice:** read [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for client-server architecture and [MDN - A typical HTTP session](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) to see how browsers and servers talk during one page load.
+The better version is still small, but it has boundaries you can defend. Published content is public. Drafts are private. The owner can write. Visitors cannot. Email is a notification, not the only record. Secrets live server-side.
 
-**Quick quiz:** in this portfolio, which parts are the client, which parts are the server, and which parts are third-party services?
+## Section 3 - The people who use it
 
-### Static vs dynamic content
+There are only two actors, which keeps the project focused:
 
-**Real-life analogy:** a printed poster cannot update itself. A notice board can be changed whenever there is new information.
+- **Visitor.** Reads your work, decides whether you are credible, and contacts you.
+- **Owner.** Logs in, manages content, reads messages, uploads images, and reviews simple analytics.
 
-**General idea:** hard-coded portfolio content is static. Database-backed content is dynamic because the owner can add, edit, publish, and unpublish without changing source code.
+There is no public multi-user platform here. No payments. No social network. No complex admin hierarchy. That restraint is intentional.
 
-```tsx
-// Static
-const projects = [{ title: "Portfolio" }];
+## Section 4 - How to work through the course
 
-// Dynamic
-const projects = await getPublishedProjects();
-```
+Create `learning-log/` in the app project when Chapter 02 starts. Every chapter asks for a written explanation. Write it before the memory fades.
 
-Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
+Move through the chapters in order. Do not skip RLS because the UI seems to hide things. Do not skip deployment checks because the homepage loads. Do not skip failure states because the happy path works once.
 
-## The people who use it
+> **📖 Mandatory read.** Read [MDN's overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview), [React's start guide](https://react.dev/learn/start-a-new-react-project), [Supabase's database overview](https://supabase.com/docs/guides/database/overview), and [Vercel's Vite deployment docs](https://vercel.com/docs/frameworks/vite). Required: you need the words browser, server, database, and deployment to mean something before you build.
 
-- **Visitor.** Wants to quickly understand who you are, what you can build, whether your work is credible, and how to contact you.
-- **Portfolio owner.** Wants to add projects, publish articles, review messages, see basic visit signals, and update content without editing code.
-
-## In scope
-
-- Public portfolio pages for home, about, projects, articles, article details, contact, and not-found.
-- Supabase Postgres tables for projects, articles, comments, contact messages, newsletter subscribers, page visits, newsletter runs, and profile settings.
-- Supabase Auth for one owner account using email/password, OAuth, or magic link.
-- Row Level Security so public users only read published content and the owner controls admin data.
-- Supabase Storage for project and article images.
-- Supabase Edge Functions for contact submission and newsletter/email workflows.
-- Brevo transactional email from server-side functions only.
-- Vercel deployment with public Vite env vars separated from private Supabase/Brevo secrets.
-
-## Out of scope
-
-- A public multi-user platform. This is owner-managed, not a social network.
-- Payment processing.
-- Complex analytics that require a third-party tracking platform.
-- Giving the learner solution code to copy. The guide names what to build and why; the learner writes the implementation.
-
-## When you get stuck
-
-Getting stuck is part of the course, not a sign that you are behind. Use this four-line reset before asking for help or moving on:
-
-```txt
-I expected...
-Actually happened...
-I checked...
-My smallest next test is...
-```
-
-If you cannot fill in all four lines, the next step is not more coding. The next step is to make the problem smaller.
+> **💡 Hint.** If the app feels huge, split it into four stories: public reading, owner writing, server-side workflows, and deployment. You never have to understand the whole thing at once.
 
 ## Definition of Done
 
 - [ ] You can describe the finished product in one minute.
-- [ ] You can name the public user and the owner user.
+- [ ] You can name the visitor workflow and the owner workflow.
 - [ ] You can explain why this portfolio needs a backend.
-- [ ] You can explain which parts belong in Supabase, Vercel, and Brevo.
-- [ ] You have created a `learning-log/` folder in the project you will build.
+- [ ] You can name which parts belong to React, Supabase, Brevo, and Vercel.
+- [ ] You have committed to keeping a `learning-log/` folder when the app project begins.
 
-> **Log it.** In `learning-log/01-introduction.md`, answer: why is a database-backed portfolio stronger than a static one for a software engineer? Which part of the system are you most likely to be asked about in an interview?
+> **✍️ Log it (mandatory).** In `learning-log/01-introduction.md`, answer: why is a database-backed portfolio stronger than a static one for a software engineer? Which part of the system do you most want to be able to explain in an interview?
 
-Next: the product is clear. Now create the project foundation without leaking secrets or making setup painful. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**
+All boxes ticked? Good. You know what you are building. Now make the project real without making a mess on day one.
+
+---
+
+Next: the product is clear; now create the project foundation without leaking secrets. -> **[Chapter 02 - Project setup with Vite, Supabase, and Git](02-project-setup-vite-supabase-git.md)**

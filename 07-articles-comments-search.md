@@ -1,136 +1,44 @@
 # Chapter 07 - Articles, comments, search, and pagination
 
-Projects prove that you can ship. Articles prove that you can explain decisions. For a software engineer, that matters. A clear article about a bug, tradeoff, or system design decision can be stronger than another decorative section.
+Projects show what you built. Articles show how you think. The moment you add article bodies and comments, you also add rendering safety, moderation, search, and pagination decisions.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, the public site has articles with categories, tags, comments, pagination, and search powered by Supabase queries.
+Published articles render safely, comments enter as pending, approved comments display publicly, and article lists support search and pagination without exposing drafts.
 
-## The content trap
+## Step 1 - Choose a safe article body format
 
-Bad:
+For this beginner build, Markdown is the recommended starting point. It stores readable text and avoids raw HTML by default. If you choose sanitized HTML later, you must own the sanitizing rules.
 
-```txt
-private notes
-random markdown snippets
-no categories
-no search
-all posts loaded at once
-```
+## Step 2 - Keep drafts private
 
-Problem: visitors cannot browse the thinking. The owner cannot build a useful writing habit. Loading every article at once also teaches the wrong scaling habit.
+Article queries should request published rows, and RLS should enforce published-only public reads. Search must not become a side door into drafts.
 
-Better:
+## Step 3 - Moderate comments
 
-```txt
-articles with status, category, tags, excerpt, slug
-approved comments only
-search and pagination handled by queries
-```
+A visitor-submitted comment should start as `pending`. The owner approves it before it becomes public. That is slower than instant display and much safer.
 
-Use the word **Articles** throughout the app. "Learning notes" sounds internal. "Articles" sounds publishable.
+## Step 4 - Paginate before the list grows
 
-## New ideas before you build
+Pagination is not only performance polish. It is the habit of never asking the browser or database for more than the screen needs.
 
-### Search
+> **📖 Mandatory read.** Read [react-markdown](https://github.com/remarkjs/react-markdown), [MDN cross-site scripting](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting), [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), and [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security). Required: safe rendering and public/private visibility meet in this chapter.
 
-**Real-life analogy:** asking a librarian for books about React is better than carrying every book home and searching page by page.
-
-**General idea:** let Supabase search the rows. Do not load every article into React just to filter in the browser.
-
-```ts
-const { data } = await supabase
-  .from("articles")
-  .select("*")
-  .eq("status", "published")
-  .ilike("title", `%${searchTerm}%`);
-```
-
-Study more: [Frontend Interview Questions - JavaScript and React](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Comparison:** filtering in React vs filtering in Supabase: React filtering means the browser already received the rows. Supabase filtering means the database returns only the rows the page needs.
-
-**Search exercise:** search for a word that matches no articles, one article, and many articles. Verify each result state is clear.
-
-### Pagination
-
-**Real-life analogy:** books use pages so you do not read the whole library at once.
-
-**General idea:** pagination loads a smaller set of rows at a time. It keeps the app faster and easier to browse.
-
-```ts
-const from = page * pageSize;
-const to = from + pageSize - 1;
-
-const { data } = await supabase
-  .from("articles")
-  .select("*")
-  .range(from, to);
-```
-
-Study more: [Frontend Interview Questions - Performance](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Big word alert:** **pagination** means splitting a large result into smaller pages or chunks so the app does not load everything at once.
-
-**Performance exercise:** seed at least 30 articles, then compare loading all rows vs loading one page. Write down what changes in query size, UI speed, and mental model.
-
-### Sanitizing user content
-
-**Real-life analogy:** if visitors can write on a public wall, you still check the writing before displaying it.
-
-**General idea:** never blindly render user-submitted HTML. Comments and rich article bodies can become unsafe if scripts are allowed through.
-
-```tsx
-// Prefer safe Markdown rendering or sanitized HTML.
-<ArticleBody markdown={article.body} />
-```
-
-Study more: [Frontend Interview Questions - Security and React](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-## Daily guideline
-
-**think about scalability** and **test edge cases**. Search and pagination are not only "nice features"; they prevent the app from loading every article forever. Test empty results, long search terms, no comments, many comments, and deleted article slugs.
-
-## Build it
-
-Create article list and detail routes. Query only published articles. Add category and tag filters. Add search as a Supabase query condition rather than filtering only in memory.
-
-Use pagination. Cursor pagination is stronger for large changing lists, but page/limit pagination is acceptable for this portfolio if the learner can explain the tradeoff.
-
-For comments, public visitors may submit a comment as `pending`. Only approved comments render publicly. This is not just moderation; it is abuse control.
-
-**Quick quiz:** why are pending comments hidden? Choose two answers: moderation, performance, abuse control, prettier UI. Defend your choices.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  controls[Search input, filters, and page number] --> query[Supabase query]
-  query --> published[Published articles only]
-  published --> page[Limited page of rows]
-  page --> list[Article list UI]
-```
-
-## Rich text
-
-Add a rich text editor in the admin chapter, but decide the storage format now. Store article body in a format you can render safely. Do not blindly inject HTML without sanitizing. If you store Markdown, render it with a trusted parser and safe configuration.
-
-## Mandatory read
-
-Read about React lists/keys if not already done in Chapter 06. Read a short article on pagination and one on sanitizing user-generated content. Required: comments and rich article bodies introduce data that can harm readers if rendered carelessly.
-
-**Blog prompt:** draft an article titled `Why I do not load every row into React`. Explain search, pagination, and the difference between database work and browser work.
+> **💡 Hint.** Create one article containing a harmless code block and one suspicious HTML snippet. The code should display; the suspicious HTML should not execute.
 
 ## Definition of Done
 
-- [ ] Article list renders published articles from Supabase.
-- [ ] Article details load by slug.
-- [ ] Categories and tags work.
-- [ ] Search uses Supabase queries.
-- [ ] Pagination exists.
-- [ ] Comments can be submitted as pending and only approved comments render.
-- [ ] Draft articles are hidden publicly.
+- [ ] Published article list and detail pages work.
+- [ ] Draft articles are hidden from public reads and search.
+- [ ] Article body uses a documented safe rendering strategy.
+- [ ] New comments are pending by default.
+- [ ] Only approved comments display publicly.
+- [ ] Search and pagination work without loading everything.
 
-> **Log it.** In `learning-log/07-articles-comments-search.md`, explain why pending comments should not appear immediately and why article search should not require loading every row.
+> **✍️ Log it (mandatory).** In `learning-log/07-articles-comments-search.md`: explain raw HTML risk, why comments start pending, and why search must still respect published-only visibility.
 
-Next: public content works. Now build the private door for the owner. -> **[Chapter 08 - Owner auth and admin dashboard](08-owner-auth-and-admin-dashboard.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: public content works; now build the private door for the owner. -> **[Chapter 08 - Owner auth and admin dashboard](08-owner-auth-and-admin-dashboard.md)**

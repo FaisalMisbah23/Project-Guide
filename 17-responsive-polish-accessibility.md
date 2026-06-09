@@ -1,109 +1,49 @@
 # Chapter 17 - Responsive polish and accessibility
 
-Polish is not decoration. It is respect for the person using the site. A visitor may open your portfolio on a phone between meetings. The owner may manage content on a laptop. Keyboard and screen-reader users should not be treated as an afterthought.
+The app works; now it has to feel trustworthy on real screens and with real input methods. Polish is not decoration. It is whether a visitor can read, navigate, submit, and understand the portfolio without fighting it.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, public and admin pages are responsive, readable, keyboard-accessible, labeled, and visually consistent.
+Responsive layout, semantic HTML, keyboard navigation, labels, focus states, alt text, and a final public/admin usability pass.
 
-## The polish trap
+## Step 1 - Test more than your laptop
 
-Bad:
+Check mobile, tablet, desktop, and a narrow awkward width. Layout bugs love the viewport you forgot.
 
-```txt
-desktop looks fine
-mobile cards overflow
-buttons have unclear labels
-forms depend on placeholder text
-```
+## Step 2 - Use semantic structure
 
-Problem: the app demos well on your machine and fails in normal use.
+Headers, nav, main, sections, articles, forms, labels, and buttons give the page meaning before CSS improves it.
 
-Better:
+## Step 3 - Navigate by keyboard
 
-```txt
-test mobile early
-labels are explicit
-focus states are visible
-layout handles long text
-images have alt text
-```
+Every link, button, input, menu, and admin action should be reachable and visibly focused without a mouse.
 
-## New ideas before you build
+## Step 4 - Treat text overflow as a bug
 
-### Responsive design
+Buttons, cards, sidebars, and dashboards should not overlap or clip important text. Fix layout, not the user's screen.
 
-**Real-life analogy:** the same message should fit on a billboard, a poster, and a note card. Responsive design makes one interface fit different screen sizes.
+## Step 5 - Review images and forms
 
-**General idea:** use layout rules that adapt on mobile, tablet, and desktop. Test actual narrow widths, not only your laptop.
+Meaningful images need useful alt text. Inputs need labels. Errors need to appear near the field they explain.
 
-```tsx
-<section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-  {projects.map((project) => <ProjectCard key={project.id} project={project} />)}
-</section>
-```
+> **📖 Mandatory read.** Read [MDN accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility), [MDN responsive design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design), and [WebAIM keyboard accessibility](https://webaim.org/techniques/keyboard/). Required: visual polish and accessibility are both part of frontend quality.
 
-Study more: [Frontend Interview Questions - CSS and Styling](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Comparison:** responsive design vs accessibility: responsive design adapts to screen size. Accessibility makes the interface usable for people with different abilities, tools, and input methods.
-
-**Responsive exercise:** test the homepage, project detail, article detail, contact form, and admin dashboard at mobile, tablet, and desktop widths. Fix the first overflow before adding any new visuals.
-
-### Accessibility
-
-**Real-life analogy:** a building needs ramps, signs, and usable doors. A website needs labels, keyboard access, contrast, and meaningful structure.
-
-**General idea:** accessible UI works for keyboard users, screen readers, low-vision users, and people on different devices.
-
-```tsx
-<label htmlFor="email">Email</label>
-<input id="email" name="email" type="email" />
-```
-
-Study more: [Accessibility Overview](https://resources.devweekends.com/courses/angular-crash-course/20-accessibility)
-
-**Big word alert:** **focus state** means the visible indicator showing which button, link, or input is currently selected by keyboard navigation.
-
-## Build it
-
-Audit every public page at mobile, tablet, and desktop widths. Then audit admin pages. Admin does not need to be flashy; it needs to be efficient and clear.
-
-Check:
-
-```txt
-navigation
-project cards
-article cards
-forms
-dialogs
-tables/lists
-image previews
-dashboard cards
-contact inbox
-```
-
-Use Tailwind responsive utilities deliberately. Use shadcn/ui components consistently, but do not let a component library make design decisions for you.
-
-**Metadata check:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) for SEO and social previews, and [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata). Then check whether project and article detail pages have meaningful titles and descriptions.
-
-## Accessibility basics
-
-Every input needs a label. Every meaningful image needs alt text. Buttons should say what they do. Destructive actions need confirmation. Keyboard focus should be visible. Heading order should make sense.
-
-**Assignment:** navigate the public site using only the keyboard. Write down the first three places where focus, labels, or button text feel unclear.
-
-**Accessibility exercise:** run through all forms and confirm every input has a visible label, not only placeholder text.
+> **💡 Hint.** Complete the contact form and at least one admin flow using only the keyboard. That test reveals more than staring at the page.
 
 ## Definition of Done
 
-- [ ] Public pages work on mobile and desktop.
-- [ ] Admin pages work on mobile enough to be usable.
-- [ ] Forms have labels.
-- [ ] Keyboard navigation works.
-- [ ] Focus states are visible.
-- [ ] Images have useful alt text or are decorative.
-- [ ] Destructive actions are confirmed.
+- [ ] Public pages work at mobile and desktop widths.
+- [ ] Admin screens remain dense but readable.
+- [ ] Keyboard navigation reaches all core controls.
+- [ ] Visible focus states exist.
+- [ ] Forms have labels and useful errors.
+- [ ] Meaningful images have useful alt text.
+- [ ] Text does not overlap or escape its containers.
 
-> **Log it.** In `learning-log/17-responsive-polish-accessibility.md`, describe one accessibility fix you made and who it helps.
+> **✍️ Log it (mandatory).** In `learning-log/17-responsive-polish-accessibility.md`: document one responsive or accessibility issue you found and how you fixed it.
 
-Next: the app works locally. Ship it with the right environment boundaries. -> **[Chapter 18 - Deploy with Vercel and Supabase](18-deploy-vercel-supabase.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: the app is polished locally; now ship it with the right environment boundaries. -> **[Chapter 18 - Deploy with Vercel and Supabase](18-deploy-vercel-supabase.md)**

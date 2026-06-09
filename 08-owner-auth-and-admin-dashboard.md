@@ -1,119 +1,44 @@
 # Chapter 08 - Owner auth and admin dashboard
 
-The public site now reads from Supabase. The owner needs a private workspace to manage that content. This is where authentication becomes visible.
+The public site can now read content. The owner needs a private door. This is where beginners often confuse two different protections: a route guard that keeps the UI tidy, and RLS that keeps the database safe.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, the owner can sign in with a chosen login method, protected admin routes reject signed-out users, and the dashboard summarizes projects, articles, contact messages, subscribers, and visit signals.
+Supabase Auth login, protected admin routes, logout, owner verification, and an admin dashboard shell that future admin features plug into.
 
-## Login choices
+## Step 1 - Pick the simple auth path
 
-Supabase supports email/password, OAuth, and magic link login.
+Use email/password or magic link. Do not build custom auth from scratch. Supabase Auth already handles sessions; your job is to integrate it clearly.
 
-Email/password is familiar and simple to demonstrate.
+## Step 2 - Protect routes for user experience
 
-OAuth is convenient if the owner wants GitHub or Google login.
+Create `/admin/login`, an admin layout, and a `RequireAuth` style guard. Signed-out visitors should not wander through admin screens.
 
-Magic link reduces password handling but depends on email deliverability and can feel slower.
+## Step 3 - Verify owner, not just signed-in
 
-Choose one for the first build. Do not build all three unless the course explicitly needs them.
+Any signed-in user is not automatically the owner. Connect the session user id to `owner_profile` and let RLS decide owner-only access.
 
-**Assignment:** write a one-minute explanation of your login choice: email/password, OAuth, or magic link. Include one tradeoff.
+## Step 4 - Build the shell before the features
 
-**Related reading:** read [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [MDN - Session management](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management), and [MDN - Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview). Pay attention to cookies, sessions, and the idea that HTTP is stateless but not sessionless.
+Add dashboard navigation for projects, articles, images, messages, newsletter, and analytics. Empty sections are fine today; the shell gives later chapters a home.
 
-## The auth trap
+> **📖 Mandatory read.** Read [Supabase Auth](https://supabase.com/docs/guides/auth), [React Router](https://reactrouter.com/home), and [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security). Required: this chapter makes the difference between identity, route protection, and database permission concrete.
 
-Bad:
-
-```txt
-if (isAdmin) show dashboard
-```
-
-Problem: where did `isAdmin` come from? If it only lives in React state, refreshing or manipulating the app breaks the assumption.
-
-Better:
-
-```txt
-Supabase Auth session -> protected route -> RLS-backed queries
-```
-
-The UI protects navigation. The database protects data. You need both.
-
-**Quick quiz:** if a signed-out visitor manually types `/admin`, what should React do? If the same visitor calls Supabase directly, what should the database do?
-
-## New ideas before you build
-
-### Protected routes
-
-**Real-life analogy:** a staff-only door checks your badge before opening. A protected route checks the session before showing admin screens.
-
-**General idea:** route protection is for navigation and user experience. RLS is still required because users can bypass React and call Supabase directly.
-
-```tsx
-function RequireAuth({ children }) {
-  if (isLoadingSession) return <p>Checking session...</p>;
-  if (!session) return <Navigate to="/admin/login" />;
-  return children;
-}
-```
-
-Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
-
-**Comparison:** session vs cookie: a cookie is a small value stored by the browser. A session is the user's logged-in state, often represented or refreshed using cookies or tokens.
-
-**Big word alert:** **stateless** means the server does not automatically remember previous requests. Login systems add session mechanisms so the app can still recognize a returning user.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  admin[/admin requested] --> requireAuth[RequireAuth checks Supabase session]
-  requireAuth --> noSession{Session exists?}
-  noSession -- No --> login[Redirect to /admin/login]
-  noSession -- Yes --> dashboard[Render dashboard]
-  dashboard --> rls[RLS still protects database rows]
-```
-
-### Dashboard summaries
-
-**Real-life analogy:** a car dashboard shows speed, fuel, and warning lights. An admin dashboard shows what needs attention.
-
-**General idea:** summary cards should answer practical questions quickly: how many drafts, unread messages, subscribers, and recent visits exist.
-
-```tsx
-<StatCard label="Unread messages" value={unreadCount} />
-```
-
-Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-## Build it
-
-Create `/admin/login` and `/admin`. Build a `RequireAuth` wrapper that waits for the Supabase session, shows a loading state while checking, redirects signed-out users, and lets signed-in owners continue.
-
-The dashboard should be useful, not decorative. Add summary cards:
-
-```txt
-Published projects
-Draft articles
-Unread contact messages
-Newsletter subscribers
-Recent visits
-```
-
-Add sign out. Test direct URL access by opening `/admin` in a signed-out browser session.
-
-**Auth exercise:** test `/admin` in three states: signed out, signed in as owner, and after signing out in another tab. Record what the UI shows while the session is loading.
+> **💡 Hint.** After route protection works, still test a direct Supabase query as a signed-out user. The database should reject private data even if the UI is bypassed.
 
 ## Definition of Done
 
-- [ ] Owner login works with the chosen method.
-- [ ] Sign out works.
-- [ ] Protected admin routes reject signed-out visitors.
-- [ ] Auth loading state prevents flicker.
-- [ ] Dashboard shows useful summary cards.
-- [ ] RLS still blocks unauthorized data if the route is bypassed.
+- [ ] Owner can log in and log out.
+- [ ] Signed-out users are redirected away from admin routes.
+- [ ] Admin layout and navigation exist.
+- [ ] The signed-in owner matches `owner_profile`.
+- [ ] RLS still blocks unauthorized database access if the route is bypassed.
+- [ ] Session loading has a visible state instead of a blank screen.
 
-> **Log it.** In `learning-log/08-owner-auth-and-admin-dashboard.md`, explain the difference between route protection and RLS protection.
+> **✍️ Log it (mandatory).** In `learning-log/08-owner-auth-and-admin-dashboard.md`: explain route protection vs RLS protection. Give one example where route protection helps UX but does not secure data.
 
-Next: the owner can enter the dashboard. Now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: the owner can enter; now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**

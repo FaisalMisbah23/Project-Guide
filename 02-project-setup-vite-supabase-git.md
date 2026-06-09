@@ -1,162 +1,105 @@
 # Chapter 02 - Project setup with Vite, Supabase, and Git
 
-Last chapter you chose the product: a full-stack portfolio, not a static resume page. Now make the repo real. Setup is not glamorous, but it is where production habits start. A messy setup leaks secrets, hides required commands, and makes every later chapter feel harder than it is.
+Last chapter gave the product a shape. Now you create the workspace where it will live. Setup is not glamorous, but it is one of the first places beginners accidentally create future pain: secrets in the wrong file, no reproducible commands, no folder plan, no clean commit to return to.
 
-## Where we're headed
+This chapter builds the skeleton slowly and deliberately. Nothing useful is on screen yet, and that's fine. A clean foundation is a feature.
 
-By the end, a Vite React app runs locally, TailwindCSS and shadcn/ui are installed, Supabase client configuration is separated from secrets, `.env` is ignored, `.env.example` is committed, and Git has a clean baseline commit.
+## The point of this chapter
 
-## The setup trap
+A Vite React app runs locally, builds for production, has a clear folder layout, reads only browser-safe Supabase variables, ignores real secrets, commits a safe `.env.example`, and has a baseline Git commit.
 
-The weak setup puts everything wherever it first fits:
+## Step 1 - Create the React app
 
-```txt
-API keys pasted into components
-no .env.example
-no folder plan
-uncommitted setup changes for days
-```
+Use Vite because it gives React beginners fast feedback and a simple production build:
 
-Problem: you cannot tell which values are safe for the browser, a teammate cannot reproduce your setup, and one accidental push can expose private credentials.
-
-The professional setup separates public configuration from private secrets:
-
-```txt
-VITE_SUPABASE_URL=public project URL
-VITE_SUPABASE_ANON_KEY=public anon key protected by RLS
-
-BREVO_API_KEY=server-only, never in Vite
-SUPABASE_SERVICE_ROLE_KEY=server-only, never in Vite
-```
-
-Supabase's anon key is allowed in the browser because RLS is the real guard. Brevo and service-role keys are not browser-safe and must live only in Supabase Edge Function secrets.
-
-## New ideas before you build
-
-### Vite and React
-
-**Real-life analogy:** before a carpenter builds a table, they need a workshop with tools, lights, and a workbench. Vite is the workshop for your React app: it starts the local server, refreshes the browser when files change, and prepares the final build.
-
-**General idea:** React builds the user interface from components. Vite runs and bundles that React code.
-
-```txt
-npm create vite@latest
+```bash
+npm create vite@latest portfolio-app -- --template react-ts
+cd portfolio-app
+npm install
 npm run dev
-npm run build
 ```
 
-Study more: [React Crash Course - Introduction to React and JSX](https://resources.devweekends.com/courses/react-crash-course/01-intro-jsx)
+What each piece means:
 
-### Environment variables
+- **Vite** runs the local development server and builds the final browser assets.
+- **React** renders the UI from components.
+- **TypeScript** helps catch wrong-shaped data before runtime.
 
-**Real-life analogy:** a hotel guest key opens one room, but a master key opens every room. Public Vite values are guest keys. Brevo and service-role keys are master keys.
+Do not add Supabase yet. First prove the app itself starts.
 
-**General idea:** values that start with `VITE_` are available in browser code. Never put private server secrets in them.
+## Step 2 - Install the UI tools
 
-```txt
-VITE_SUPABASE_URL=browser_safe
-VITE_SUPABASE_ANON_KEY=browser_safe_only_with_RLS
-BREVO_API_KEY=server_only
-```
+This course uses TailwindCSS and shadcn/ui because the app has both public marketing-style pages and dense admin screens. Follow the official Vite instructions for both tools. Do not paste random setup from an old blog post; frontend tooling changes.
 
-Study more: [Frontend Interview Questions - Deployment and Best Practices](https://resources.devweekends.com/resources/frontend-interview-qs)
+> **📖 Mandatory read.** Read [Vite's guide](https://vite.dev/guide/), [React's project guide](https://react.dev/learn/start-a-new-react-project), [Tailwind's Vite installation](https://tailwindcss.com/docs/installation/using-vite), [shadcn/ui's Vite installation](https://ui.shadcn.com/docs/installation/vite), and [Vite environment variables](https://vite.dev/guide/env-and-mode). Required: the rest of the course assumes you know what the dev server, build command, and `VITE_` prefix do.
 
-**Pause and practice:** which of these may appear in browser code: `VITE_SUPABASE_URL`, `BREVO_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_ANON_KEY`? For each answer, write one sentence explaining why.
+## Step 3 - Choose the folder shape
 
-**Comparison:** `.env` vs `.env.example`: `.env` contains real local values and stays out of Git. `.env.example` contains only variable names and safe placeholder values so another developer knows what to create.
+A flat `src/` feels easy for one page. It becomes confusing once you have projects, articles, auth, admin CRUD, contact, newsletter, analytics, and storage.
 
-### Git commits
-
-**Real-life analogy:** saving a game before a hard level gives you a safe return point. A Git commit is a return point for your code.
-
-**General idea:** make a clean baseline commit after setup works, so later changes can be reviewed and recovered.
-
-```txt
-git status
-git add .
-git commit -m "Set up portfolio app"
-```
-
-Study more: [Git Crash Course](https://resources.devweekends.com/courses/devops-tools/git-overview)
-
-**Big word alert:** **baseline** means the first known-good version of the project. When someone says "make a baseline commit," they mean commit the clean starting point before feature work begins.
-
-**Git exercise:** make three tiny commits instead of one large commit: project scaffold, environment/example files, and styling/tooling setup. Run `git log --oneline` and check that each message explains one clear change.
-
-## Daily guideline
-
-**commit frequently** and **use `.gitignore` correctly**. Before leaving setup, make one clean baseline commit and confirm `.env`, `node_modules/`, build output, logs, and local clutter are ignored. A beginner mistake is thinking "private repo" means secrets are safe; treat every commit as something another person may eventually read.
-
-## Build it
-
-Create the Vite app and install the frontend tools. Use React, TailwindCSS, and shadcn/ui because this course needs a polished public site and repeatable admin UI patterns.
-
-Create a clean source layout:
+Use this feature-friendly shape:
 
 ```txt
 src/
-  components/
-  features/
-  lib/
-  pages/
-  routes/
-  styles/
+  components/   shared UI pieces
+  features/     project, article, admin, contact, analytics logic
+  lib/          clients and shared helpers
+  pages/        route-level pages
+  routes/       router setup
+  styles/       global styles
 ```
 
-Add a Supabase client helper in `src/lib/`. It should read only Vite-safe variables. Do not put service-role keys, Brevo keys, or database passwords in frontend code.
+The rule is simple: code that changes together should be easy to find together.
 
-Create:
+## Step 4 - Set up environment files safely
+
+Create `.env` for real local values and `.env.example` for safe placeholders.
 
 ```txt
-.env
-.env.example
-.gitignore
-learning-log/
+# .env.example
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
 ```
 
-`.env.example` should show the names of required variables without real values. `.gitignore` must ignore `.env`, build output, dependency folders, editor clutter, and local Supabase artifacts that should not be committed.
+Only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` belong in frontend env files. The anon key is browser-safe only because RLS will protect the database later. Brevo keys, service-role keys, database passwords, and provider tokens do not belong in React.
 
-**Mini assignment:** intentionally add `.env` to your working tree, confirm Git notices it, then fix `.gitignore` so Git ignores it again. Do not commit the secret file.
+Add `.env`, `node_modules/`, build output, logs, and local clutter to `.gitignore`.
 
-Commit the baseline once the app starts and builds. Small commits matter because this course will change database schema, policies, Edge Functions, and frontend code. You want rollback points.
+## Step 5 - Add the Supabase client helper
 
-Diagram:
+Create `src/lib/supabaseClient.ts`. It should read only `import.meta.env.VITE_SUPABASE_URL` and `import.meta.env.VITE_SUPABASE_ANON_KEY`.
 
-```mermaid
-flowchart TD
-  repo[Project repo] --> env[".env: local real values, ignored by Git"]
-  repo --> envExample[".env.example: safe template, committed"]
-  repo --> srcLib["src/lib/: browser-safe Supabase client"]
-  repo --> learningLog["learning-log/: written explanations"]
+Do not make the client work by adding a service-role key. That would bypass the security model before you even build it.
+
+## Step 6 - Build, check, commit
+
+Run:
+
+```bash
+npm run dev
+npm run build
+git status
 ```
 
-## Do and don't
+Confirm `.env` is ignored and `.env.example` is visible. Then make the baseline commit.
 
-Do commit the first working baseline before adding features.
-
-Don't store Brevo, service-role, or database credentials in any `VITE_` variable.
-
-Do add a clear `.env.example`.
-
-Don't assume a secret is safe because the repo is private.
-
-## Mandatory read
-
-Read the official Vite environment variables guide and Supabase's note on anon keys and RLS. Required: the rest of the course assumes you understand why some browser variables are acceptable and some secrets must stay server-side.
-
-**Related reading:** read [MDN - HTTP](https://developer.mozilla.org/en-US/docs/HTTP) for the big picture of web requests, then skim [MDN - Webpage metadata](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata) so `index.html`, `<head>`, and metadata do not feel mysterious.
+> **💡 Hint.** If an env variable is `undefined`, restart the dev server after editing `.env`. Vite reads env files when the server starts.
 
 ## Definition of Done
 
-- [ ] Vite React app runs locally.
-- [ ] TailwindCSS and shadcn/ui are installed.
-- [ ] Supabase client helper exists and uses only `VITE_` variables.
-- [ ] `.env` is ignored and `.env.example` is committed.
-- [ ] `learning-log/` exists.
-- [ ] The baseline setup is committed.
+- [ ] Vite React app starts locally.
+- [ ] TailwindCSS and shadcn/ui are installed from official docs.
+- [ ] The project has the agreed `src/` folder shape.
+- [ ] Supabase client helper reads only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+- [ ] `.env` is ignored; `.env.example` is committed and contains no real values.
+- [ ] `npm run build` succeeds.
+- [ ] A baseline Git commit exists.
+- [ ] No Brevo key, service-role key, database password, or private token appears in frontend code.
 
-> **Log it.** In `learning-log/02-project-setup.md`, explain the difference between a public Vite env var and a server-only secret. Name one mistake that would leak credentials.
+> **✍️ Log it (mandatory).** In `learning-log/02-project-setup.md`: explain why `VITE_SUPABASE_ANON_KEY` may appear in browser code but `SUPABASE_SERVICE_ROLE_KEY` must not. Also explain why `.env.example` is committed but `.env` is not.
 
-**Motivation pause:** from `Software_Engineering_Community_Affirmations.md`: "Great software starts with small steps." Setup is one of those steps. It may feel basic, but every clean project begins here.
+All boxes ticked? Then the app exists. Now give it durable truth.
 
-Next: the app runs, but it has no durable data. Build the database model that everything else depends on. -> **[Chapter 03 - Data model and migrations](03-data-model-and-migrations.md)**
+---
+
+Next: the app exists; now give it durable truth. -> **[Chapter 03 - Data model and migrations](03-data-model-and-migrations.md)**

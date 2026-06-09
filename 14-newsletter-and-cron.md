@@ -1,144 +1,49 @@
 # Chapter 14 - Newsletter and Cron
 
-Newsletter subscriptions sound small until you treat them like production data. A subscriber is trusting you with their email. Store it carefully, avoid duplicate rows, and send updates only from server-side scheduled work.
+Newsletter signup sounds tiny until you treat an email address like trusted user data. You need validation, duplicate protection, server-side provider calls, unsubscribe-ready status, and a log of scheduled sends.
 
-## Where we're headed
+## The point of this chapter
 
-By the end, visitors can subscribe, subscriber emails are stored in Supabase, and a scheduled newsletter function is planned or implemented with Supabase Cron and Brevo.
+Newsletter signup through an Edge Function, normalized unique subscribers, friendly duplicate behavior, `newsletter_runs`, and a dry-run-first scheduled digest plan using Supabase Cron and Brevo.
 
-## The newsletter trap
+## Step 1 - Signup goes through the server
 
-Bad:
+The browser should not call Brevo or write messy subscriber rows directly. Use an Edge Function to validate and normalize email.
 
-```txt
-newsletter form -> frontend calls email provider
-```
+## Step 2 - Let the database stop duplicates
 
-Problem: provider keys leak, duplicates grow, and unsubscribes become messy.
+The UI can try to prevent double submits. Only a unique normalized email constraint can protect against two requests arriving at nearly the same time.
 
-Better:
+## Step 3 - Store subscriber status
 
-```txt
-newsletter form -> Edge Function -> newsletter_subscribers
-scheduled function -> query new content -> Brevo send
-newsletter_runs records result
-```
+Use statuses such as active, unsubscribed, and bounced if supported. A newsletter table without status becomes painful the first time someone opts out.
 
-## New ideas before you build
+## Step 4 - Dry run before real Cron
 
-### Newsletter signup
+A scheduled job should first report who would receive the digest and what content it would include. Only after that should it send real email.
 
-**Real-life analogy:** signing a clipboard should not create three copies of your name. The organizer checks whether you already signed up and keeps one clean entry.
+## Step 5 - Record every run
 
-**General idea:** normalize email addresses, prevent duplicates, and keep subscriber status. Do not send provider secrets to the browser.
+`newsletter_runs` is how you inspect success, failure, counts, and errors later.
 
-```ts
-const email = input.email.trim().toLowerCase();
-await saveSubscriber(email);
-```
+> **📖 Mandatory read.** Read [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase Cron](https://supabase.com/docs/guides/cron), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), and [Brevo transactional email](https://developers.brevo.com/docs/send-a-transactional-email). Required: signup and scheduled sending both need server-side boundaries.
 
-Study more: [Frontend Interview Questions - Forms and Validation](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Assignment:** write the newsletter duplicate-email behavior before coding it. Should the user see an error, a success message, or "already subscribed"? Why?
-
-### Cron
-
-**Real-life analogy:** an alarm clock runs at a scheduled time even when nobody is watching it.
-
-**General idea:** Cron is scheduled server work. Use it for planned newsletter sends, cleanups, and recurring jobs.
-
-```txt
-Every Monday 09:00 -> find new articles -> send update email
-```
-
-Study more: [Supabase Cron documentation](https://supabase.com/docs/guides/cron) or a beginner-friendly cron syntax reference before scheduling real sends.
-
-**Comparison:** immediate work vs scheduled work: immediate work happens because a user just clicked or submitted something. Scheduled work happens later because a clock or cron rule triggered it.
-
-**Cron exercise:** write a dry-run mode for the newsletter job that reports who would receive the email without sending it.
-
-## Daily guideline
-
-**think about concurrency**. Two signup requests for the same email may arrive at nearly the same time. Normalize the email, add a unique constraint, and handle the duplicate case gracefully instead of trusting the UI to prevent it.
-
-**Big word alert:** **concurrency** means two or more things can happen at nearly the same time. Duplicate newsletter signups are a simple place where concurrency can create bugs.
-
-**Related reading:** revisit the "Think About Concurrency" section in `Daily_Software_Development_Guidelines.md`.
-
-## Build it
-
-Create a newsletter signup Edge Function. Validate email, normalize casing, prevent duplicates, and store status such as `active`, `unsubscribed`, or `bounced` if you support it.
-
-**Concurrency exercise:** submit the same email twice quickly. Confirm the database ends with one subscriber and the UI response is friendly.
-
-Create `newsletter_runs` to track scheduled sends:
-
-```txt
-id
-started_at
-finished_at
-status
-article_count
-subscriber_count
-error_message
-```
-
-If implementing Cron now, schedule a Supabase function that looks for new published articles or projects and sends a digest through Brevo. If this is too much for the first pass, write the contract and leave the function as a planned advanced feature, but keep the schema ready.
-
-## Revisit earlier decisions before Cron
-
-Scheduled functions are not magic background code. They still depend on the database shape, RLS rules, secrets, and logging decisions you made earlier.
-
-Before enabling a newsletter schedule, revisit:
-
-```txt
-Chapter 03 migrations
-  -> newsletter_subscribers table exists
-  -> newsletter_runs table exists
-  -> unique normalized email constraint exists
-  -> useful indexes exist for status and created_at
-
-Chapter 04 RLS
-  -> public visitors can subscribe only through the intended path
-  -> subscribers are not publicly readable
-  -> scheduled/server work uses server-side privileges carefully
-
-Chapter 12 Edge Function habits
-  -> Brevo key is a Supabase secret
-  -> function responses are predictable
-  -> failures are stored or logged
-
-Chapter 19 maintenance
-  -> newsletter_runs gives you a place to inspect success/failure
-  -> dry-run mode exists before real sending
-```
-
-If a scheduled function needs service-role power, keep that power inside Supabase server-side code. Never move service-role keys into the browser just because a scheduled job needs stronger access.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  signup[Newsletter signup] --> edge[Edge Function]
-  edge --> normalize[Normalize email]
-  normalize --> subscriber[Insert subscriber or handle duplicate]
-
-  cron[Scheduled digest] --> trigger[Cron trigger]
-  trigger --> content[Query new content]
-  content --> brevo[Send via Brevo]
-  brevo --> runs[Record newsletter_runs row]
-```
+> **💡 Hint.** Submit the same email twice quickly. The database should end with one row, and the UI should still feel friendly.
 
 ## Definition of Done
 
-- [ ] Newsletter signup stores validated emails.
-- [ ] Duplicate emails are handled.
-- [ ] Brevo keys remain server-side.
-- [ ] `newsletter_runs` exists or is clearly planned.
-- [ ] Cron workflow is documented.
-- [ ] Migration, RLS, secrets, and logging assumptions were revisited before scheduling.
-- [ ] The owner can explain what triggers an update email.
+- [ ] Newsletter signup uses an Edge Function.
+- [ ] Email is validated and normalized server-side.
+- [ ] Duplicate signups do not create duplicate rows.
+- [ ] Subscriber status exists.
+- [ ] `newsletter_runs` records scheduled send attempts or planned run output.
+- [ ] Dry-run behavior exists before real sending.
+- [ ] Brevo secrets remain server-side.
 
-> **Log it.** In `learning-log/14-newsletter-and-cron.md`, explain why newsletters should be sent by scheduled server work, not by browser code.
+> **✍️ Log it (mandatory).** In `learning-log/14-newsletter-and-cron.md`: explain why duplicate prevention belongs in the database, not only in React.
 
-Next: the owner has content and messages. Now add lightweight visit insights without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: newsletter data is controlled; now add useful analytics without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**

@@ -1,133 +1,44 @@
 # Chapter 05 - Public layout and routing
 
-The database is protected. Now return to the visitor. A portfolio succeeds when someone can understand it quickly without being taught the interface. Routing is the promise your app makes: each URL should mean something stable.
+The database is guarded; now the public site needs a shape. Routing is easy to underestimate because beginners can fake pages with component state. But URLs are part of the product. They let visitors bookmark, refresh, share, and understand where they are.
 
-## Where we're headed
+## The point of this chapter
 
-By the end you will have a public layout, navigation, and routes for home, about, projects, project details, articles, article details, contact, and not-found.
+A public route structure with home, about, projects, project detail, articles, article detail, contact, and not-found pages, all wrapped in a shared layout.
 
-## The routing trap
+## Step 1 - Use routes, not manual page state
 
-Bad:
+The shortcut is one giant component with `currentPage` state. It works until refresh, deep links, analytics, not-found pages, and deployment enter the room. Use React Router so URLs represent real pages.
 
-```txt
-One giant Home component
-scroll anchors for everything
-project details hidden in modals
-no real article URLs
-```
+## Step 2 - Build the shared public layout
 
-Problem: content cannot be linked cleanly, visitors cannot share a project URL, and search/indexing signals are weak.
+Create a header, navigation, main content area, and footer. Keep the layout boring and dependable. Public pages should feel easy to scan before they become fancy.
 
-Better:
+## Step 3 - Add placeholder pages before data
 
-```txt
-/                 home
-/about            owner story and skills
-/projects         project list
-/projects/:slug   project detail
-/articles         article list
-/articles/:slug   article detail
-/contact          contact form
-```
+Build every route with meaningful placeholder content first. Projects and articles will connect to Supabase later; today you are proving navigation, not data loading.
 
-## New ideas before you build
+## Step 4 - Test direct refresh
 
-### Routing
+Visit `/projects`, `/projects/example-slug`, `/articles`, `/articles/example-slug`, `/contact`, and a nonsense URL. Refresh each one. If refresh breaks, you have a routing/deployment issue to solve before feature work hides it.
 
-**Real-life analogy:** rooms in a building have addresses. Routes give screens in your app addresses.
+> **📖 Mandatory read.** Read [React Router](https://reactrouter.com/home), [React conditional rendering](https://react.dev/learn/conditional-rendering), and [MDN document structure](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents). Required: routes, layout, and semantic page regions are the vocabulary of this chapter.
 
-**General idea:** React Router connects URLs to components. A stable URL lets visitors open, bookmark, and share one exact page.
-
-```tsx
-<Route path="/projects" element={<ProjectsPage />} />
-<Route path="/projects/:slug" element={<ProjectDetailPage />} />
-```
-
-Study more: [Frontend Interview Questions - React Fundamentals](https://resources.devweekends.com/resources/frontend-interview-qs)
-
-**Mini assignment:** sketch your route tree on paper before coding. Mark which routes are public, which are admin-only, and which routes need a slug.
-
-### Layout components
-
-**Real-life analogy:** a book uses the same margins, header style, and page structure on every page. A layout component gives your app that shared structure.
-
-**General idea:** put common UI like header, footer, and page wrapper in one component so every route feels consistent.
-
-```tsx
-function PublicLayout() {
-  return (
-    <>
-      <Header />
-      <main><Outlet /></main>
-      <Footer />
-    </>
-  );
-}
-```
-
-Study more: [React Crash Course - Components and Props](https://resources.devweekends.com/courses/react-crash-course/02-components-props)
-
-**Related reading:** read [web.dev - Metadata](https://web.dev/learn/html/metadata/) and [MDN - `<head>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head). Portfolio pages are not only visual screens; their titles, descriptions, and shared-link previews matter too.
-
-Diagram:
-
-```mermaid
-flowchart TD
-  layout[PublicLayout] --> header[Header]
-  layout --> main[main]
-  layout --> footer[Footer]
-  main --> home["/ -> HomePage"]
-  main --> projects["/projects -> ProjectsPage"]
-  main --> projectDetail["/projects/:slug -> ProjectDetailPage"]
-  main --> articles["/articles -> ArticlesPage"]
-  main --> contact["/contact -> ContactPage"]
-```
-
-**Comparison:** route vs component: a route is the URL rule, like `/projects/:slug`. A component is the React function that renders what the visitor sees for that URL.
-
-**Big word alert:** **slug** means a human-readable URL identifier, such as `react-portfolio-site`, instead of a random database id.
-
-## Daily guideline
-
-**keep components focused**. A route file should decide which page appears; a layout should hold shared structure; a card should display one piece of content. If one component starts handling navigation, fetching, filtering, forms, and styling all at once, split it before it becomes hard to understand.
-
-## Build it
-
-Install and configure React Router. Create the public layout with header, main content, footer, and navigation. Keep the layout quiet and work-focused: a software engineer portfolio should be easy to scan, not a maze of decorative sections.
-
-Add placeholder pages first. The goal is to prove the route structure before wiring Supabase data.
-
-Use TailwindCSS for layout and shadcn/ui for repeated interface pieces where they help: buttons, forms, cards, inputs, dialogs, and navigation patterns.
-
-Track page visits later with Supabase, but design the route boundaries now. Do not track admin routes as public visitor behavior.
-
-## Empty routes matter
-
-A missing project slug should not show a blank screen. Create a not-found route and a project/article missing state. Blank pages feel broken.
-
-Good empty copy:
-
-```txt
-No project found for this link.
-```
-
-Bad empty copy:
-
-```txt
-[]
-```
-
-**Routing exercise:** manually type every planned URL into the browser, including one fake slug and one unknown route. Write the expected page before you build it, then compare after implementation.
+> **💡 Hint.** Use `Link` or `NavLink` for internal navigation. A normal `<a>` is for leaving the app or linking to real documents, not for route changes inside the SPA.
 
 ## Definition of Done
 
-- [ ] Public layout exists.
-- [ ] Routes exist for home, about, projects, project detail, articles, article detail, contact, and not-found.
-- [ ] Navigation works on desktop and mobile.
-- [ ] Unknown URLs show a not-found page.
-- [ ] Admin routes are not mixed into public navigation.
+- [ ] All public routes render.
+- [ ] The shared public layout wraps the pages.
+- [ ] Navigation works without full page reloads.
+- [ ] Slug routes exist for project and article details.
+- [ ] Unknown URLs show a friendly not-found page.
+- [ ] Direct refresh works locally and has a deployment plan.
 
-> **Log it.** In `learning-log/05-public-layout-and-routing.md`, explain why project and article detail pages need stable slug URLs.
+> **✍️ Log it (mandatory).** In `learning-log/05-public-layout-and-routing.md`: explain why real URLs are better than manual page switching with component state. Include one thing that would break with the shortcut.
 
-Next: the routes exist. Now replace placeholder project content with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**
+All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
+
+---
+
+Next: the routes exist; now replace placeholder work with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**
