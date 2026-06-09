@@ -1,207 +1,119 @@
-# Chapter 15 - Analytics and Realtime insights
+# Chapter 15 - Analytics And Realtime Insights
 
-A portfolio owner benefits from knowing what people read. But analytics is a trust decision. You are not building an ad-tech platform, and browser-submitted analytics should never be treated as exact truth.
+Analytics help the owner understand which public pages visitors use. Keep analytics minimal, privacy-aware, and owner-only.
 
-## The point of this chapter
+## Goal
 
-Minimal page visit tracking, admin route exclusion, database-side summaries, and optional Realtime recent activity, all with browser analytics marked as untrusted/noisy.
+By the end, public page visits can be recorded and summarized for the owner dashboard.
 
-## Before you touch code
+## What You Will Build
 
-- Public routes exist.
-- Admin dashboard shell exists.
-- page_visits table exists or is planned.
-- You have written a privacy refusal list before choosing fields.
+- Page visit tracker.
+- `page_visits` insert path.
+- Admin analytics dashboard.
+- Summary queries.
+- Optional Realtime recent activity.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Analytics event.** A stored record that something happened.
-- **Aggregate.** A summary such as count by page.
-- **Referrer.** The previous page/site reported by the browser, when available.
-- **Untrusted browser data.** Data the visitor can spoof or spam.
-- **Privacy budget.** The smallest amount of data needed for the feature.
+- **Analytics:** measured activity, such as page visits.
+- **Untrusted data:** browser-sent data that may be incomplete or fake.
+- **Summary:** grouped result such as visits per path.
+- **Admin exclusion:** not counting owner dashboard visits.
+- **Privacy:** collecting only what you actually need.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Decide What To Track
 
-```sql
--- minimal analytics shape
-page_visits(
-  path text not null,
-  referrer text null,
-  created_at timestamptz not null default now()
-)
-
--- summary contract
-get_top_pages(days) -> path, visits
-get_recent_visits(limit) -> path, referrer, created_at
-```
-
-## Step 1 - Decide what you refuse to collect
-
-Start with the smallest useful event: path, referrer if available, and timestamp. Do not store form content, secrets, precise personal data, or admin activity.
-
-## Step 2 - Treat browser inserts as untrusted
-
-A visitor controls the browser. They can spoof or spam analytics requests. If you insert from the browser, keep the policy narrow and the fields minimal. Consider an Edge Function or rate limiting if abuse matters.
-
-## Step 3 - Summarize in the database
-
-The dashboard should ask for totals, top pages, top referrers, and recent visits. It should not load every row and count in React.
-
-## Step 4 - Use Realtime only where it helps
-
-Live recent activity can be nice. It is not a replacement for stored events and summary queries.
-
-## Step 5 - Write the analytics contract
-
-Start with a deliberately small event:
+Track only simple public data:
 
 ```txt
-page_visits
-  path text
-  referrer text nullable
-  created_at timestamptz
+path
+referrer, optional
+created_at
 ```
 
-Anything beyond this needs a reason. Country, city, user-agent family, and session-like identifiers can become privacy decisions quickly.
+Do not collect private messages, passwords, or unnecessary personal data.
 
-## Step 6 - Choose browser insert or function insert
-
-| Approach | Benefit | Risk |
-|---|---|---|
-| Browser insert | simple and fast to build | spoofable, noisy, needs narrow RLS |
-| Edge Function | more control and rate-limit options | more server code |
-
-For a beginner portfolio, browser insert can be acceptable if you document that it is untrusted and collect only minimal fields. Do not call it exact analytics.
-
-## Step 7 - Define dashboard summaries
-
-The dashboard should ask for summaries:
-
-```txt
-total visits this week
-top pages in last 30 days
-top referrers
-recent visits limited to 20
-```
-
-Use grouped database queries or RPC functions. Do not load every row into React and count there.
-
-## Step 8 - Do it on your project
+### Step 2 - Create Analytics Feature Files
 
 Create:
 
 ```txt
-src/features/analytics/trackPageVisit.ts
-src/features/analytics/analyticsApi.ts
-src/features/analytics/AnalyticsDashboard.tsx
-page_visits insert path or Edge Function
-summary query/RPC shapes
-optional recent-visit Realtime subscription
+src/features/analytics/
+  trackPageVisit.ts
+  analyticsApi.ts
+  AnalyticsDashboard.tsx
 ```
 
-The tracker should immediately return for `/admin` paths.
+### Step 3 - Track Public Routes
 
-## Prove it before moving on
+When a public route loads, insert a page visit. Skip:
 
-Visit public pages, then admin pages. Public visits should count; admin visits should not. Try inserting extra fields from the browser if using direct insert. The database or API should ignore/block fields you did not choose.
+```txt
+/admin
+/admin/*
+/admin/login
+```
 
-## If it breaks
+Admin activity should not pollute public portfolio analytics.
 
-| Symptom | Likely cause | Smallest next test |
+### Step 4 - Treat Browser Analytics As Noisy
+
+The browser can lie, fail, block requests, or send duplicates. Analytics should be useful hints, not perfect truth.
+
+### Step 5 - Build Dashboard Summaries
+
+In `/admin/analytics`, show:
+
+```txt
+top pages
+recent visits
+visits over time, optional
+```
+
+Prefer database-side summary queries or RPC functions instead of loading every visit into React.
+
+### Step 6 - Add Optional Realtime
+
+After normal summaries work, add a Realtime feed for recent public visits if desired. The dashboard should still work from normal queries.
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Admin visits counted | Tracker does not exclude `/admin` | Visit admin route then inspect recent rows. |
-| Counts look inflated | Browser inserts are spoofed/noisy or double-tracked | Log one route transition and inspect insert count. |
-| Dashboard is slow | React loads raw rows instead of summaries | Replace raw load with grouped query/RPC. |
-| Sensitive data appears in logs | Tracker captures too much | Remove field and document refusal. |
+| Counting admin visits | Dashboard becomes misleading | Exclude admin paths |
+| Loading all visits into React | Slow and wasteful | Summarize near database |
+| Treating analytics as exact | Browser data is noisy | Present as directional |
+| Public analytics dashboard | Visitor behavior leaks | Owner-only RLS |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why analytics should be minimal.
-- Why browser inserts are untrusted/noisy.
-- Why summaries belong near the database.
-- Which fields you refuse to collect and why.
+- Public visits are recorded.
+- Admin visits are excluded.
+- Owner can see summaries.
+- Signed-out users cannot read analytics.
+- Dashboard still works without Realtime.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the analytics feature into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/15-analytics-realtime-insights.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Why is browser analytics untrusted?
+Why exclude admin paths?
+Why should summaries happen near the database?
+Which analytics data did you intentionally avoid collecting?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
-
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), [Supabase Realtime](https://supabase.com/docs/guides/realtime), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), and [PostgreSQL aggregate functions](https://www.postgresql.org/docs/current/functions-aggregate.html). Required: analytics is a database, privacy, and trust-boundary feature.
-
-> **💡 Hint.** Write `Analytics I refuse to collect` before coding. If you cannot defend a field, remove it.
-
-## Definition of Done
-
-- [ ] Public page visits are recorded minimally.
+- [ ] Page visit tracking exists.
 - [ ] Admin routes are excluded.
-- [ ] Visit logs contain no sensitive form content or private data.
-- [ ] Browser analytics is documented as untrusted and noisy.
-- [ ] Dashboard uses database-side summaries.
-- [ ] Realtime, if used, is cleaned up and non-essential.
+- [ ] Owner analytics dashboard exists.
+- [ ] Summaries use database-side logic or narrow queries.
+- [ ] Analytics rows are private.
+- [ ] Realtime, if used, is optional.
 
-> **✍️ Log it (mandatory).** In `learning-log/15-analytics-realtime-insights.md`: list at least three analytics fields you refuse to collect and explain why.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: the features exist; now make failure states understandable. -> **[Chapter 16 - Validation, errors, and empty states](16-validation-errors-empty-states.md)**
+Next: design validation and UI states. -> **[Chapter 16 - Validation, Errors, And Empty States](16-validation-errors-empty-states.md)**

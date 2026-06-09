@@ -1,189 +1,159 @@
-# Chapter 19 - Final review and maintenance
+# Chapter 19 - Final Review And Maintenance
 
-A portfolio becomes evidence when you can explain it and keep it alive. The last engineering task is not another feature; it is turning the system into something readable, demoable, reviewable, and maintainable.
+The app is deployed. Now turn it into evidence you can explain and maintain.
 
-## The point of this chapter
+## Goal
 
-A project README, case study, demo script, security checklist, production smoke-test checklist, and maintenance rhythm.
+By the end, the project has a strong README, demo script, security review, maintenance checklist, and future improvement plan.
 
-## Before you touch code
+## What You Will Build
 
-- Production deployment exists or is close.
-- Smoke-test results are available.
-- Learning log has entries from earlier chapters.
-- You are ready to turn the project into a case study.
+- Project README.
+- Demo script.
+- Case-study notes.
+- Security review checklist.
+- Maintenance rhythm.
+- Backlog of improvements.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Case study.** Story of problem, decisions, tradeoffs, result, and next improvement.
-- **Maintenance rhythm.** Repeated checks that keep the app alive.
-- **Security checklist.** Documented review of secrets, policies, and private data.
-- **Demo script.** Planned walkthrough that proves the system.
-- **Residual risk.** Known weakness you accept or plan to fix.
+- **README:** first document a reviewer sees.
+- **Demo script:** planned path through the app.
+- **Case study:** explanation of problem, decisions, tradeoffs, and result.
+- **Maintenance:** recurring work that keeps the app healthy.
+- **Backlog:** future improvements not required for v1.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Write The Project README
 
-```txt
-Final documentation contract
-  README: setup and architecture
-  CASE-STUDY: story and tradeoffs
-  SECURITY-CHECKLIST: RLS/secrets/storage/logs
-  SMOKE-TEST: production checks
-  MAINTENANCE: monthly and quarterly routine
-```
-
-## Step 1 - Write the project README
-
-Explain what the app does, the stack, setup commands, safe env vars, server-only secrets, scripts, deployment, and core architecture. Do not paste real secret values.
-
-## Step 2 - Write the case study
-
-Use: problem, decision, tradeoff, result, next improvement. The portfolio itself is now one of your best projects.
-
-## Step 3 - Rehearse the demo
-
-Public pages, admin login, project publish, article preview, image upload, contact stored-before-email, inbox, analytics, and deployment boundaries.
-
-## Step 4 - Review security
-
-Check RLS, service-role usage, storage policies, public reads, private messages, subscribers, and logs.
-
-## Step 5 - Schedule maintenance
-
-Monthly: content, messages, broken links, smoke test. Quarterly: dependencies, secrets, RLS spot checks, analytics fields, and deployment review.
-
-## Step 6 - Create the final documentation set
-
-Your repo should have enough documentation for someone else to understand it:
+Include:
 
 ```txt
-README.md              setup, stack, scripts, env vars, architecture
-CASE-STUDY.md          problem, decisions, tradeoffs, result
-SECURITY-CHECKLIST.md  RLS, secrets, storage, service-role, logs
-SMOKE-TEST.md          production workflow checks
-MAINTENANCE.md         monthly and quarterly rhythm
+project purpose
+live URL
+tech stack
+features
+setup instructions
+environment variables
+security notes
+screenshots, optional
 ```
 
-The filenames can differ, but the artifacts should exist.
+Write for a recruiter and an engineer. Both should understand what matters.
 
-## Step 7 - Write the demo script
+### Step 2 - Create A Demo Script
 
-A strong demo is a path, not a feature list:
+Write a short flow:
 
 ```txt
-visitor sees published work
-owner logs in
-owner creates or edits a project
-owner publishes content
-visitor submits contact form
-owner sees message in inbox
-analytics shows public activity
-explain where secrets and RLS fit
+open homepage
+show experience/projects/articles
+submit contact form
+log in as owner
+show dashboard
+edit project
+show inbox
+show analytics
+explain deployment
 ```
 
-## Step 8 - Do it on your project
+Practice the demo before sharing the project.
 
-Run the demo once while recording notes. Wherever you stumble, improve either the app or the explanation. The final review is allowed to change the project.
+### Step 3 - Write A Case Study
 
-## Prove it before moving on
+Use this structure:
 
-Hand your README and case study to a future reader in your imagination. Can they run the app, understand the boundaries, and know what is intentionally out of scope? If not, documentation is not done.
+```txt
+Problem:
+Audience:
+Key features:
+Important technical decisions:
+Security decisions:
+Tradeoffs:
+What I would improve next:
+```
 
-## If it breaks
+### Step 4 - Run Security Review
 
-| Symptom | Likely cause | Smallest next test |
+Check:
+
+```txt
+no private keys in repo
+no private keys in browser
+RLS blocks drafts
+RLS blocks messages
+admin routes require auth
+contact uses Edge Function
+Brevo key is server-side
+storage uploads are owner-only
+```
+
+### Step 5 - Make A Maintenance Checklist
+
+Schedule a monthly review:
+
+```txt
+check contact messages
+check broken links
+update recent work
+review dependencies
+check logs
+test contact form
+backup or export important data
+```
+
+### Step 6 - Create A Backlog
+
+Examples:
+
+```txt
+better article editor
+experience admin CRUD
+project image gallery
+RSS feed
+more analytics summaries
+theme toggle
+automated tests
+```
+
+Do not add everything now. A finished v1 beats a forever-unfinished v2.
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| README cannot set up app | Commands/env vars are incomplete | Pretend you are new and follow README only. |
-| Case study reads generic | It lists tools but no tradeoffs | Add one real decision and what it cost. |
-| Demo runs too long | It has no story path | Use visitor -> owner -> failure/security -> deployment. |
-| Maintenance never happens | Checklist has no cadence | Add monthly/quarterly dates or issue template. |
+| README only says tech stack | Reviewer misses decisions | Explain features and tradeoffs |
+| No demo script | Live demo becomes scattered | Practice a path |
+| No maintenance plan | Portfolio goes stale | Schedule review |
+| Forgetting security review | Hidden risk remains | Run checklist |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why documentation is part of the finished product.
-- Which security checks you will repeat later.
-- How you will keep content current.
+- README explains the project clearly.
+- Demo script exists.
+- Security checklist passes.
+- Maintenance schedule exists.
+- Backlog is separated from v1.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the final review and maintenance package into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/19-final-review-maintenance.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+What is the strongest technical decision in this project?
+What tradeoff did you make?
+What will you maintain monthly?
+What would you improve next?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] README exists.
+- [ ] Demo script exists.
+- [ ] Case-study notes exist.
+- [ ] Security review is complete.
+- [ ] Maintenance checklist exists.
+- [ ] Backlog exists.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [GitHub README docs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes), [Vercel observability](https://vercel.com/docs/observability), [Supabase logs](https://supabase.com/docs/guides/platform/logs), and [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart). Required: a deployed app still needs explanation and care.
-
-> **💡 Hint.** If your README only says how to run the app, it is incomplete. It should also explain why the app is shaped the way it is.
-
-## Definition of Done
-
-- [ ] Project README exists and is safe to share.
-- [ ] Case study exists.
-- [ ] Demo script covers public and owner workflows.
-- [ ] Security checklist covers RLS, secrets, service-role, storage, and private data.
-- [ ] Production smoke-test checklist exists.
-- [ ] Monthly and quarterly maintenance rhythm exists.
-
-> **✍️ Log it (mandatory).** In `learning-log/19-final-review-maintenance.md`: explain how you will keep the portfolio alive after launch and which workflow you will test monthly.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: the system is documented; now turn it into a story you can defend. -> **[Chapter 20 - Closing](20-closing.md)**
+Next: close the course and prepare to explain it. -> **[Chapter 20 - Closing](20-closing.md)**

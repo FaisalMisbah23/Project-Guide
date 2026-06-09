@@ -1,196 +1,128 @@
-# Chapter 14 - Newsletter and Cron
+# Chapter 14 - Newsletter And Cron
 
-Newsletter signup sounds tiny until you treat an email address like trusted user data. You need validation, duplicate protection, server-side provider calls, unsubscribe-ready status, and a log of scheduled sends.
+A newsletter signup lets visitors ask for updates. Cron lets scheduled work happen later. For a beginner portfolio, build the signup carefully and plan scheduled sending before making it complex.
 
-## The point of this chapter
+## Goal
 
-Newsletter signup through an Edge Function, normalized unique subscribers, friendly duplicate behavior, `newsletter_runs`, and a dry-run-first scheduled digest plan using Supabase Cron and Brevo.
+By the end, visitors can subscribe safely, duplicate emails are controlled, and the owner has a clear newsletter/Cron plan.
 
-## Before you touch code
+## What You Will Build
 
-- Newsletter table exists.
-- Edge Function pattern from Chapter 12 is understood.
-- Brevo secrets are server-side only.
-- You know whether Cron is implemented now or planned as advanced.
+- Newsletter signup form.
+- Server-side signup handler or safe insert path.
+- Duplicate email protection.
+- Admin subscriber view.
+- Newsletter run log or plan.
+- Cron schedule plan.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Normalize.** Convert email into a consistent stored form.
-- **Unique constraint.** Database rule preventing duplicate subscriber rows.
-- **Cron.** Scheduled work triggered by time.
-- **Dry run.** Report what would happen without sending.
-- **Run log.** Stored record of a scheduled job attempt.
+- **Subscriber:** a visitor who asked for updates.
+- **Duplicate:** same email submitted more than once.
+- **Cron:** scheduled work triggered by time.
+- **Run log:** record that a scheduled task happened.
+- **Privacy-aware response:** message that does not reveal too much about someone else's email.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Add Public Signup UI
 
-```txt
-Newsletter contract
-  signup: validate -> normalize -> insert or friendly duplicate
-  subscriber status: active/unsubscribed/bounced if supported
-  digest dry run: find recipients and content, send nothing
-  real run: send via Brevo, record newsletter_runs
-```
-
-## Step 1 - Signup goes through the server
-
-The browser should not call Brevo or write messy subscriber rows directly. Use an Edge Function to validate and normalize email.
-
-## Step 2 - Let the database stop duplicates
-
-The UI can try to prevent double submits. Only a unique normalized email constraint can protect against two requests arriving at nearly the same time.
-
-## Step 3 - Store subscriber status
-
-Use statuses such as active, unsubscribed, and bounced if supported. A newsletter table without status becomes painful the first time someone opts out.
-
-## Step 4 - Dry run before real Cron
-
-A scheduled job should first report who would receive the digest and what content it would include. Only after that should it send real email.
-
-## Step 5 - Record every run
-
-`newsletter_runs` is how you inspect success, failure, counts, and errors later.
-
-## Step 5 - Write the signup response behavior
-
-Duplicate signup behavior should be friendly and privacy-aware. Do not reveal too much, but do not show a scary database error.
+Add a small signup form, usually near the footer or articles page:
 
 ```txt
-new valid email       -> saved, success message
-existing active email -> friendly already-subscribed style success
-invalid email         -> validation message
-provider unavailable  -> signup still stored if provider is only notification
+email input
+submit button
+success message
+error message
 ```
 
-For the first version, signup does not need to send a provider email unless you choose confirmation. It must store clean subscriber data.
+### Step 2 - Protect Against Duplicates
 
-## Step 6 - Plan the scheduled digest
+The database should enforce unique subscriber emails. React can warn, but the database must prevent duplicates.
 
-A digest job needs a contract before Cron:
+### Step 3 - Decide The Signup Path
+
+Use one of these safe paths:
 
 ```txt
-input: dryRun boolean
-find: published articles/projects since last successful run
-send: Brevo email to active subscribers
-record: newsletter_runs status, counts, error
-retry: safe because run records exist
+Edge Function validates and inserts subscriber
+or
+public insert policy allows only safe subscriber fields
 ```
 
-Dry-run is mandatory before real sending.
+Do not let visitors set admin-only fields.
 
-## Step 7 - Do it on your project
+### Step 4 - Build Admin Subscriber View
 
-Create:
+In `/admin/newsletter`, show:
 
 ```txt
-newsletter signup Edge Function
-newsletter_subscribers unique normalized email
-newsletter_runs table usage
-optional digest Edge Function
-Cron schedule only after dry-run proof
-admin view or log path for recent runs
+subscriber email
+status
+created_at
+unsubscribe or archive action, if supported
 ```
 
-## Prove it before moving on
+### Step 5 - Add Newsletter Run Planning
 
-Submit the same email twice quickly. Inspect the table. There should be one normalized subscriber row. Then run the digest in dry-run mode and confirm it reports recipients and content without sending.
+Create or document `newsletter_runs` rows:
 
-## If it breaks
+```txt
+subject
+status
+started_at
+finished_at
+error
+```
 
-| Symptom | Likely cause | Smallest next test |
+This gives scheduled sending a history.
+
+### Step 6 - Plan Cron Carefully
+
+For v1, document the schedule and smoke test. If implementing Cron now, keep it narrow:
+
+```txt
+Cron triggers function
+function selects eligible content/subscribers
+function records run
+function handles failures
+```
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Duplicate rows appear | No unique normalized email constraint | Submit same email twice and inspect table. |
-| Duplicate error scares user | Database error not mapped | Return friendly already-subscribed response. |
-| Cron sends unexpectedly | Dry-run gate skipped | Disable schedule until dry-run output is reviewed. |
-| Brevo key leaks | Provider secret placed in frontend env | Move it to Supabase secrets and rotate it. |
+| Duplicate prevention only in React | Double submits can still happen | Add unique database rule |
+| Revealing subscriber existence | Privacy issue | Use a neutral success response |
+| Cron without logs | Hard to debug | Create run records |
+| Letting public set status fields | Users can alter workflow | Validate server-side or restrict policy |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why duplicate prevention belongs in the database.
-- Why dry-run comes before real scheduled sends.
-- Why subscriber status matters for future unsubscribe behavior.
+- Signup form works.
+- Duplicate email ends with one subscriber row.
+- Admin can view subscribers.
+- Public users cannot read subscriber list.
+- Cron/send plan is documented or implemented with logs.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the newsletter and Cron workflow into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/14-newsletter-and-cron.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Why does duplicate protection belong in the database?
+What should a visitor see after signing up?
+Why should scheduled work create logs?
+What parts are implemented now and what parts are planned?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] Newsletter signup exists.
+- [ ] Duplicate emails are controlled.
+- [ ] Subscriber data is private.
+- [ ] Admin subscriber view exists.
+- [ ] Newsletter run log or plan exists.
+- [ ] Cron behavior is documented or implemented safely.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase Cron](https://supabase.com/docs/guides/cron), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), and [Brevo transactional email](https://developers.brevo.com/docs/send-a-transactional-email). Required: signup and scheduled sending both need server-side boundaries.
-
-> **💡 Hint.** Submit the same email twice quickly. The database should end with one row, and the UI should still feel friendly.
-
-## Definition of Done
-
-- [ ] Newsletter signup uses an Edge Function.
-- [ ] Email is validated and normalized server-side.
-- [ ] Duplicate signups do not create duplicate rows.
-- [ ] Subscriber status exists.
-- [ ] `newsletter_runs` records scheduled send attempts or planned run output.
-- [ ] Dry-run behavior exists before real sending.
-- [ ] Brevo secrets remain server-side.
-
-> **✍️ Log it (mandatory).** In `learning-log/14-newsletter-and-cron.md`: explain why duplicate prevention belongs in the database, not only in React.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: newsletter data is controlled; now add useful analytics without building a surveillance machine. -> **[Chapter 15 - Analytics and Realtime insights](15-analytics-realtime-insights.md)**
+Next: add analytics. -> **[Chapter 15 - Analytics And Realtime Insights](15-analytics-realtime-insights.md)**

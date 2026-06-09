@@ -1,248 +1,122 @@
-# Chapter 04 - RLS and security basics
+# Chapter 04 - RLS And Security Basics
 
-You now have tables, which means you also have a problem: tables will answer questions unless you teach them who is allowed to ask. A hidden admin button is not security. A route guard is not database security. A public anon key is not dangerous by itself, but an anon key against badly protected tables absolutely is.
+Now that tables exist, you must decide who can read and change each row. Hiding buttons in React is not security. Supabase Row Level Security protects data at the database layer.
 
-This chapter is the security hinge of the whole course.
+## Goal
 
-## The point of this chapter
+By the end, public users can read only public content, and the owner can manage private content.
 
-Public users can read only public rows. The owner can manage owner-only content. Contact messages and subscribers stay private. The service-role key is treated as server-only power. RLS, not React, becomes the guardrail.
+## What You Will Build
 
-## Before you touch code
+- RLS enabled on important tables.
+- Public read policies for published content.
+- Owner policies for admin workflows.
+- Manual tests that prove drafts and messages are private.
 
-- Chapter 03 tables and seed rows exist.
-- You have at least one draft row to try to leak.
-- You know the owner user id that belongs in `owner_profile`.
-- You are ready to test from outside the UI.
+## Beginner Concepts
 
-## Vocabulary for this chapter
+- **RLS:** Row Level Security, database rules checked for each row.
+- **Policy:** the rule that says who may select, insert, update, or delete.
+- **Anon user:** signed-out browser visitor using the public anon key.
+- **Authenticated user:** signed-in Supabase Auth user.
+- **Owner:** the one authenticated user listed in `owner_profile`.
 
-- **Authentication.** Proving who the user is.
-- **Authorization.** Deciding what that user may do.
-- **RLS.** Postgres policies that allow or block rows.
-- **Anon key.** Browser-safe Supabase key limited by RLS.
-- **Service-role.** Server-only key that bypasses RLS.
+## Step By Step
 
-## Guided snippet or contract
+### Step 1 - Mark Public And Private Data
 
-This is a shape to aim for, not a finished solution to paste blindly:
-
-```sql
--- policy shape, not final complete SQL
-create policy "public read published projects"
-on projects for select
-using (status = 'published');
-
-create policy "owner manages projects"
-on projects for all
-using (public.is_owner())
-with check (public.is_owner());
-```
-
-## Section 1 - Authentication is not authorization
-
-Authentication answers: *who are you?* Authorization answers: *what are you allowed to do?*
-
-A signed-in user is not automatically the owner. A hidden admin link does not stop someone from calling Supabase directly. RLS policies are where the database decides whether a row may be read or changed.
-
-## Section 2 - Write the policy map first
-
-Before SQL, write the rules:
+Write this table:
 
 ```txt
-projects: public reads published; owner writes
-articles: public reads published; owner writes
-article_comments: public reads approved; public may insert pending if allowed; owner moderates
-contact_messages: no public reads; owner reads and archives
-newsletter_subscribers: no public reads; signup through server workflow
-page_visits: minimal public insert or server insert; owner reads summaries
-owner_profile: private owner identity source
+Public when published:
+  projects
+  articles
+  approved article_comments
+  published work_experience if database-backed
+
+Owner-only:
+  drafts
+  contact_messages
+  newsletter_subscribers
+  newsletter_runs
+  page_visits summaries
+  owner_profile
 ```
 
-That map is the spec. Policies implement it.
+### Step 2 - Enable RLS
 
-## Section 3 - Use one owner helper
+Enable RLS on every table that stores app data. A table without RLS can accidentally expose more than intended.
 
-Use the owner table from Chapter 03. A teaching-safe helper should schema-qualify objects and fix its search path:
+### Step 3 - Add Public Read Policies
 
-```sql
-create or replace function public.is_owner()
-returns boolean
-language sql
-security definer
-set search_path = public
-as $$
-  select exists (
-    select 1
-    from public.owner_profile
-    where owner_profile.user_id = auth.uid()
-  );
-$$;
-```
-
-This helper is for owner-only policies. Do not use it as a shortcut to make public features work. If public reads fail, fix the public policy; do not reach for service-role.
-
-## Section 5 - Write policies one table at a time
-
-Do not enable everything and hope. Work table by table:
+Allow signed-out visitors to read:
 
 ```txt
-projects
-  public select: status = 'published'
-  owner insert/update/delete: public.is_owner()
-
-articles
-  public select: status = 'published'
-  owner insert/update/delete: public.is_owner()
-
-contact_messages
-  public select: never
-  owner select/update: public.is_owner()
+projects where status = 'published'
+articles where status = 'published'
+article_comments where status = 'approved'
+work_experience where status = 'published', if table-backed
 ```
 
-After each table, test both an allowed case and a blocked case. Security work done in one giant batch is hard to debug.
+Do not allow public users to read drafts, contact messages, subscribers, or owner identity.
 
-## Section 6 - Understand the anon key boundary
+### Step 4 - Add Owner Policies
 
-The anon key is not a password in the normal sense. It is allowed in the browser because the database is supposed to enforce permissions with RLS. That gives you this rule:
+Use `owner_profile.user_id` to decide who the owner is. The owner may read and write admin-managed tables.
 
-| Key | Browser? | Why |
-|---|---:|---|
-| Supabase anon key | yes | limited by RLS policies |
-| Supabase service-role key | no | bypasses RLS entirely |
-| Brevo API key | no | can send email as your account |
-| Database password | no | direct database power |
+The rule should live in the database, not in React.
 
-If a feature only works when you move service-role into React, the feature is not fixed. It is unsafe.
+### Step 5 - Test With The Anon Client
 
-## Section 7 - Do it on your project
-
-Create a written `policy-map.md` or learning-log section before writing policies. Then implement policies in this order:
-
-1. Enable RLS on all app tables.
-2. Create and test `public.is_owner()`.
-3. Add public read policies for published/approved content.
-4. Add owner policies for admin-managed tables.
-5. Add narrow insert policies only where public insertion is intentional.
-6. Leave private tables private by default.
-
-## Section 8 - Prove blocked access directly
-
-Use the public Supabase client, browser console, or a small script. Test:
+Run or simulate signed-out queries:
 
 ```txt
-public reads published project        -> allowed
-public reads draft project            -> blocked or empty
-public reads contact_messages         -> blocked or empty
-signed-out updates article            -> blocked
-owner updates own project             -> allowed
+published project -> visible
+draft project -> blocked or not returned
+published article -> visible
+draft article -> blocked or not returned
+contact message -> blocked
+subscriber row -> blocked
 ```
 
-Record the exact result in the learning log. Security you did not test is a hope, not a gate.
+### Step 6 - Test As The Owner
 
-## If it breaks
+Sign in as the owner and confirm the owner can read drafts and admin-only rows.
 
-| Symptom | Likely cause | Smallest next test |
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Public sees drafts | Policy or query is too broad | Query a known draft by slug as signed-out anon. |
-| Owner cannot edit | `owner_profile` does not match `auth.uid()` or policy missing `with check` | Select `auth.uid()` while signed in and compare owner row. |
-| Everything returns empty | RLS enabled before public policies were added | Test one table with one known published row. |
-| A service-role key seems necessary in React | Policy design is wrong | Stop and fix RLS; do not move service-role to browser. |
+| Hiding draft links in React only | Draft rows can still leak through queries | Add RLS policies |
+| Making any authenticated user an owner | Any login can edit content | Check against `owner_profile` |
+| Forgetting contact messages | Private visitor data leaks | Make messages owner-only |
+| Not testing signed out | You only tested the happy path | Use anon queries deliberately |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why hiding a button is not security.
-- Why anon key can be public only with correct RLS.
-- Why `public.is_owner()` uses `set search_path`.
-- How you proved one blocked read and one blocked write.
+- RLS is enabled on app tables.
+- Public policies read only published/approved content.
+- Owner policies use owner identity.
+- Drafts are blocked from signed-out users.
+- Contact messages are owner-only.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the RLS security model into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/04-rls-and-security.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Why is hiding UI not security?
+Which data is public?
+Which data is owner-only?
+How did you prove a draft row stays private?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] RLS is enabled.
+- [ ] Public read policies are narrow.
+- [ ] Owner policies are based on `owner_profile`.
+- [ ] Signed-out tests cannot read private rows.
+- [ ] Owner tests can access owner workflows.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security), [PostgreSQL row security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [Supabase Auth](https://supabase.com/docs/guides/auth), and [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets). Required: admin CRUD, inbox, comments, analytics, and deployment all depend on this distinction.
-
-## Section 4 - Test blocked cases like an attacker
-
-After each policy, test both sides. Public should read published projects but not drafts. Signed-out users should not update articles. Public users should not read contact messages. The owner should still be able to do owner work.
-
-Use the browser console or a tiny script with the anon key. That is the point: prove the database rejects bypass attempts.
-
-> **💡 Hint.** A correct blocked read often returns no rows, not dramatic fireworks. Learn what success looks like for both allowed and blocked cases.
-
-## Definition of Done
-
-- [ ] RLS is enabled on every application table.
-- [ ] Public users can read published projects/articles and approved comments only.
-- [ ] Draft content is hidden from public reads.
-- [ ] Owner-only policies use one consistent `public.is_owner()` helper or equivalent.
-- [ ] The owner identity table is not publicly readable or editable.
-- [ ] Contact messages and subscribers are not publicly readable.
-- [ ] Signed-out write attempts fail.
-- [ ] You can explain why the anon key is browser-safe only when RLS is correct.
-- [ ] No service-role key appears in frontend code.
-
-> **✍️ Log it (mandatory).** In `learning-log/04-rls-and-security.md`: write your policy map, then describe one blocked read and one blocked write you tested. Explain why service-role must never go in React.
-
-All boxes ticked? Then the backend has its guardrails. Now build pages visitors can actually navigate.
-
----
-
-Next: the backend has guardrails; now give visitors a route structure they can navigate. -> **[Chapter 05 - Public layout and routing](05-public-layout-and-routing.md)**
+Next: design public layout and routes. -> **[Chapter 05 - Public Layout And Routing](05-public-layout-and-routing.md)**

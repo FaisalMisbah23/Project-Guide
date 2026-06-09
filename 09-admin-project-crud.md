@@ -1,217 +1,142 @@
-# Chapter 09 - Admin project CRUD
+# Chapter 09 - Admin Project CRUD
 
-Now the owner gets real power: create, edit, publish, unpublish, and archive projects. CRUD looks basic until you add validation, duplicate slugs, public visibility, ownership policies, and two tabs editing the same row.
+The owner can enter the admin area. Now the owner needs to create, edit, publish, unpublish, and archive projects without editing source code.
 
-## The point of this chapter
+## Goal
 
-An owner-only project management flow with validated forms, draft/published states, safer archive behavior, and a concurrency guard based on reliable `updated_at`.
+By the end, project content is manageable from the admin dashboard.
 
-## Before you touch code
+## What You Will Build
 
-- Owner login works.
-- Owner can read project rows through RLS.
-- `updated_at` changes on update.
-- Public project pages already hide drafts.
+- Admin project list.
+- Project form.
+- Create action.
+- Edit action.
+- Publish/unpublish action.
+- Archive action.
+- Validation and duplicate-slug handling.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **CRUD.** Create, read, update, delete/archive workflow.
-- **Draft.** Saved but not public.
-- **Published.** Visible to public routes.
-- **Archive.** Hide while preserving history.
-- **Concurrency.** Two edits happening close enough to conflict.
+- **CRUD:** create, read, update, delete. This course usually archives instead of deleting.
+- **Validation:** checking input before saving.
+- **Mutation:** a database write.
+- **Slug:** URL-safe identifier.
+- **Archive:** hide from active use without destroying history.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Create Admin Project Files
 
-```ts
-// form and mutation contract shapes
-type ProjectFormValues = {
-  title: string;
-  slug: string;
-  summary: string;
-  description: string;
-  technologies: string[];
-  demoUrl: string;
-  codeUrl: string;
-  featured: boolean;
-  status: 'draft' | 'published' | 'archived';
-};
-
-validateProjectInput(values) -> fieldErrors;
-updateProject(id, values, lastSeenUpdatedAt) -> updated row or stale-edit error;
-```
-
-## Step 1 - Confirm `updated_at` is real
-
-Before using `updated_at` as a guard, prove it changes on update. A stale timestamp gives false confidence and makes concurrency handling theater.
-
-## Step 2 - Validate before saving
-
-Create a form shape for what the owner edits. Validate title, slug, summary, URLs, technologies, status, and featured flag before mutation. Database constraints still stay in place.
-
-## Step 3 - Prefer archive over hard delete
-
-Hard delete is permanent and can break public links. Archive is the safer default because it removes public visibility while preserving history.
-
-## Step 4 - Guard stale edits
-
-When loading an edit form, remember `updated_at`. On save, update only when the row still has that same value. If no row updates, tell the owner to reload because the project changed elsewhere.
-
-## Step 5 - Define the admin project feature folder
-
-Use a folder that keeps form, validation, and mutations together:
+Create:
 
 ```txt
 src/features/adminProjects/
   adminProjectTypes.ts
   adminProjectApi.ts
-  validateProjectInput.ts
-  AdminProjectsPage.tsx
   ProjectForm.tsx
-  ProjectRowActions.tsx
+  AdminProjectList.tsx
 ```
 
-This is the admin-side mirror of the public projects feature. Public reads and owner writes should not blur together.
+### Step 2 - Build The List First
 
-## Step 6 - Write the mutation contract
+Show all owner-visible projects in `/admin/projects`, including drafts, published, and archived rows. Public pages still show only published rows.
 
-Use clear functions instead of inline Supabase calls everywhere:
+### Step 3 - Build The Form
 
-```ts
-listOwnerProjects()
-createProjectDraft(values)
-updateProject(id, values, lastSeenUpdatedAt)
-publishProject(id)
-unpublishProject(id)
-archiveProject(id)
+The form should include:
+
+```txt
+title
+slug
+summary
+description
+technologies
+project link
+repository link
+featured flag
+status
+image path / image alt later
 ```
 
-The names describe intent. The implementation can use Supabase, but the UI should call verbs the owner understands.
+Start with text inputs and textareas. Improve UI later.
 
-## Step 7 - Compare delete choices
+### Step 4 - Add Create
 
-| Action | Public effect | History effect | Beginner default |
-|---|---|---|---|
-| hard delete | row disappears | history can break | avoid for published work |
-| archive | hidden publicly | row remains | use this |
-| unpublish | hidden publicly | draft/editable | use for temporary removal |
+On submit:
 
-Hard delete is not evil. It is just rarely the safest first behavior for portfolio work that may have links, images, comments, or analytics.
+```txt
+validate required fields
+insert project
+show success
+return to project list or stay on edit page
+```
 
-## Step 8 - Do it on your project
+### Step 5 - Add Edit
 
-Build this lifecycle in order:
+Load the existing project by id or slug. Fill the form. Save changes with an update mutation.
 
-1. Owner list view with status filters.
-2. Create draft form.
-3. Edit draft form.
-4. Publish action.
-5. Unpublish action.
-6. Archive action with confirmation.
-7. Duplicate slug and invalid URL messages.
-8. Stale edit guard using `updated_at`.
+### Step 6 - Add Status Actions
 
-## Prove it before moving on
+Add buttons for:
 
-Open two tabs on the same project. Save a change in tab A. Try saving older data in tab B. Tab B should not silently overwrite tab A; it should ask the owner to reload.
+```txt
+publish
+unpublish to draft
+archive
+```
 
-## If it breaks
+Prefer archive over hard delete for v1 because links, images, and analytics may reference old projects.
 
-| Symptom | Likely cause | Smallest next test |
+### Step 7 - Test Errors
+
+Try:
+
+```txt
+empty title
+duplicate slug
+invalid status
+signed-out insert
+two tabs editing the same row, if using updated_at checks
+```
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Duplicate slug creates ugly error | Database error is not mapped to field message | Catch unique violation and show slug-specific message. |
-| Public page does not update after publish | Status value or public query mismatch | Inspect row status and public query filter. |
-| Stale edit overwrites newer edit | `updated_at` guard missing or timestamp stale | Run the two-tab test again. |
-| Signed-out create works | RLS policy too broad | Try insert from anon client and fix policy immediately. |
+| Only validating in React | Bad writes can still happen | Keep database constraints |
+| Hard deleting by default | History and links can break | Archive first |
+| Duplicate slug shows raw error | Owner cannot fix easily | Convert to a field message |
+| Public query sees drafts | RLS or query is too broad | Retest signed-out reads |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why archive is safer than hard delete.
-- Why validation and database constraints both matter.
-- Why `updated_at` must update automatically or consistently.
-- How the two-tab stale edit test works.
+- Admin project list shows all owner rows.
+- Create works.
+- Edit works.
+- Publish/unpublish works.
+- Archive works.
+- Duplicate slug is handled.
+- Signed-out users cannot write.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the admin project CRUD feature into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/09-admin-project-crud.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Why does the admin list show drafts while the public list does not?
+Why is archive safer than hard delete for v1?
+Which validation belongs in React?
+Which validation belongs in the database?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] Owner can create projects.
+- [ ] Owner can edit projects.
+- [ ] Owner can publish and unpublish.
+- [ ] Owner can archive.
+- [ ] Validation errors are understandable.
+- [ ] RLS blocks unauthorized writes.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase inserts and updates](https://supabase.com/docs/reference/javascript/insert), [MDN form validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation), and [PostgreSQL unique constraints](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS). Required: admin forms need UI validation, database constraints, and clear mutation behavior.
-
-> **💡 Hint.** Test a duplicate slug on purpose. A database error should become a useful field message, not a mysterious red wall.
-
-## Definition of Done
-
-- [ ] Owner can list projects.
-- [ ] Owner can create and edit drafts.
-- [ ] Owner can publish and unpublish projects.
-- [ ] Archive is available and safer than hard delete by default.
-- [ ] Invalid URLs, empty titles, short summaries, and duplicate slugs fail clearly.
-- [ ] Signed-out writes fail through RLS.
-- [ ] Stale `updated_at` updates show a reload-before-saving message.
-
-> **✍️ Log it (mandatory).** In `learning-log/09-admin-project-crud.md`: explain why archive is safer than hard delete, and why the concurrency guard depends on trustworthy `updated_at`.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: projects are manageable; now give articles the same owner workflow. -> **[Chapter 10 - Admin article CRUD](10-admin-article-crud.md)**
+Next: add article management. -> **[Chapter 10 - Admin Article CRUD](10-admin-article-crud.md)**

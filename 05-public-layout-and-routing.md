@@ -1,64 +1,47 @@
-# Chapter 05 - Public layout and routing
+# Chapter 05 - Public Layout And Routing
 
-The database is guarded; now the public site needs a shape. Routing is easy to underestimate because beginners can fake pages with component state. But URLs are part of the product. They let visitors bookmark, refresh, share, and understand where they are.
+The database is protected. Now you build the public shape of the portfolio: pages, navigation, layout, and placeholders. Do not connect Supabase yet. First prove the site structure.
 
-## The point of this chapter
+## Goal
 
-A public route structure with home, about, projects, project detail, articles, article detail, contact, and not-found pages, all wrapped in a shared layout.
+By the end, the public portfolio has real routes, a navbar, a footer, and meaningful placeholder pages.
 
-## Before you touch code
+## What You Will Build
 
-- The app starts locally.
-- You know the public pages the portfolio needs.
-- You are not connecting Supabase data yet.
-- You have React Router docs open.
+- Public route map.
+- Shared public layout.
+- Navbar and footer.
+- Placeholder pages for required sections.
+- Local arrays for early experience, skills, and project previews.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Route.** A URL mapped to a component.
-- **Layout.** Shared wrapper around related pages.
-- **Slug.** URL-safe identifier such as `portfolio-site`.
-- **Not-found page.** The recovery page for unknown URLs.
+- **Route:** a URL mapped to a page component.
+- **Layout:** shared wrapper around pages.
+- **Navbar:** links used to move through the site.
+- **Placeholder:** temporary content that still describes what belongs there.
+- **Local array:** repeated content stored in a TypeScript file before database fetching.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Confirm The Design Direction
+
+Use the choice from Chapter 01. Write one sentence:
 
 ```txt
-Route contract
-  /                  public home
-  /about             public about
-  /projects          public project list
-  /projects/:slug    public project detail
-  /articles          public article list
-  /articles/:slug    public article detail
-  /contact           public contact
-  *                  public not found
+This portfolio should feel like: calm professional / developer dashboard / editorial / creative.
 ```
 
-## Step 1 - Use routes, not manual page state
+That decision affects spacing, typography, and page density.
 
-The shortcut is one giant component with `currentPage` state. It works until refresh, deep links, analytics, not-found pages, and deployment enter the room. Use React Router so URLs represent real pages.
+### Step 2 - Write The Route Contract
 
-## Step 2 - Build the shared public layout
-
-Create a header, navigation, main content area, and footer. Keep the layout boring and dependable. Public pages should feel easy to scan before they become fancy.
-
-## Step 3 - Add placeholder pages before data
-
-Build every route with meaningful placeholder content first. Projects and articles will connect to Supabase later; today you are proving navigation, not data loading.
-
-## Step 4 - Test direct refresh
-
-Visit `/projects`, `/projects/example-slug`, `/articles`, `/articles/example-slug`, `/contact`, and a nonsense URL. Refresh each one. If refresh breaks, you have a routing/deployment issue to solve before feature work hides it.
-
-## Step 5 - Write the route contract
-
-Before building components, write the route table:
+Use this public route map:
 
 ```txt
 /                  HomePage
 /about             AboutPage
+/experience        ExperiencePage
 /projects          ProjectsPage
 /projects/:slug    ProjectDetailPage
 /articles          ArticlesPage
@@ -67,139 +50,120 @@ Before building components, write the route table:
 *                  NotFoundPage
 ```
 
-This is your frontend contract. A new reader should know which component owns each URL.
+### Step 3 - Create Starter Local Data
 
-## Step 6 - Create the minimum page content
-
-Each placeholder page should answer one question even before data exists:
+Create local data files:
 
 ```txt
-Home: who are you and what should the visitor do next?
-About: what is your story and current focus?
-Projects: what work will appear here?
-Articles: what thinking will appear here?
-Contact: how will a visitor start a conversation?
-Not found: how does the visitor recover?
+src/data/experience.ts
+src/data/skills.ts
+src/data/starterProjects.ts
 ```
 
-Do not leave pages as `TODO`. A placeholder should still be meaningful.
+These files should export arrays. This lets beginners practice rendering lists before Supabase is involved.
 
-## Step 7 - Do it on your project
+### Step 4 - Create Page Components
 
-Create these artifacts:
+Create page files in `src/pages/`:
 
 ```txt
-src/routes/router.tsx
-src/pages/HomePage.tsx
-src/pages/AboutPage.tsx
-src/pages/ProjectsPage.tsx
-src/pages/ProjectDetailPage.tsx
-src/pages/ArticlesPage.tsx
-src/pages/ArticleDetailPage.tsx
-src/pages/ContactPage.tsx
-src/pages/NotFoundPage.tsx
+HomePage.tsx
+AboutPage.tsx
+ExperiencePage.tsx
+ProjectsPage.tsx
+ProjectDetailPage.tsx
+ArticlesPage.tsx
+ArticleDetailPage.tsx
+ContactPage.tsx
+NotFoundPage.tsx
+```
+
+Each page should show a heading and one useful sentence. Avoid empty `TODO` pages.
+
+### Step 5 - Create The Layout
+
+Create:
+
+```txt
 src/components/layout/PublicLayout.tsx
 ```
 
-Names can vary, but the responsibilities should remain separate.
+It should contain:
 
-## Prove it before moving on
+```txt
+header with site name and navbar
+main area for the current route
+footer with resume, GitHub, LinkedIn, email
+```
 
-Open every route manually, then refresh it. Click every nav item. Type a bad URL. If any route gives a blank screen, fix routing before Supabase data enters the picture.
+### Step 6 - Add React Router
 
-## If it breaks
+Create:
 
-| Symptom | Likely cause | Smallest next test |
+```txt
+src/routes/router.tsx
+```
+
+Use `createBrowserRouter` or the React Router pattern you choose. Wrap public pages in `PublicLayout`.
+
+### Step 7 - Check Navigation
+
+Run:
+
+```bash
+npm run dev
+```
+
+Click every navbar link. Refresh these URLs:
+
+```txt
+/
+/about
+/experience
+/projects
+/projects/example-slug
+/articles
+/articles/example-slug
+/contact
+/not-a-real-page
+```
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Clicking nav reloads page | Internal links use `<a>` instead of router links | Replace internal anchors with `Link` or `NavLink`. |
-| Refresh on nested route fails | SPA fallback is not configured for deployment | Test locally now; note Vercel rewrite for Chapter 18. |
-| Slug page shows no slug | Route pattern or param hook is wrong | Log route params on a placeholder detail page. |
-| Layout duplicates on pages | Layout is placed inside each page instead of route tree | Move shared structure into `PublicLayout`. |
+| Using component state instead of routes | Refresh and sharing links break | Use React Router |
+| Using `<a>` for internal links | The app fully reloads | Use `Link` or `NavLink` |
+| Empty placeholder pages | You cannot judge layout | Add meaningful starter text |
+| Skipping experience route | Required portfolio proof is missing | Add `/experience` |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why URLs matter for a portfolio.
-- Why placeholder pages should still be meaningful.
-- Why internal navigation should use router links.
+- All public routes render.
+- Navbar links work without full reloads.
+- Footer appears on public pages.
+- Work experience has a page or section.
+- Local arrays exist for beginner content practice.
+- Bad URLs show a not-found page.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the public route structure into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/05-public-layout-and-routing.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+What routes does the public portfolio need?
+Why are real URLs better than page state?
+What content is currently in local arrays?
+How does the navbar match the portfolio sections?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] Public route map is implemented.
+- [ ] Shared layout exists.
+- [ ] Navbar and footer exist.
+- [ ] Home, About, Experience, Projects, Articles, Contact, and Not Found pages render.
+- [ ] Local arrays render at least one repeated section.
+- [ ] Direct refresh works locally.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [React Router](https://reactrouter.com/home), [React conditional rendering](https://react.dev/learn/conditional-rendering), and [MDN document structure](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents). Required: routes, layout, and semantic page regions are the vocabulary of this chapter.
-
-> **💡 Hint.** Use `Link` or `NavLink` for internal navigation. A normal `<a>` is for leaving the app or linking to real documents, not for route changes inside the SPA.
-
-## Definition of Done
-
-- [ ] All public routes render.
-- [ ] The shared public layout wraps the pages.
-- [ ] Navigation works without full page reloads.
-- [ ] Slug routes exist for project and article details.
-- [ ] Unknown URLs show a friendly not-found page.
-- [ ] Direct refresh works locally and has a deployment plan.
-
-> **✍️ Log it (mandatory).** In `learning-log/05-public-layout-and-routing.md`: explain why real URLs are better than manual page switching with component state. Include one thing that would break with the shortcut.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: the routes exist; now replace placeholder work with published rows from Supabase. -> **[Chapter 06 - Projects from Supabase](06-projects-from-supabase.md)**
+Next: replace starter project cards with Supabase data. -> **[Chapter 06 - Projects From Supabase](06-projects-from-supabase.md)**

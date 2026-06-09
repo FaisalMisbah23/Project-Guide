@@ -1,71 +1,45 @@
-# Chapter 08 - Owner auth and admin dashboard
+# Chapter 08 - Owner Auth And Admin Dashboard
 
-The public site can now read content. The owner needs a private door. This is where beginners often confuse two different protections: a route guard that keeps the UI tidy, and RLS that keeps the database safe.
+The public site can read content. Now the owner needs a private workspace. This chapter adds login, protected admin routes, and the admin dashboard shell.
 
-## The point of this chapter
+## Goal
 
-Supabase Auth login, protected admin routes, logout, owner verification, and an admin dashboard shell that future admin features plug into.
+By the end, the owner can sign in and view a protected admin dashboard while signed-out users are kept out of admin screens.
 
-## Before you touch code
+## What You Will Build
 
-- RLS owner policies exist for at least one admin table.
-- `owner_profile` contains the intended owner user id.
-- Public routes still work signed out.
-- You know which admin routes will exist.
+- Login page.
+- Auth helper functions.
+- Protected route wrapper.
+- Admin layout.
+- Dashboard navigation.
+- Placeholder admin pages.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Session.** Browser-held proof that Supabase Auth knows the user.
-- **Protected route.** A UI route that redirects when no session exists.
-- **Owner check.** Database-backed check that the signed-in user is the portfolio owner.
-- **Admin shell.** Shared private layout for admin pages.
+- **Authentication:** proving who a user is.
+- **Session:** saved login state.
+- **Route guard:** React logic that redirects signed-out users.
+- **Admin shell:** shared layout for private pages.
+- **RLS:** database protection that still matters even with route guards.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Create Auth Feature Files
 
-```txt
-Admin route contract
-  /admin/login      public login screen
-  /admin            owner dashboard
-  /admin/projects   owner project management
-  /admin/articles   owner article management
-  /admin/messages   owner inbox
-  /admin/newsletter owner newsletter runs/subscribers
-  /admin/analytics  owner analytics summaries
-```
-
-## Step 1 - Pick the simple auth path
-
-Use email/password or magic link. Do not build custom auth from scratch. Supabase Auth already handles sessions; your job is to integrate it clearly.
-
-## Step 2 - Protect routes for user experience
-
-Create `/admin/login`, an admin layout, and a `RequireAuth` style guard. Signed-out visitors should not wander through admin screens.
-
-## Step 3 - Verify owner, not just signed-in
-
-Any signed-in user is not automatically the owner. Connect the session user id to `owner_profile` and let RLS decide owner-only access.
-
-## Step 4 - Build the shell before the features
-
-Add dashboard navigation for projects, articles, images, messages, newsletter, and analytics. Empty sections are fine today; the shell gives later chapters a home.
-
-## Step 5 - Draw the auth flow
-
-Write the flow before wiring components:
+Create:
 
 ```txt
-Visitor opens /admin/projects
-  -> route checks session loading
-  -> no session: redirect to /admin/login
-  -> session exists: render admin layout
-  -> data query still depends on RLS and owner_profile
+src/features/auth/
+  authApi.ts
+  useSession.ts
 ```
 
-The route guard improves navigation. RLS protects data. Keep repeating that until it is boring.
+`authApi.ts` should wrap Supabase login/logout calls. `useSession.ts` should help React know whether the owner is signed in.
 
-## Step 6 - Create the admin route map
+### Step 2 - Add Admin Routes
+
+Add these routes:
 
 ```txt
 /admin/login
@@ -78,127 +52,82 @@ The route guard improves navigation. RLS protects data. Keep repeating that unti
 /admin/analytics
 ```
 
-Some pages can be placeholders today. The shell is the important artifact: a private workspace where future chapters land.
-
-## Step 7 - Do it on your project
+### Step 3 - Build The Login Page
 
 Create:
 
 ```txt
-src/features/auth/
-src/routes/RequireAuth.tsx
-src/pages/admin/AdminLayout.tsx
-src/pages/admin/AdminDashboardPage.tsx
 src/pages/admin/LoginPage.tsx
 ```
 
-Add logout early. Beginners often build login and forget the way out.
+The form should ask for email and password. On success, send the owner to `/admin`.
 
-## Prove it before moving on
+### Step 4 - Build `RequireAuth`
 
-Test three paths:
+Create:
 
 ```txt
-signed out opens /admin/projects -> redirected
-owner logs in -> dashboard opens
-signed out direct Supabase query for private table -> blocked by RLS
+src/routes/RequireAuth.tsx
 ```
 
-If the third path fails, do not continue to CRUD.
+Behavior:
 
-## If it breaks
+```txt
+session loading -> show loading state
+no session -> redirect to /admin/login
+session exists -> render admin page
+```
 
-| Symptom | Likely cause | Smallest next test |
+### Step 5 - Build The Admin Layout
+
+Create:
+
+```txt
+src/pages/admin/AdminLayout.tsx
+src/pages/admin/AdminDashboardPage.tsx
+```
+
+The layout should include private navigation for dashboard, projects, articles, images, messages, newsletter, and analytics.
+
+### Step 6 - Confirm RLS Still Protects Data
+
+Route guards improve user experience. They do not replace RLS. Test a signed-out database query for private rows and confirm it is blocked.
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Admin page flashes then redirects | Session loading state is treated as signed out | Add an explicit loading branch before redirect. |
-| Any signed-in user can access data | Owner identity is not checked by RLS | Test with a second non-owner user. |
-| Login works but queries fail | `owner_profile.user_id` does not match session user | Compare auth user id with owner row. |
-| Logout does not clear UI | Session state is cached in app state | Subscribe to auth state changes or refetch session after logout. |
+| Treating route guard as security | Browser code can be bypassed | Keep RLS policies |
+| Letting any signed-in user edit | Wrong user can become admin | Check owner identity in RLS |
+| No loading state | Auth check flashes wrong page | Show loading while session loads |
+| Admin links mixed with public nav | Visitors see irrelevant links | Keep admin layout separate |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why route protection is UX and RLS is security.
-- Why any signed-in user is not automatically owner.
-- How admin shell helps later chapters.
+- Owner can log in.
+- Signed-out visitor is redirected from `/admin`.
+- Admin layout appears after login.
+- Dashboard navigation exists.
+- RLS still blocks private rows when signed out.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the owner auth and dashboard feature into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/08-owner-auth-and-admin-dashboard.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+What does authentication prove?
+What does the route guard do?
+What does RLS do that the route guard cannot?
+Which admin sections will future chapters fill in?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
-
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase Auth](https://supabase.com/docs/guides/auth), [React Router](https://reactrouter.com/home), and [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security). Required: this chapter makes the difference between identity, route protection, and database permission concrete.
-
-> **💡 Hint.** After route protection works, still test a direct Supabase query as a signed-out user. The database should reject private data even if the UI is bypassed.
-
-## Definition of Done
-
-- [ ] Owner can log in and log out.
-- [ ] Signed-out users are redirected away from admin routes.
+- [ ] Login page exists.
+- [ ] Session state is handled.
+- [ ] Protected admin routes exist.
 - [ ] Admin layout and navigation exist.
-- [ ] The signed-in owner matches `owner_profile`.
-- [ ] RLS still blocks unauthorized database access if the route is bypassed.
-- [ ] Session loading has a visible state instead of a blank screen.
+- [ ] Signed-out users cannot browse admin pages.
+- [ ] RLS still blocks private data directly.
 
-> **✍️ Log it (mandatory).** In `learning-log/08-owner-auth-and-admin-dashboard.md`: explain route protection vs RLS protection. Give one example where route protection helps UX but does not secure data.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: the owner can enter; now give them control over projects. -> **[Chapter 09 - Admin project CRUD](09-admin-project-crud.md)**
+Next: add project management. -> **[Chapter 09 - Admin Project CRUD](09-admin-project-crud.md)**

@@ -1,33 +1,63 @@
-# Chapter 06 - Projects from Supabase
+# Chapter 06 - Projects From Supabase
 
-The projects page is where the portfolio starts proving skill. Hard-coded cards are useful for sketching, but the finished app should read published work from the database while keeping drafts private.
+The projects page can start with a local array, but the finished portfolio should load published projects from Supabase while keeping drafts private.
 
-## The point of this chapter
+## Goal
 
-Published projects load from Supabase into public list and detail pages, with loading, empty, error, filter, and missing-project states.
+By the end, project list and detail pages read published projects from Supabase and handle loading, empty, error, and not-found states.
 
-## Before you touch code
+## What You Will Build
 
-- Projects table has published and draft seed rows.
-- RLS public read policy exists for published projects only.
-- Public routes from Chapter 05 work.
-- You can run the app and inspect browser network requests.
+- Project types.
+- Project API functions.
+- Project card component.
+- Project list page.
+- Project detail page.
+- Privacy checks for draft projects.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Data module.** A file that owns Supabase queries for a feature.
-- **Mapper.** A function that converts database row shape into UI shape.
-- **Loading state.** UI shown while async work is unfinished.
-- **Empty state.** UI shown when the request succeeds with no rows.
-- **Not-found state.** UI shown when one requested item does not exist or is not public.
+- **API module:** a file that fetches data.
+- **Component:** a reusable UI piece.
+- **Mapper:** code that converts database field names into UI-friendly names.
+- **Loading state:** what the visitor sees while data is being fetched.
+- **Draft:** content that exists but is not public.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Start With The Local Array
+
+Before fetching, render project cards from `src/data/starterProjects.ts`. This proves the UI works without database complexity.
+
+Each item should include:
+
+```txt
+title
+slug
+summary
+technologies
+featured
+```
+
+### Step 2 - Create The Feature Folder
+
+Create:
+
+```txt
+src/features/projects/
+  projectTypes.ts
+  projectApi.ts
+  ProjectCard.tsx
+```
+
+Pages may stay in `src/pages/` or move into the feature folder, but keep fetching code out of visual cards.
+
+### Step 3 - Define The UI Type
+
+In `projectTypes.ts`, define the shape your UI wants:
 
 ```ts
-// contract shape, not final code
-type Project = {
+export type Project = {
   id: string;
   slug: string;
   title: string;
@@ -37,171 +67,87 @@ type Project = {
   imagePath: string | null;
   imageAlt: string | null;
 };
-
-getPublishedProjects(): Promise<Project[]>;
-getPublishedProjectBySlug(slug: string): Promise<Project | null>;
 ```
 
-## Step 1 - Keep data access out of the card
+### Step 4 - Write Supabase Read Functions
 
-Create a project feature folder. Put Supabase queries in a data module and rendering in components. A card should display a project; it should not know how to query the database.
-
-## Step 2 - Ask for published rows only
-
-The bad approach is fetching all rows and hiding drafts in React. If the browser receives the draft, the draft leaked. Query `status = 'published'` and let RLS enforce the same rule.
-
-## Step 3 - Map database rows to UI data
-
-Database rows are often snake_case. UI code often wants camelCase. Map deliberately so your components are not coupled to raw table shape.
-
-## Step 4 - Build the states
-
-Show loading while the request runs, a useful empty state when no projects exist, a human error when Supabase fails, and a not-found state when a slug has no published row.
-
-## Step 5 - Define the feature folder
-
-Keep the project feature cohesive:
+In `projectApi.ts`, create:
 
 ```txt
-src/features/projects/
-  projectTypes.ts
-  projectApi.ts
-  ProjectCard.tsx
-  ProjectsPage.tsx
-  ProjectDetailPage.tsx
+getPublishedProjects()
+getPublishedProjectBySlug(slug)
 ```
 
-The API module knows Supabase. The card knows display. The pages coordinate loading and route state.
+Both functions must request only `status = 'published'`. RLS should enforce the same rule.
 
-## Step 6 - Write the read contract
+### Step 5 - Replace Local Data With Supabase Data
 
-Your data functions should have simple promises:
-
-```ts
-getPublishedProjects() -> Project[]
-getPublishedProjectBySlug(slug) -> Project | null
-```
-
-They should select only public fields: title, slug, summary, technologies, links, featured flag, image path, and image alt. Do not select owner-only notes or draft-only fields.
-
-## Step 7 - Do it on your project
-
-Build in this order:
-
-1. Render fake project cards from a local array.
-2. Add filter state against the fake array.
-3. Create Supabase read functions.
-4. Replace the data source without rewriting the card.
-5. Add detail page fetch by slug.
-6. Add loading, empty, error, and not-found states.
-
-This order proves your UI and data boundary are separate.
-
-## Prove it before moving on
-
-Seed a published and draft project with similar tags. Confirm:
+Update the projects page:
 
 ```txt
-/projects shows published only
-filtering by shared tag still shows published only
+start loading
+call getPublishedProjects
+show cards when rows exist
+show empty state when no rows exist
+show error state when request fails
+```
+
+### Step 6 - Build Detail Fetching
+
+On `/projects/:slug`, read the slug from the route, fetch one published project, and show:
+
+```txt
+loading
+project details
+not found when null
+error when request fails
+```
+
+### Step 7 - Prove Draft Privacy
+
+Create one published project and one draft project. Check:
+
+```txt
+/projects shows only published projects
 /projects/draft-slug shows not found
-browser console query cannot reveal drafts when signed out
+signed-out Supabase query cannot reveal the draft
 ```
 
-## If it breaks
+## Common Mistakes
 
-| Symptom | Likely cause | Smallest next test |
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| No projects appear | RLS blocks everything or seed status is not `published` | Run the Supabase query for one known published slug. |
-| Draft appears publicly | Query selected all rows or RLS policy is too broad | Test signed-out query for the draft slug. |
-| Filter reveals unexpected data | Filtering happens after fetching too much | Confirm fetched rows are public before filter state runs. |
-| Detail page spins forever | Loading flag is never cleared on error or null result | Force a missing slug and inspect state transitions. |
+| Fetching all rows then filtering in React | Drafts reach the browser | Filter in query and enforce RLS |
+| Querying inside the card | UI becomes hard to reuse | Fetch in API/page layer |
+| No empty state | Empty database looks broken | Add a friendly empty message |
+| Detail page never stops loading | Error/null path does not clear loading | Handle all outcomes |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why project cards should not query Supabase themselves.
-- Why database rows are mapped before UI rendering.
-- Why filters must not be responsible for hiding drafts.
-- How you tested a draft slug.
+- Local project cards worked first.
+- Supabase project list works.
+- Project detail works by slug.
+- Draft rows are not public.
+- Loading, empty, error, and not-found states exist.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the projects feature into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/06-projects-from-supabase.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Why did the UI start with a local array?
+Why should cards not query Supabase?
+Why is hiding drafts in React too late?
+How did you prove the draft stayed private?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] Published projects load from Supabase.
+- [ ] Draft projects do not appear.
+- [ ] Detail pages fetch by slug.
+- [ ] Missing or draft slug shows not found.
+- [ ] UI handles loading, empty, and error states.
+- [ ] Data is mapped before rendering.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), and [React effects](https://react.dev/learn/synchronizing-with-effects). Required: this is the first public feature that depends on async data and RLS together.
-
-> **💡 Hint.** Seed a draft and published project with the same technology tag. Filters should never reveal the draft.
-
-## Definition of Done
-
-- [ ] Projects list reads from Supabase.
-- [ ] Only published projects render publicly.
-- [ ] Project detail fetches by slug and published status.
-- [ ] Draft projects do not appear in list, filter, or detail views.
-- [ ] Loading, empty, error, and not-found states are visible.
-- [ ] Database row shape is mapped before reaching visual components.
-
-> **✍️ Log it (mandatory).** In `learning-log/06-projects-from-supabase.md`: explain why both the query filter and RLS policy matter. Why is hiding drafts in React too late?
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: projects show what you built; now articles show how you think. -> **[Chapter 07 - Articles, comments, search, and pagination](07-articles-comments-search.md)**
+Next: build articles and comments. -> **[Chapter 07 - Articles, Comments, Search, And Pagination](07-articles-comments-search.md)**

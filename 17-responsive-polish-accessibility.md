@@ -1,204 +1,135 @@
-# Chapter 17 - Responsive polish and accessibility
+# Chapter 17 - Responsive Polish And Accessibility
 
-The app works; now it has to feel trustworthy on real screens and with real input methods. Polish is not decoration. It is whether a visitor can read, navigate, submit, and understand the portfolio without fighting it.
+The app works. Now make it usable on phones, tablets, desktops, keyboards, and assistive technology.
 
-## The point of this chapter
+## Goal
 
-Responsive layout, semantic HTML, keyboard navigation, labels, focus states, alt text, and a final public/admin usability pass.
+By the end, the portfolio is responsive, keyboard-friendly, readable, and accessible enough for a serious v1.
 
-## Before you touch code
+## What You Will Build
 
-- Core visitor and owner flows work.
-- You can open the app at multiple viewport widths.
-- You are ready to use keyboard-only navigation.
-- You have real-ish long text examples to test overflow.
+- Responsive layout pass.
+- Mobile navigation.
+- Keyboard checks.
+- Accessible labels and alt text.
+- Focus states.
+- Basic contrast and readability review.
 
-## Vocabulary for this chapter
+## Beginner Concepts
 
-- **Responsive.** Layout adapts to screen size.
-- **Semantic HTML.** HTML that describes meaning, not only appearance.
-- **Focus indicator.** Visible mark showing current keyboard position.
-- **Accessible name.** Name assistive tech uses for a control.
-- **Alt text.** Text replacement for meaningful images.
+- **Responsive design:** layout adapts to screen size.
+- **Breakpoint:** screen width where layout changes.
+- **Keyboard navigation:** using Tab, Enter, Escape, and arrows where appropriate.
+- **Focus state:** visible indicator of the active element.
+- **Semantic HTML:** HTML that communicates meaning, such as `main`, `nav`, `button`, `label`.
+- **Contrast:** readability between text and background.
 
-## Guided snippet or contract
+## Step By Step
 
-This is a shape to aim for, not a finished solution to paste blindly:
+### Step 1 - Check Real Viewports
 
-```txt
-Polish contract
-  mobile: readable, no horizontal scroll from layout bugs
-  desktop: content uses space without becoming stretched
-  keyboard: every action reachable and visible
-  forms: label + error + focus behavior
-  images: stable size + useful alt text
-  admin: dense, scannable, not cramped
-```
-
-## Step 1 - Test more than your laptop
-
-Check mobile, tablet, desktop, and a narrow awkward width. Layout bugs love the viewport you forgot.
-
-## Step 2 - Use semantic structure
-
-Headers, nav, main, sections, articles, forms, labels, and buttons give the page meaning before CSS improves it.
-
-## Step 3 - Navigate by keyboard
-
-Every link, button, input, menu, and admin action should be reachable and visibly focused without a mouse.
-
-## Step 4 - Treat text overflow as a bug
-
-Buttons, cards, sidebars, and dashboards should not overlap or clip important text. Fix layout, not the user's screen.
-
-## Step 5 - Review images and forms
-
-Meaningful images need useful alt text. Inputs need labels. Errors need to appear near the field they explain.
-
-## Step 6 - Make a viewport checklist
-
-Test at least:
+Inspect at:
 
 ```txt
-360px mobile
-768px tablet
-1024px laptop
-1440px desktop
-one awkward narrow height
+mobile width around 375px
+tablet width around 768px
+desktop width around 1280px
 ```
 
-Do not only drag the browser until it looks okay. Use named checkpoints so you can repeat the test later.
+Check home, projects, article detail, contact, admin dashboard, admin forms, and inbox.
 
-## Step 7 - Make a keyboard checklist
+### Step 2 - Fix Navigation On Small Screens
 
-Keyboard-test these flows:
+The navbar should not overflow. Add a mobile menu or a compact stacked layout.
+
+Make sure links are large enough to tap.
+
+### Step 3 - Fix Layout Overflow
+
+Look for:
 
 ```txt
-open navigation
-move through project cards
-submit contact form
-log in to admin
-open admin project actions
-edit and save a form
-archive a message
+cards too wide
+tables overflowing
+long slugs or URLs breaking layout
+buttons wrapping badly
+forms too cramped
 ```
 
-The visible focus indicator should tell you where you are at every step.
+Use responsive grids, wrapping, and sensible max widths.
 
-## Step 8 - Do it on your project
+### Step 4 - Check Keyboard Use
 
-Create a polish pass for:
+Use only the keyboard:
 
 ```txt
-public typography and spacing
-project/article card grids
-article body readability
-forms and field errors
-admin sidebar/header behavior
-modal or confirmation actions
-image aspect ratios
-button text wrapping
+Tab through nav links
+Tab through forms
+Submit buttons with Enter
+Close menus or dialogs
+Reach admin actions
+See focus clearly
 ```
 
-## Prove it before moving on
+### Step 5 - Add Labels And Alt Text
 
-Use only the keyboard for one visitor flow and one owner flow. Then inspect a long title, long email, long URL, and empty image. If text overlaps or controls move unpredictably, keep polishing.
+Every input needs a label. Every meaningful image needs useful alt text. Decorative images should be marked appropriately.
 
-## If it breaks
+### Step 6 - Check Headings And Page Structure
 
-| Symptom | Likely cause | Smallest next test |
+Each page should have one clear main heading. Sections should use headings in order.
+
+Use:
+
+```txt
+header
+nav
+main
+section
+footer
+```
+
+### Step 7 - Review Color And Text
+
+Check that text is readable. Avoid tiny text, low contrast, and layout where text overlaps.
+
+## Common Mistakes
+
+| Mistake | Why it hurts | Fix |
 |---|---|---|
-| Horizontal scroll on mobile | Fixed width or long unbroken content | Inspect the widest element at 360px. |
-| Keyboard focus disappears | Focus outline removed or custom control not focusable | Tab through and inspect active element. |
-| Button text overlaps | Container too narrow or text cannot wrap | Test longest realistic label and adjust layout. |
-| Screen reader label missing | Input uses placeholder only | Add real label or accessible name. |
+| Designing only on desktop | Mobile breaks | Test narrow screens |
+| Removing focus outlines | Keyboard users get lost | Keep visible focus |
+| Placeholder alt text | Screen readers get poor info | Write useful alt text |
+| Labels replaced by placeholders | Inputs are harder to use | Add real labels |
 
-## What you should be able to explain
+## Checks Before Moving On
 
-- Why polish is part of trust.
-- Why keyboard testing finds real bugs.
-- Why placeholder text is not a label.
-- How you fixed one overflow or focus issue.
+- Public pages work on mobile and desktop.
+- Admin pages remain usable.
+- Navbar does not overflow.
+- Keyboard navigation works.
+- Focus is visible.
+- Forms have labels.
+- Images have alt text.
 
-## The slower beginner path
+## Learning Log
 
-If this chapter feels too large, split the responsive and accessibility pass into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
-
-### Sitting 1 - Read and translate
-
-- Read the mandatory docs with this chapter open beside you.
-- Write five plain-language notes in the learning log.
-- Circle any word you cannot define yet.
-- Rewrite the point of the chapter in your own words.
-- Stop before coding if you cannot explain what you are about to change.
-
-### Sitting 2 - Create the smallest artifact
-
-- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
-- Add placeholder content or a tiny shape before trying to make it complete.
-- Run the smallest possible check.
-- If it fails, debug that one artifact before adding the next one.
-
-### Sitting 3 - Connect the artifact
-
-- Connect the artifact to the previous chapter's work.
-- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
-- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
-- Write down what changed in the request flow.
-
-### Sitting 4 - Break it safely
-
-- Try the shortcut this chapter warned you about in a harmless way.
-- Try the most likely beginner mistake from the troubleshooting table.
-- Confirm the app fails safely, or fix it until it does.
-- Record the before/after in the learning log.
-
-## Checkpoints during the work
-
-Use this mini-review after each sitting:
+In `learning-log/17-responsive-polish-accessibility.md`, answer:
 
 ```txt
-What did I create or change?
-What command, route, query, or click proves it exists?
-What private data or failure case did I protect?
-What is the next smallest test?
+Which page broke most on mobile?
+What keyboard path did you test?
+Which images needed better alt text?
+What accessibility issue did you fix?
 ```
 
-If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+## Definition Of Done
 
-## Suggested commit rhythm
+- [ ] Mobile, tablet, and desktop layouts are checked.
+- [ ] Public and admin navigation are usable.
+- [ ] Keyboard navigation is possible.
+- [ ] Focus states are visible.
+- [ ] Forms have labels.
+- [ ] Important images have useful alt text.
 
-Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
-
-```txt
-setup: add safe Supabase client shape
-schema: add project and article tables
-security: add public published-project policy
-ui: add project loading and empty states
-admin: add project archive action
-ops: add production smoke-test checklist
-```
-
-Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
-
-> **📖 Mandatory read.** Read [MDN accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility), [MDN responsive design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design), and [WebAIM keyboard accessibility](https://webaim.org/techniques/keyboard/). Required: visual polish and accessibility are both part of frontend quality.
-
-> **💡 Hint.** Complete the contact form and at least one admin flow using only the keyboard. That test reveals more than staring at the page.
-
-## Definition of Done
-
-- [ ] Public pages work at mobile and desktop widths.
-- [ ] Admin screens remain dense but readable.
-- [ ] Keyboard navigation reaches all core controls.
-- [ ] Visible focus states exist.
-- [ ] Forms have labels and useful errors.
-- [ ] Meaningful images have useful alt text.
-- [ ] Text does not overlap or escape its containers.
-
-> **✍️ Log it (mandatory).** In `learning-log/17-responsive-polish-accessibility.md`: document one responsive or accessibility issue you found and how you fixed it.
-
-All boxes ticked? Then continue. The next chapter builds on this gate, not around it.
-
----
-
-Next: the app is polished locally; now ship it with the right environment boundaries. -> **[Chapter 18 - Deploy with Vercel and Supabase](18-deploy-vercel-supabase.md)**
+Next: deploy the app. -> **[Chapter 18 - Deploy With Vercel And Supabase](18-deploy-vercel-supabase.md)**
