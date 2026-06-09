@@ -6,6 +6,34 @@ Deployment is where local assumptions meet reality. A green Vercel build proves 
 
 A production deployment where Vercel hosts the Vite frontend, Supabase hosts backend pieces, secrets live in the right platform, and a production smoke test proves critical workflows.
 
+## Before you touch code
+
+- Local build passes.
+- Supabase migrations and functions are ready.
+- You know all env vars and where they belong.
+- You have a smoke-test checklist written before deployment.
+
+## Vocabulary for this chapter
+
+- **Build.** Compile and package frontend assets.
+- **Preview deployment.** A non-production deployment used for review.
+- **Function secret.** Server-side env value available to Edge Functions.
+- **Smoke test.** Small set of critical checks after deployment.
+- **SPA fallback.** Rule that sends direct route refreshes back to React.
+
+## Guided snippet or contract
+
+This is a shape to aim for, not a finished solution to paste blindly:
+
+```txt
+Deployment contract
+  Vercel: frontend build + browser-safe VITE_ variables
+  Supabase: database, RLS, storage, Edge Functions, secrets, Realtime/Cron
+  Brevo: provider account and transactional email key stored server-side
+  CI: install, test if configured, build
+  Smoke test: prove critical workflows in production
+```
+
 ## Step 1 - Build locally first
 
 Run the production build before deploying. If it fails locally, it will not magically become clearer in Vercel logs.
@@ -76,6 +104,83 @@ Deploy in this order:
 ## Prove it before moving on
 
 Open browser devtools on production and inspect shipped config. You should see public Vite values, not Brevo keys, service-role keys, database passwords, or private tokens. Then run the blocked RLS tests against production data.
+
+## If it breaks
+
+| Symptom | Likely cause | Smallest next test |
+|---|---|---|
+| Homepage works but contact fails | Edge Function not deployed or secrets missing | Open function logs and verify Supabase secrets. |
+| Admin write fails in production | Owner id/RLS mismatch | Check `owner_profile` in production before using service-role. |
+| Direct route refresh 404s | SPA fallback missing | Configure Vercel rewrite/fallback. |
+| Secret appears in bundle | Private value was put in frontend env | Remove, rotate, redeploy, and inspect bundle again. |
+
+## What you should be able to explain
+
+- Why Vercel gets only browser-safe values.
+- Why Supabase secrets hold Brevo/service-role values.
+- Why production smoke tests include blocked RLS cases.
+- What you do first when production differs from local.
+
+## The slower beginner path
+
+If this chapter feels too large, split the deployment workflow into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
+
+### Sitting 1 - Read and translate
+
+- Read the mandatory docs with this chapter open beside you.
+- Write five plain-language notes in the learning log.
+- Circle any word you cannot define yet.
+- Rewrite the point of the chapter in your own words.
+- Stop before coding if you cannot explain what you are about to change.
+
+### Sitting 2 - Create the smallest artifact
+
+- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
+- Add placeholder content or a tiny shape before trying to make it complete.
+- Run the smallest possible check.
+- If it fails, debug that one artifact before adding the next one.
+
+### Sitting 3 - Connect the artifact
+
+- Connect the artifact to the previous chapter's work.
+- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
+- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
+- Write down what changed in the request flow.
+
+### Sitting 4 - Break it safely
+
+- Try the shortcut this chapter warned you about in a harmless way.
+- Try the most likely beginner mistake from the troubleshooting table.
+- Confirm the app fails safely, or fix it until it does.
+- Record the before/after in the learning log.
+
+## Checkpoints during the work
+
+Use this mini-review after each sitting:
+
+```txt
+What did I create or change?
+What command, route, query, or click proves it exists?
+What private data or failure case did I protect?
+What is the next smallest test?
+```
+
+If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+
+## Suggested commit rhythm
+
+Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
+
+```txt
+setup: add safe Supabase client shape
+schema: add project and article tables
+security: add public published-project policy
+ui: add project loading and empty states
+admin: add project archive action
+ops: add production smoke-test checklist
+```
+
+Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
 
 > **📖 Mandatory read.** Read [Vercel Vite deployment](https://vercel.com/docs/frameworks/vite), [Vercel environment variables](https://vercel.com/docs/environment-variables), [Supabase CLI](https://supabase.com/docs/guides/cli), [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), and [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart). Required: deployment is frontend, backend, secrets, and checks together.
 

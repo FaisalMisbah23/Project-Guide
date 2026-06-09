@@ -8,6 +8,31 @@ This first chapter does not ask you to code yet. It asks you to understand the s
 
 By the end, you can describe the product, the two people who use it, the major system pieces, and why a database-backed portfolio is stronger evidence than a static page.
 
+## Before you touch code
+
+- Read the course README once, even if you skim the outline first.
+- Create a place for notes; the learning log becomes part of the work.
+- Do not choose extra features yet. First understand the core system.
+
+## Vocabulary for this chapter
+
+- **Portfolio system.** A portfolio with data, admin workflows, permissions, and deployment, not only static pages.
+- **Visitor.** The public user who reads and contacts you.
+- **Owner.** You, the signed-in person who manages content.
+- **Boundary.** A line where responsibility changes, such as browser to Edge Function or React to database.
+
+## Guided snippet or contract
+
+This is a shape to aim for, not a finished solution to paste blindly:
+
+```txt
+Minimum product contract
+  public pages: home, about, projects, articles, contact
+  owner pages: dashboard, projects, articles, messages, newsletter, analytics
+  protected data: drafts, messages, subscribers, owner identity
+  server-only secrets: Brevo key, service-role key, database credentials
+```
+
 ## Section 1 - The product, in plain language
 
 The public site helps a visitor answer: *should I talk to this engineer?* It needs a strong home page, credible projects, thoughtful articles, and a contact path that does not silently lose messages.
@@ -103,6 +128,81 @@ Fill it in with your own words. Do not write generic textbook definitions. Use t
 ## Prove it before moving on
 
 Explain the whole system to yourself without naming React first. If your explanation starts with tools, restart with people: visitor, owner, message, content, trust. Tools come second.
+
+## If it breaks
+
+| Symptom | Likely cause | Smallest next test |
+|---|---|---|
+| I cannot explain the app without listing tools | You are starting from implementation instead of product flow | Describe what the visitor and owner do before naming React or Supabase. |
+| The scope feels too big | You are holding all chapters in your head at once | Split the system into public read, owner write, server workflow, and deployment. |
+| I want to skip the log | The written explanation feels slower than coding | Write five rough sentences; polish is less important than proof of thought. |
+
+## What you should be able to explain
+
+- Why this portfolio is stronger than a static page.
+- Which data should be public and which should stay private.
+- Why email is not the source of truth for contact messages.
+
+## The slower beginner path
+
+If this chapter feels too large, split the product model into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
+
+### Sitting 1 - Read and translate
+
+- Read the mandatory docs with this chapter open beside you.
+- Write five plain-language notes in the learning log.
+- Circle any word you cannot define yet.
+- Rewrite the point of the chapter in your own words.
+- Stop before coding if you cannot explain what you are about to change.
+
+### Sitting 2 - Create the smallest artifact
+
+- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
+- Add placeholder content or a tiny shape before trying to make it complete.
+- Run the smallest possible check.
+- If it fails, debug that one artifact before adding the next one.
+
+### Sitting 3 - Connect the artifact
+
+- Connect the artifact to the previous chapter's work.
+- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
+- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
+- Write down what changed in the request flow.
+
+### Sitting 4 - Break it safely
+
+- Try the shortcut this chapter warned you about in a harmless way.
+- Try the most likely beginner mistake from the troubleshooting table.
+- Confirm the app fails safely, or fix it until it does.
+- Record the before/after in the learning log.
+
+## Checkpoints during the work
+
+Use this mini-review after each sitting:
+
+```txt
+What did I create or change?
+What command, route, query, or click proves it exists?
+What private data or failure case did I protect?
+What is the next smallest test?
+```
+
+If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+
+## Suggested commit rhythm
+
+Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
+
+```txt
+setup: add safe Supabase client shape
+schema: add project and article tables
+security: add public published-project policy
+ui: add project loading and empty states
+admin: add project archive action
+ops: add production smoke-test checklist
+```
+
+Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
 
 > **📖 Mandatory read.** Read [MDN's overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview), [React's start guide](https://react.dev/learn/start-a-new-react-project), [Supabase's database overview](https://supabase.com/docs/guides/database/overview), and [Vercel's Vite deployment docs](https://vercel.com/docs/frameworks/vite). Required: you need the words browser, server, database, and deployment to mean something before you build.
 

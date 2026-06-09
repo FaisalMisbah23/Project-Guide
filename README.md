@@ -92,6 +92,59 @@ Chapters 15-18 handle analytics, failure states, responsive/accessibility polish
 
 Chapters 19-20 turn the shipped app into evidence: README, case study, demo script, smoke tests, maintenance rhythm, and the final explanation.
 
+
+## How to use troubleshooting tables
+
+Every chapter now includes an **If it breaks** table. Use it like a debugging ladder:
+
+1. Find the symptom closest to what you see.
+2. Read the likely cause, but do not assume it is correct yet.
+3. Run the smallest next test exactly as written or adapt it narrowly.
+4. Change one thing at a time.
+5. Record the result in your learning log if it taught you something.
+
+The goal is not to memorize fixes. The goal is to learn how to make a vague problem smaller.
+
+## How to know you are stuck productively
+
+You are productively stuck when you can say:
+
+```txt
+I know which chapter/feature I am in.
+I know what I expected.
+I know what actually happened.
+I have checked one log, query, console message, or network request.
+I have one smallest next test.
+```
+
+You are unproductively stuck when the problem is still `it does not work`. In that case, stop coding and write the four-line reset from above.
+
+## Suggested pacing
+
+A beginner-friendly pace is four passes:
+
+```txt
+Pass 1: Foundations       Chapters 01-04   setup, schema, RLS
+Pass 2: Public site       Chapters 05-07   routes, projects, articles
+Pass 3: Owner workflows   Chapters 08-14   admin, storage, contact, newsletter
+Pass 4: Production proof  Chapters 15-20   analytics, polish, deploy, maintain
+```
+
+If you work part-time, one or two chapters per week is reasonable. If you work intensively, do not measure only by chapter count. Measure by gates cleared honestly.
+
+## Minimum proof per chapter
+
+Before moving on from any chapter, you need at least this much proof:
+
+```txt
+1 visible artifact     route, table, policy, form, function, dashboard, checklist, or deployed URL
+1 failure test         blocked read, invalid input, missing row, provider failure, bad route, or bad viewport
+1 explanation          learning-log answer in your own words
+1 commit or checkpoint if code changed
+```
+
+This is the course's rhythm: build, break safely, explain, then continue.
+
 ## Course outline
 
 | # | Chapter | Done when... |

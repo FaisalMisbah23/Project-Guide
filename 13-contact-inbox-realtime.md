@@ -6,6 +6,34 @@ Now that messages are stored, the owner needs a place to read them. Email is use
 
 Owner-only contact inbox with list, detail, read/archive workflow, notification-status visibility, and optional Realtime updates for new messages.
 
+## Before you touch code
+
+- Contact form stores messages.
+- Owner auth works.
+- RLS blocks signed-out reads of contact_messages.
+- At least one message row exists.
+
+## Vocabulary for this chapter
+
+- **Inbox.** Admin workflow for stored contact messages.
+- **Unread/read.** Workflow status for owner attention.
+- **Archive.** Hide from active view without deleting.
+- **Realtime channel.** Subscription that receives future database changes.
+- **Cleanup.** Stopping a subscription when a component unmounts.
+
+## Guided snippet or contract
+
+This is a shape to aim for, not a finished solution to paste blindly:
+
+```txt
+Inbox contract
+  initial load: newest messages from database
+  detail: selected message body and metadata
+  actions: mark read, archive, optional restore
+  Realtime: new inserts update count/list
+  fallback: refresh always reloads truth
+```
+
 ## Step 1 - Load stored messages first
 
 The inbox begins with a normal query ordered newest first. If Realtime disconnects, refresh should still show the truth.
@@ -64,6 +92,82 @@ Build in this order:
 ## Prove it before moving on
 
 Submit the contact form in one browser while the inbox is open in another. The message may appear live, but after refresh it must still appear from stored data. Then navigate away and back repeatedly to check for duplicate subscriptions.
+
+## If it breaks
+
+| Symptom | Likely cause | Smallest next test |
+|---|---|---|
+| New messages duplicate | Realtime subscription created multiple times | Navigate away/back and inspect cleanup. |
+| Inbox empty after disconnect | UI depends only on Realtime | Reload from database first, subscribe second. |
+| Signed-out user can read messages | RLS policy too broad | Test anon select and fix policy. |
+| Owner misses email failure | Notification status is hidden | Show `notification_status` in list or detail. |
+
+## What you should be able to explain
+
+- Why Realtime is convenience, not source of truth.
+- Why messages use statuses instead of immediate deletion.
+- How cleanup prevents duplicate events.
+
+## The slower beginner path
+
+If this chapter feels too large, split the contact inbox and Realtime workflow into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
+
+### Sitting 1 - Read and translate
+
+- Read the mandatory docs with this chapter open beside you.
+- Write five plain-language notes in the learning log.
+- Circle any word you cannot define yet.
+- Rewrite the point of the chapter in your own words.
+- Stop before coding if you cannot explain what you are about to change.
+
+### Sitting 2 - Create the smallest artifact
+
+- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
+- Add placeholder content or a tiny shape before trying to make it complete.
+- Run the smallest possible check.
+- If it fails, debug that one artifact before adding the next one.
+
+### Sitting 3 - Connect the artifact
+
+- Connect the artifact to the previous chapter's work.
+- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
+- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
+- Write down what changed in the request flow.
+
+### Sitting 4 - Break it safely
+
+- Try the shortcut this chapter warned you about in a harmless way.
+- Try the most likely beginner mistake from the troubleshooting table.
+- Confirm the app fails safely, or fix it until it does.
+- Record the before/after in the learning log.
+
+## Checkpoints during the work
+
+Use this mini-review after each sitting:
+
+```txt
+What did I create or change?
+What command, route, query, or click proves it exists?
+What private data or failure case did I protect?
+What is the next smallest test?
+```
+
+If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+
+## Suggested commit rhythm
+
+Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
+
+```txt
+setup: add safe Supabase client shape
+schema: add project and article tables
+security: add public published-project policy
+ui: add project loading and empty states
+admin: add project archive action
+ops: add production smoke-test checklist
+```
+
+Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
 
 > **📖 Mandatory read.** Read [Supabase Realtime](https://supabase.com/docs/guides/realtime), [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), and [React effect lifecycle](https://react.dev/learn/lifecycle-of-reactive-effects). Required: subscriptions must be started and cleaned up deliberately.
 

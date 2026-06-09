@@ -8,6 +8,33 @@ This chapter builds the skeleton slowly and deliberately. Nothing useful is on s
 
 A Vite React app runs locally, builds for production, has a clear folder layout, reads only browser-safe Supabase variables, ignores real secrets, commits a safe `.env.example`, and has a baseline Git commit.
 
+## Before you touch code
+
+- Confirm Node and npm are installed.
+- Make sure you are inside the folder where you want the app project to live.
+- Have a Supabase project URL and anon key only if you are ready to connect Supabase; setup can start without them.
+- Decide the project folder name before running create commands.
+
+## Vocabulary for this chapter
+
+- **Dev server.** The local server Vite runs while you build.
+- **Production build.** The optimized files Vercel will serve.
+- **Environment variable.** A config value read by the app at runtime or build time.
+- **Secret.** A value that gives private power and must not be visible in browser code.
+- **Baseline commit.** The first known-good checkpoint after setup works.
+
+## Guided snippet or contract
+
+This is a shape to aim for, not a finished solution to paste blindly:
+
+```txt
+Setup contract, not final code
+  commands: npm install, npm run dev, npm run build
+  frontend env: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+  ignored: .env, node_modules, dist, logs
+  committed: .env.example, package files, source files, learning-log notes
+```
+
 ## Step 1 - Create the React app
 
 Use Vite because it gives React beginners fast feedback and a simple production build:
@@ -118,6 +145,82 @@ code search      -> no real private secret exists in frontend files
 ```
 
 If any line fails, fix setup now. Setup problems become harder to untangle after Supabase, routing, and admin features arrive.
+
+## If it breaks
+
+| Symptom | Likely cause | Smallest next test |
+|---|---|---|
+| `npm run dev` fails | Dependencies are missing or the project folder is wrong | Run `npm install`, then check `package.json` scripts. |
+| Env values are undefined | Vite server started before `.env` existed or names lack `VITE_` | Restart dev server and inspect variable names. |
+| `.env` appears in Git status | `.gitignore` is missing or added too late | Stop, untrack `.env` if needed, and rotate any leaked value. |
+| Build fails after setup | Tooling config is incomplete | Fix the first build error before adding features. |
+
+## What you should be able to explain
+
+- Why `VITE_` variables are browser-visible.
+- Why `.env.example` is safe but `.env` is not.
+- Why a baseline commit matters before feature work.
+
+## The slower beginner path
+
+If this chapter feels too large, split the project setup into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
+
+### Sitting 1 - Read and translate
+
+- Read the mandatory docs with this chapter open beside you.
+- Write five plain-language notes in the learning log.
+- Circle any word you cannot define yet.
+- Rewrite the point of the chapter in your own words.
+- Stop before coding if you cannot explain what you are about to change.
+
+### Sitting 2 - Create the smallest artifact
+
+- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
+- Add placeholder content or a tiny shape before trying to make it complete.
+- Run the smallest possible check.
+- If it fails, debug that one artifact before adding the next one.
+
+### Sitting 3 - Connect the artifact
+
+- Connect the artifact to the previous chapter's work.
+- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
+- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
+- Write down what changed in the request flow.
+
+### Sitting 4 - Break it safely
+
+- Try the shortcut this chapter warned you about in a harmless way.
+- Try the most likely beginner mistake from the troubleshooting table.
+- Confirm the app fails safely, or fix it until it does.
+- Record the before/after in the learning log.
+
+## Checkpoints during the work
+
+Use this mini-review after each sitting:
+
+```txt
+What did I create or change?
+What command, route, query, or click proves it exists?
+What private data or failure case did I protect?
+What is the next smallest test?
+```
+
+If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+
+## Suggested commit rhythm
+
+Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
+
+```txt
+setup: add safe Supabase client shape
+schema: add project and article tables
+security: add public published-project policy
+ui: add project loading and empty states
+admin: add project archive action
+ops: add production smoke-test checklist
+```
+
+Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
 
 > **📖 Mandatory read.** Read [Vite's guide](https://vite.dev/guide/), [React's project guide](https://react.dev/learn/start-a-new-react-project), [Tailwind's Vite installation](https://tailwindcss.com/docs/installation/using-vite), [shadcn/ui's Vite installation](https://ui.shadcn.com/docs/installation/vite), and [Vite environment variables](https://vite.dev/guide/env-and-mode). Required: the rest of the course assumes you know what the dev server, build command, and `VITE_` prefix do.
 

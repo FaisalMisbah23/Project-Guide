@@ -8,6 +8,36 @@ This chapter is where the app stops being a pile of components and becomes a sys
 
 You design and create the database through committed Supabase migrations: content tables, workflow tables, analytics tables, an owner identity table, constraints, seed rows, indexes, and a reliable `updated_at` strategy.
 
+## Before you touch code
+
+- Finish Chapter 02 and confirm the app builds.
+- Read the Supabase CLI docs with migrations in mind.
+- Write the table list before opening the SQL editor.
+- Decide that dashboard-only schema changes do not count as done.
+
+## Vocabulary for this chapter
+
+- **Migration.** A committed database change that can be rerun in order.
+- **Constraint.** A database rule that rejects invalid data.
+- **Seed data.** Sample rows used to prove features and policies.
+- **Foreign key.** A rule that one row points to a real row elsewhere.
+- **Trigger.** Database logic that runs automatically, such as updating `updated_at`.
+
+## Guided snippet or contract
+
+This is a shape to aim for, not a finished solution to paste blindly:
+
+```sql
+-- shape, not final migration
+owner_profile(user_id uuid unique not null)
+projects(slug text unique not null, status text not null, updated_at timestamptz)
+articles(slug text unique not null, status text not null, updated_at timestamptz)
+article_comments(article_id uuid not null, status text not null)
+contact_messages(email text not null, status text not null, notification_status text)
+newsletter_subscribers(email text unique not null, status text not null)
+page_visits(path text not null, referrer text, created_at timestamptz)
+```
+
 ## Step 1 - Draw the model before SQL
 
 Write the tables on paper first:
@@ -98,6 +128,83 @@ Do not move to RLS with fuzzy answers. RLS policies are only as clear as the mod
 ## Prove it before moving on
 
 Run the migrations from a clean database if your Supabase workflow allows it, or inspect the migration history and table definitions carefully. Then try one invalid insert per important constraint: duplicate slug, bad status, comment with missing article, duplicate subscriber email. The database should say no.
+
+## If it breaks
+
+| Symptom | Likely cause | Smallest next test |
+|---|---|---|
+| Migration fails on first run | SQL syntax or dependency order is wrong | Read the first error line and run only that migration after fixing. |
+| Seed rows fail | Required field or check constraint missing from seed data | Insert one row manually with all required fields. |
+| Duplicate bad data is accepted | A unique or check constraint is missing | Try the bad insert again after adding the constraint. |
+| `updated_at` never changes | Trigger/application update strategy is not wired | Update one row and compare timestamp before/after. |
+
+## What you should be able to explain
+
+- Why migrations are better than dashboard-only changes.
+- Why `owner_profile` is needed before RLS.
+- Why seed data should include private rows.
+- Why `updated_at` must be real before Chapter 09.
+
+## The slower beginner path
+
+If this chapter feels too large, split the database model into one sitting per checkpoint. The goal is not to finish fast; the goal is to finish with proof.
+
+### Sitting 1 - Read and translate
+
+- Read the mandatory docs with this chapter open beside you.
+- Write five plain-language notes in the learning log.
+- Circle any word you cannot define yet.
+- Rewrite the point of the chapter in your own words.
+- Stop before coding if you cannot explain what you are about to change.
+
+### Sitting 2 - Create the smallest artifact
+
+- Create only the first file, table, route, policy, function, checklist, or note this chapter requires.
+- Add placeholder content or a tiny shape before trying to make it complete.
+- Run the smallest possible check.
+- If it fails, debug that one artifact before adding the next one.
+
+### Sitting 3 - Connect the artifact
+
+- Connect the artifact to the previous chapter's work.
+- Keep the connection narrow: one query, one route, one form submit, one policy, or one checklist item.
+- Add a visible loading, empty, blocked, or failure state if this chapter touches UI or data.
+- Write down what changed in the request flow.
+
+### Sitting 4 - Break it safely
+
+- Try the shortcut this chapter warned you about in a harmless way.
+- Try the most likely beginner mistake from the troubleshooting table.
+- Confirm the app fails safely, or fix it until it does.
+- Record the before/after in the learning log.
+
+## Checkpoints during the work
+
+Use this mini-review after each sitting:
+
+```txt
+What did I create or change?
+What command, route, query, or click proves it exists?
+What private data or failure case did I protect?
+What is the next smallest test?
+```
+
+If you cannot answer the second question, you do not have proof yet. If you cannot answer the third question, you may have built only the happy path.
+
+## Suggested commit rhythm
+
+Make small commits when code changes. A good commit for this chapter should complete one idea, not the whole universe:
+
+```txt
+setup: add safe Supabase client shape
+schema: add project and article tables
+security: add public published-project policy
+ui: add project loading and empty states
+admin: add project archive action
+ops: add production smoke-test checklist
+```
+
+Use the style that fits your repo, but keep the habit: one clear change, one clear reason, one checkpoint you can return to.
 
 > **📖 Mandatory read.** Read [Supabase CLI](https://supabase.com/docs/guides/cli), [Supabase database overview](https://supabase.com/docs/guides/database/overview), [PostgreSQL constraints](https://www.postgresql.org/docs/current/ddl-constraints.html), and [PostgreSQL indexes](https://www.postgresql.org/docs/current/indexes.html). Required: this chapter depends on knowing what migrations, constraints, and indexes are for.
 
