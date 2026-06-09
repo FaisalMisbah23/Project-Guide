@@ -22,6 +22,61 @@ Build every route with meaningful placeholder content first. Projects and articl
 
 Visit `/projects`, `/projects/example-slug`, `/articles`, `/articles/example-slug`, `/contact`, and a nonsense URL. Refresh each one. If refresh breaks, you have a routing/deployment issue to solve before feature work hides it.
 
+## Step 5 - Write the route contract
+
+Before building components, write the route table:
+
+```txt
+/                  HomePage
+/about             AboutPage
+/projects          ProjectsPage
+/projects/:slug    ProjectDetailPage
+/articles          ArticlesPage
+/articles/:slug    ArticleDetailPage
+/contact           ContactPage
+*                  NotFoundPage
+```
+
+This is your frontend contract. A new reader should know which component owns each URL.
+
+## Step 6 - Create the minimum page content
+
+Each placeholder page should answer one question even before data exists:
+
+```txt
+Home: who are you and what should the visitor do next?
+About: what is your story and current focus?
+Projects: what work will appear here?
+Articles: what thinking will appear here?
+Contact: how will a visitor start a conversation?
+Not found: how does the visitor recover?
+```
+
+Do not leave pages as `TODO`. A placeholder should still be meaningful.
+
+## Step 7 - Do it on your project
+
+Create these artifacts:
+
+```txt
+src/routes/router.tsx
+src/pages/HomePage.tsx
+src/pages/AboutPage.tsx
+src/pages/ProjectsPage.tsx
+src/pages/ProjectDetailPage.tsx
+src/pages/ArticlesPage.tsx
+src/pages/ArticleDetailPage.tsx
+src/pages/ContactPage.tsx
+src/pages/NotFoundPage.tsx
+src/components/layout/PublicLayout.tsx
+```
+
+Names can vary, but the responsibilities should remain separate.
+
+## Prove it before moving on
+
+Open every route manually, then refresh it. Click every nav item. Type a bad URL. If any route gives a blank screen, fix routing before Supabase data enters the picture.
+
 > **📖 Mandatory read.** Read [React Router](https://reactrouter.com/home), [React conditional rendering](https://react.dev/learn/conditional-rendering), and [MDN document structure](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents). Required: routes, layout, and semantic page regions are the vocabulary of this chapter.
 
 > **💡 Hint.** Use `Link` or `NavLink` for internal navigation. A normal `<a>` is for leaving the app or linking to real documents, not for route changes inside the SPA.

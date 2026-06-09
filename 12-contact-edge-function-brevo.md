@@ -26,6 +26,70 @@ Use `201` for stored and notified, `202` for stored but notification failed, `40
 
 Browser calls to Edge Functions may need CORS headers and preflight handling. Add them as part of the function, not after panic-debugging.
 
+## Step 6 - Write the function contract
+
+The frontend should be able to depend on a precise response shape:
+
+```txt
+201 Created
+{ ok: true, messageStored: true, notificationSent: true }
+
+202 Accepted
+{ ok: true, messageStored: true, notificationSent: false }
+
+400 Bad Request
+{ ok: false, error: "validation_failed" }
+
+500 Internal Server Error
+{ ok: false, error: "message_not_stored" }
+```
+
+This contract keeps the UI honest. A stored message with failed email is not the same as a lost message.
+
+## Step 7 - Define the Edge Function responsibilities
+
+The function owns server-side work:
+
+```txt
+handle CORS preflight
+parse JSON safely
+validate name/email/subject/message
+insert contact_messages row
+call Brevo with server-side secret
+update notification_status
+return precise JSON
+avoid logging secrets or full private message bodies
+```
+
+React owns the form and user feedback. Brevo owns email delivery. The database owns truth.
+
+## Step 8 - Do it on your project
+
+Create:
+
+```txt
+supabase/functions/contact/index.ts
+contact form submit helper
+contact_messages notification fields
+Supabase secrets for BREVO_API_KEY, sender, recipient
+frontend messages for 201, 202, 400, 500
+```
+
+Do not put Brevo secrets in `.env` for Vite.
+
+## Prove it before moving on
+
+Run four tests:
+
+```txt
+valid message + Brevo works       -> 201 and inbox row
+valid message + Brevo forced fail -> 202 and inbox row with failed notification
+invalid email                     -> 400 and no row
+forced database failure           -> 500 and no false success
+```
+
+If email failure loses the message, the feature is backwards.
+
 > **📖 Mandatory read.** Read [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), [Brevo transactional email](https://developers.brevo.com/docs/send-a-transactional-email), [MDN CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS), and [MDN form validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation). Required: this feature crosses browser, server, database, and provider boundaries.
 
 > **💡 Hint.** Temporarily force Brevo failure in development. The message should still exist, and the UI should say the message was saved but notification failed.

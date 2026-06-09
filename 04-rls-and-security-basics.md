@@ -51,6 +51,64 @@ $$;
 
 This helper is for owner-only policies. Do not use it as a shortcut to make public features work. If public reads fail, fix the public policy; do not reach for service-role.
 
+## Section 5 - Write policies one table at a time
+
+Do not enable everything and hope. Work table by table:
+
+```txt
+projects
+  public select: status = 'published'
+  owner insert/update/delete: public.is_owner()
+
+articles
+  public select: status = 'published'
+  owner insert/update/delete: public.is_owner()
+
+contact_messages
+  public select: never
+  owner select/update: public.is_owner()
+```
+
+After each table, test both an allowed case and a blocked case. Security work done in one giant batch is hard to debug.
+
+## Section 6 - Understand the anon key boundary
+
+The anon key is not a password in the normal sense. It is allowed in the browser because the database is supposed to enforce permissions with RLS. That gives you this rule:
+
+| Key | Browser? | Why |
+|---|---:|---|
+| Supabase anon key | yes | limited by RLS policies |
+| Supabase service-role key | no | bypasses RLS entirely |
+| Brevo API key | no | can send email as your account |
+| Database password | no | direct database power |
+
+If a feature only works when you move service-role into React, the feature is not fixed. It is unsafe.
+
+## Section 7 - Do it on your project
+
+Create a written `policy-map.md` or learning-log section before writing policies. Then implement policies in this order:
+
+1. Enable RLS on all app tables.
+2. Create and test `public.is_owner()`.
+3. Add public read policies for published/approved content.
+4. Add owner policies for admin-managed tables.
+5. Add narrow insert policies only where public insertion is intentional.
+6. Leave private tables private by default.
+
+## Section 8 - Prove blocked access directly
+
+Use the public Supabase client, browser console, or a small script. Test:
+
+```txt
+public reads published project        -> allowed
+public reads draft project            -> blocked or empty
+public reads contact_messages         -> blocked or empty
+signed-out updates article            -> blocked
+owner updates own project             -> allowed
+```
+
+Record the exact result in the learning log. Security you did not test is a hope, not a gate.
+
 > **📖 Mandatory read.** Read [Supabase Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security), [PostgreSQL row security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [Supabase Auth](https://supabase.com/docs/guides/auth), and [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets). Required: admin CRUD, inbox, comments, analytics, and deployment all depend on this distinction.
 
 ## Section 4 - Test blocked cases like an attacker

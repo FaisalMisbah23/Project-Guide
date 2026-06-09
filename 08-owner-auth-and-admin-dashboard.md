@@ -22,6 +22,61 @@ Any signed-in user is not automatically the owner. Connect the session user id t
 
 Add dashboard navigation for projects, articles, images, messages, newsletter, and analytics. Empty sections are fine today; the shell gives later chapters a home.
 
+## Step 5 - Draw the auth flow
+
+Write the flow before wiring components:
+
+```txt
+Visitor opens /admin/projects
+  -> route checks session loading
+  -> no session: redirect to /admin/login
+  -> session exists: render admin layout
+  -> data query still depends on RLS and owner_profile
+```
+
+The route guard improves navigation. RLS protects data. Keep repeating that until it is boring.
+
+## Step 6 - Create the admin route map
+
+```txt
+/admin/login
+/admin
+/admin/projects
+/admin/articles
+/admin/images
+/admin/messages
+/admin/newsletter
+/admin/analytics
+```
+
+Some pages can be placeholders today. The shell is the important artifact: a private workspace where future chapters land.
+
+## Step 7 - Do it on your project
+
+Create:
+
+```txt
+src/features/auth/
+src/routes/RequireAuth.tsx
+src/pages/admin/AdminLayout.tsx
+src/pages/admin/AdminDashboardPage.tsx
+src/pages/admin/LoginPage.tsx
+```
+
+Add logout early. Beginners often build login and forget the way out.
+
+## Prove it before moving on
+
+Test three paths:
+
+```txt
+signed out opens /admin/projects -> redirected
+owner logs in -> dashboard opens
+signed out direct Supabase query for private table -> blocked by RLS
+```
+
+If the third path fails, do not continue to CRUD.
+
 > **📖 Mandatory read.** Read [Supabase Auth](https://supabase.com/docs/guides/auth), [React Router](https://reactrouter.com/home), and [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security). Required: this chapter makes the difference between identity, route protection, and database permission concrete.
 
 > **💡 Hint.** After route protection works, still test a direct Supabase query as a signed-out user. The database should reject private data even if the UI is bypassed.

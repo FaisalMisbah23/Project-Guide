@@ -26,6 +26,50 @@ A scheduled job should first report who would receive the digest and what conten
 
 `newsletter_runs` is how you inspect success, failure, counts, and errors later.
 
+## Step 5 - Write the signup response behavior
+
+Duplicate signup behavior should be friendly and privacy-aware. Do not reveal too much, but do not show a scary database error.
+
+```txt
+new valid email       -> saved, success message
+existing active email -> friendly already-subscribed style success
+invalid email         -> validation message
+provider unavailable  -> signup still stored if provider is only notification
+```
+
+For the first version, signup does not need to send a provider email unless you choose confirmation. It must store clean subscriber data.
+
+## Step 6 - Plan the scheduled digest
+
+A digest job needs a contract before Cron:
+
+```txt
+input: dryRun boolean
+find: published articles/projects since last successful run
+send: Brevo email to active subscribers
+record: newsletter_runs status, counts, error
+retry: safe because run records exist
+```
+
+Dry-run is mandatory before real sending.
+
+## Step 7 - Do it on your project
+
+Create:
+
+```txt
+newsletter signup Edge Function
+newsletter_subscribers unique normalized email
+newsletter_runs table usage
+optional digest Edge Function
+Cron schedule only after dry-run proof
+admin view or log path for recent runs
+```
+
+## Prove it before moving on
+
+Submit the same email twice quickly. Inspect the table. There should be one normalized subscriber row. Then run the digest in dry-run mode and confirm it reports recipients and content without sending.
+
 > **📖 Mandatory read.** Read [Supabase Edge Functions](https://supabase.com/docs/guides/functions), [Supabase Cron](https://supabase.com/docs/guides/cron), [Supabase function secrets](https://supabase.com/docs/guides/functions/secrets), and [Brevo transactional email](https://developers.brevo.com/docs/send-a-transactional-email). Required: signup and scheduled sending both need server-side boundaries.
 
 > **💡 Hint.** Submit the same email twice quickly. The database should end with one row, and the UI should still feel friendly.

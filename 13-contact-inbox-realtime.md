@@ -22,6 +22,49 @@ Subscribe to inserts on `contact_messages` to update an unread count or prepend 
 
 If Brevo failed in Chapter 12, the inbox should show that. The owner needs to know the database has a message even if email did not arrive.
 
+## Step 5 - Define the inbox feature folder
+
+```txt
+src/features/messages/
+  messageTypes.ts
+  messageApi.ts
+  useMessagesRealtime.ts
+  AdminMessagesPage.tsx
+  MessageList.tsx
+  MessageDetail.tsx
+```
+
+The Realtime hook should be optional. The page should still work from normal queries.
+
+## Step 6 - Write the inbox states
+
+Messages need a lifecycle:
+
+```txt
+unread -> read -> archived
+archived -> restored, if you support it
+notification_status -> sent or failed
+```
+
+Status gives workflow without destroying history.
+
+## Step 7 - Do it on your project
+
+Build in this order:
+
+1. Query newest messages.
+2. Render list and detail.
+3. Mark read.
+4. Archive.
+5. Show notification failure from Chapter 12.
+6. Add Realtime insert subscription.
+7. Add cleanup.
+8. Add disconnected or refresh fallback if useful.
+
+## Prove it before moving on
+
+Submit the contact form in one browser while the inbox is open in another. The message may appear live, but after refresh it must still appear from stored data. Then navigate away and back repeatedly to check for duplicate subscriptions.
+
 > **📖 Mandatory read.** Read [Supabase Realtime](https://supabase.com/docs/guides/realtime), [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), and [React effect lifecycle](https://react.dev/learn/lifecycle-of-reactive-effects). Required: subscriptions must be started and cleaned up deliberately.
 
 > **💡 Hint.** Navigate away from the inbox and back several times. If one new message appears three times, you probably forgot cleanup.

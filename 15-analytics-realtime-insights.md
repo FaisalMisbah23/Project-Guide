@@ -22,6 +22,60 @@ The dashboard should ask for totals, top pages, top referrers, and recent visits
 
 Live recent activity can be nice. It is not a replacement for stored events and summary queries.
 
+## Step 5 - Write the analytics contract
+
+Start with a deliberately small event:
+
+```txt
+page_visits
+  path text
+  referrer text nullable
+  created_at timestamptz
+```
+
+Anything beyond this needs a reason. Country, city, user-agent family, and session-like identifiers can become privacy decisions quickly.
+
+## Step 6 - Choose browser insert or function insert
+
+| Approach | Benefit | Risk |
+|---|---|---|
+| Browser insert | simple and fast to build | spoofable, noisy, needs narrow RLS |
+| Edge Function | more control and rate-limit options | more server code |
+
+For a beginner portfolio, browser insert can be acceptable if you document that it is untrusted and collect only minimal fields. Do not call it exact analytics.
+
+## Step 7 - Define dashboard summaries
+
+The dashboard should ask for summaries:
+
+```txt
+total visits this week
+top pages in last 30 days
+top referrers
+recent visits limited to 20
+```
+
+Use grouped database queries or RPC functions. Do not load every row into React and count there.
+
+## Step 8 - Do it on your project
+
+Create:
+
+```txt
+src/features/analytics/trackPageVisit.ts
+src/features/analytics/analyticsApi.ts
+src/features/analytics/AnalyticsDashboard.tsx
+page_visits insert path or Edge Function
+summary query/RPC shapes
+optional recent-visit Realtime subscription
+```
+
+The tracker should immediately return for `/admin` paths.
+
+## Prove it before moving on
+
+Visit public pages, then admin pages. Public visits should count; admin visits should not. Try inserting extra fields from the browser if using direct insert. The database or API should ignore/block fields you did not choose.
+
 > **📖 Mandatory read.** Read [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), [Supabase Realtime](https://supabase.com/docs/guides/realtime), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), and [PostgreSQL aggregate functions](https://www.postgresql.org/docs/current/functions-aggregate.html). Required: analytics is a database, privacy, and trust-boundary feature.
 
 > **💡 Hint.** Write `Analytics I refuse to collect` before coding. If you cannot defend a field, remove it.

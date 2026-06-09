@@ -31,6 +31,94 @@ Do not add Supabase yet. First prove the app itself starts.
 
 This course uses TailwindCSS and shadcn/ui because the app has both public marketing-style pages and dense admin screens. Follow the official Vite instructions for both tools. Do not paste random setup from an old blog post; frontend tooling changes.
 
+## Step 7 - Make the setup reproducible
+
+A future learner, teammate, or future-you should be able to open the repo and know what to do. Add these scripts if they are not already present:
+
+```jsonc
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  }
+}
+```
+
+The exact scripts may differ if Vite generated something newer, but the intent should not: one command for development, one command for production build, one command to preview the built app.
+
+## Step 8 - Write the first setup contract
+
+Add a short `README` note in the app project later, or at least a learning-log section now, that names the setup contract:
+
+```txt
+To run locally:
+  install dependencies
+  create .env from .env.example
+  provide VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+  run npm run dev
+
+Never commit:
+  .env
+  service-role keys
+  Brevo keys
+  database passwords
+```
+
+This is not busywork. Reproducibility is how setup becomes professional.
+
+## Step 9 - Verify the secret boundary manually
+
+Run these checks before committing:
+
+```bash
+git status
+npm run build
+```
+
+Then inspect the source tree for suspicious names:
+
+```txt
+BREVO_API_KEY
+SUPABASE_SERVICE_ROLE_KEY
+DATABASE_URL
+password
+secret
+```
+
+Finding those words is not automatically wrong, because docs and examples mention them. Finding real values is wrong. If a real private value touched Git, rotate it.
+
+## Do it on your project
+
+Create these artifacts:
+
+```txt
+.env                 real local values, ignored
+.env.example         safe names only, committed
+src/lib/supabaseClient.ts
+src/components/
+src/features/
+src/pages/
+src/routes/
+src/styles/
+learning-log/02-project-setup.md
+```
+
+Commit only after the build succeeds and the secret boundary is clear.
+
+## Prove it before moving on
+
+A clean proof looks like this:
+
+```txt
+npm run dev      -> app opens locally
+npm run build    -> production build succeeds
+git status       -> .env is not staged; .env.example is visible
+code search      -> no real private secret exists in frontend files
+```
+
+If any line fails, fix setup now. Setup problems become harder to untangle after Supabase, routing, and admin features arrive.
+
 > **📖 Mandatory read.** Read [Vite's guide](https://vite.dev/guide/), [React's project guide](https://react.dev/learn/start-a-new-react-project), [Tailwind's Vite installation](https://tailwindcss.com/docs/installation/using-vite), [shadcn/ui's Vite installation](https://ui.shadcn.com/docs/installation/vite), and [Vite environment variables](https://vite.dev/guide/env-and-mode). Required: the rest of the course assumes you know what the dev server, build command, and `VITE_` prefix do.
 
 ## Step 3 - Choose the folder shape

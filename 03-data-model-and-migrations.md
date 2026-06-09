@@ -30,6 +30,75 @@ The important beginner move is not memorizing SQL. It is deciding what each tabl
 
 Clicking tables into existence in the Supabase dashboard feels fast. It leaves no reliable history. A migration is a repeatable, committed change. Another machine can run it. Future-you can review it. That is why migrations are mandatory.
 
+## Step 6 - Turn the drawing into migration files
+
+Use one or more migration files, but keep the dependency order clear. A beginner-friendly order is:
+
+```txt
+owner_profile and profile_settings
+projects
+articles
+article_comments
+contact_messages
+newsletter_subscribers
+newsletter_runs
+page_visits
+updated_at trigger/helper
+indexes
+seed data
+```
+
+The exact filenames are less important than the rule: migrations are committed, ordered, and repeatable.
+
+## Step 7 - Write constraints as business rules
+
+A constraint is not database decoration. It is a business rule the database refuses to forget:
+
+| Rule | Database protection |
+|---|---|
+| A project slug should not collide | unique constraint on `projects.slug` |
+| A status should not be misspelled | check constraint on `status` |
+| A comment belongs to an article | foreign key from `article_comments.article_id` |
+| One subscriber email should not duplicate | unique normalized email |
+| Editable rows need reliable conflict checks | automatic `updated_at` strategy |
+
+React can help users avoid mistakes. The database prevents corrupted truth.
+
+## Step 8 - Seed for proof, not decoration
+
+Seed rows should create test situations:
+
+```txt
+published project   -> should appear publicly later
+draft project       -> should not appear publicly later
+published article   -> should appear publicly later
+draft article       -> should not appear publicly later
+pending comment     -> should not appear publicly until approved
+contact message     -> should be owner-only later
+```
+
+If seed data does not help prove a rule, improve it.
+
+## Step 9 - Do it on your project
+
+Create or update migrations so a reviewer can answer these questions from the SQL:
+
+```txt
+Where is owner identity stored?
+Which rows can be drafted or published?
+Which fields are required?
+Which values are unique?
+Which tables reference other tables?
+Which queries will need indexes later?
+How does updated_at stay current?
+```
+
+Do not move to RLS with fuzzy answers. RLS policies are only as clear as the model they protect.
+
+## Prove it before moving on
+
+Run the migrations from a clean database if your Supabase workflow allows it, or inspect the migration history and table definitions carefully. Then try one invalid insert per important constraint: duplicate slug, bad status, comment with missing article, duplicate subscriber email. The database should say no.
+
 > **📖 Mandatory read.** Read [Supabase CLI](https://supabase.com/docs/guides/cli), [Supabase database overview](https://supabase.com/docs/guides/database/overview), [PostgreSQL constraints](https://www.postgresql.org/docs/current/ddl-constraints.html), and [PostgreSQL indexes](https://www.postgresql.org/docs/current/indexes.html). Required: this chapter depends on knowing what migrations, constraints, and indexes are for.
 
 ## Step 3 - Add the safety fields early

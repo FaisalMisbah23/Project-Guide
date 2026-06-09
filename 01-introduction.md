@@ -54,6 +54,56 @@ Create `learning-log/` in the app project when Chapter 02 starts. Every chapter 
 
 Move through the chapters in order. Do not skip RLS because the UI seems to hide things. Do not skip deployment checks because the homepage loads. Do not skip failure states because the happy path works once.
 
+## Section 5 - Draw the system before tools
+
+Create a one-page sketch in your learning log before writing any code. It should show the request paths, not just product features:
+
+```txt
+Public visitor opens /projects
+  -> React route renders ProjectsPage
+  -> Supabase query asks for published projects
+  -> RLS blocks drafts even if the query is changed
+
+Visitor submits contact form
+  -> React calls Edge Function
+  -> Function validates input
+  -> Function inserts contact_messages row
+  -> Function calls Brevo notification
+  -> Admin inbox still has the message if Brevo fails
+```
+
+This drawing is deliberately plain. Beginners often hide confusion behind tool names. A simple request path proves you understand what talks to what.
+
+## Section 6 - Define the chapter gates now
+
+For this course, a chapter is finished only when you can do three things:
+
+1. **Show it** - a route, table, policy, form, function, deployment, or checklist exists.
+2. **Break it safely** - you tried the obvious failure or bypass case.
+3. **Explain it** - your learning log says why this approach was chosen.
+
+That means `it works on my machine once` is not enough. You need proof.
+
+## Section 7 - Do it on your project
+
+Before Chapter 02, create a planning note with these headings:
+
+```txt
+Product promise:
+Public visitor needs:
+Owner needs:
+Data that is public:
+Data that is private:
+Secrets that must never reach the browser:
+One failure I expect:
+```
+
+Fill it in with your own words. Do not write generic textbook definitions. Use this portfolio.
+
+## Prove it before moving on
+
+Explain the whole system to yourself without naming React first. If your explanation starts with tools, restart with people: visitor, owner, message, content, trust. Tools come second.
+
 > **📖 Mandatory read.** Read [MDN's overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview), [React's start guide](https://react.dev/learn/start-a-new-react-project), [Supabase's database overview](https://supabase.com/docs/guides/database/overview), and [Vercel's Vite deployment docs](https://vercel.com/docs/frameworks/vite). Required: you need the words browser, server, database, and deployment to mean something before you build.
 
 > **💡 Hint.** If the app feels huge, split it into four stories: public reading, owner writing, server-side workflows, and deployment. You never have to understand the whole thing at once.

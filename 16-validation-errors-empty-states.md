@@ -26,6 +26,49 @@ Force slow loading, missing slugs, empty tables, failed uploads, failed Brevo, d
 
 Validation helpers, mappers, published-only queries, auth guards, and contact degraded-success behavior are good first tests.
 
+## Step 6 - Create a state matrix
+
+Make a table before changing UI:
+
+```txt
+Surface              loading empty error success unauthorized not-found double-submit
+projects list        yes     yes   yes   yes     n/a          n/a       n/a
+project detail       yes     n/a   yes   yes     n/a          yes       n/a
+contact form         yes     n/a   yes   yes     n/a          n/a       yes
+admin projects       yes     yes   yes   yes     yes          n/a       yes
+```
+
+Fill it for every major screen. Empty cells are how blank screens happen.
+
+## Step 7 - Build reusable UI states carefully
+
+You can create shared components for common states, but do not make every message generic. `No data` is not enough. A useful empty state names the thing and the next action.
+
+```txt
+No projects match this filter. Clear filters to see all published work.
+Message saved, but email notification failed. Check the admin inbox.
+```
+
+## Step 8 - Do it on your project
+
+Audit and update:
+
+```txt
+public lists and details
+contact and newsletter forms
+admin login
+project/article CRUD forms
+image upload
+messages inbox
+analytics dashboard
+```
+
+Add validation helpers where rules repeat.
+
+## Prove it before moving on
+
+Force failures intentionally: invalid email, duplicate slug, slow network, missing slug, empty table, failed upload, forced Brevo failure, expired session, double submit. The UI should never be silent.
+
 > **📖 Mandatory read.** Read [MDN form validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation), [React conditional rendering](https://react.dev/learn/conditional-rendering), [Vitest](https://vitest.dev/guide/), and [Playwright](https://playwright.dev/docs/intro). Required: designed failure is part of the product.
 
 > **💡 Hint.** A useful error says what happened and what the user can do next. `Error.` is rarely useful.

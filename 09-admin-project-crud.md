@@ -22,6 +22,64 @@ Hard delete is permanent and can break public links. Archive is the safer defaul
 
 When loading an edit form, remember `updated_at`. On save, update only when the row still has that same value. If no row updates, tell the owner to reload because the project changed elsewhere.
 
+## Step 5 - Define the admin project feature folder
+
+Use a folder that keeps form, validation, and mutations together:
+
+```txt
+src/features/adminProjects/
+  adminProjectTypes.ts
+  adminProjectApi.ts
+  validateProjectInput.ts
+  AdminProjectsPage.tsx
+  ProjectForm.tsx
+  ProjectRowActions.tsx
+```
+
+This is the admin-side mirror of the public projects feature. Public reads and owner writes should not blur together.
+
+## Step 6 - Write the mutation contract
+
+Use clear functions instead of inline Supabase calls everywhere:
+
+```ts
+listOwnerProjects()
+createProjectDraft(values)
+updateProject(id, values, lastSeenUpdatedAt)
+publishProject(id)
+unpublishProject(id)
+archiveProject(id)
+```
+
+The names describe intent. The implementation can use Supabase, but the UI should call verbs the owner understands.
+
+## Step 7 - Compare delete choices
+
+| Action | Public effect | History effect | Beginner default |
+|---|---|---|---|
+| hard delete | row disappears | history can break | avoid for published work |
+| archive | hidden publicly | row remains | use this |
+| unpublish | hidden publicly | draft/editable | use for temporary removal |
+
+Hard delete is not evil. It is just rarely the safest first behavior for portfolio work that may have links, images, comments, or analytics.
+
+## Step 8 - Do it on your project
+
+Build this lifecycle in order:
+
+1. Owner list view with status filters.
+2. Create draft form.
+3. Edit draft form.
+4. Publish action.
+5. Unpublish action.
+6. Archive action with confirmation.
+7. Duplicate slug and invalid URL messages.
+8. Stale edit guard using `updated_at`.
+
+## Prove it before moving on
+
+Open two tabs on the same project. Save a change in tab A. Try saving older data in tab B. Tab B should not silently overwrite tab A; it should ask the owner to reload.
+
 > **📖 Mandatory read.** Read [Supabase inserts and updates](https://supabase.com/docs/reference/javascript/insert), [MDN form validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation), and [PostgreSQL unique constraints](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS). Required: admin forms need UI validation, database constraints, and clear mutation behavior.
 
 > **💡 Hint.** Test a duplicate slug on purpose. A database error should become a useful field message, not a mysterious red wall.

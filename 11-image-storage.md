@@ -22,6 +22,54 @@ The admin form uploads an image, receives or stores the path, and saves that pat
 
 A meaningful screenshot needs meaningful alt text. Decorative images can be empty, but portfolio evidence is rarely decorative.
 
+## Step 5 - Write the storage contract
+
+Your database should not store image bytes. It should store a reference:
+
+```txt
+image_path: projects/my-project/cover.webp
+image_alt: Screenshot of the dashboard showing project cards
+```
+
+The storage bucket holds the file. The database row explains which file belongs to which project or article.
+
+## Step 6 - Plan ownership and cleanup
+
+Images create lifecycle questions:
+
+```txt
+upload new image -> save path on row
+replace image -> upload new file, update path, decide what happens to old file
+archive project -> keep image for history
+hard delete draft -> optionally delete unused image
+```
+
+You do not need perfect cleanup on day one, but you need to know the tradeoff.
+
+## Step 7 - Do it on your project
+
+Create:
+
+```txt
+Supabase storage bucket for portfolio images
+owner-only upload/update/delete policy
+public read policy if images are public
+image fields in project/article forms
+helper to build public image URLs from paths
+```
+
+## Prove it before moving on
+
+Try three actions:
+
+```txt
+signed-in owner uploads image -> succeeds
+signed-out visitor views public image -> succeeds
+signed-out visitor uploads image -> fails
+```
+
+If the third action succeeds, stop and fix storage policies.
+
 > **📖 Mandatory read.** Read [Supabase Storage](https://supabase.com/docs/guides/storage), [Supabase Storage access control](https://supabase.com/docs/guides/storage/security/access-control), and [MDN accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility). Required: storage has its own access rules and images need accessible descriptions.
 
 > **💡 Hint.** Signed-out users should be able to view public images but fail to upload one. Test both cases.

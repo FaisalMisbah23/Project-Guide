@@ -47,6 +47,51 @@ My smallest next test is...
 
 If you cannot fill in the lines, the problem is still too vague. Make it smaller.
 
+
+## Expected effort
+
+Treat this as a capstone, not a weekend template. A careful beginner should expect roughly **50-90 hours** across the full build, depending on how much React, SQL, Supabase, and deployment are new. Speed is not the score. The score is whether you can build, test, and explain each decision.
+
+A useful weekly rhythm is:
+
+```txt
+Read docs -> write a short note -> build one small piece -> prove it -> commit -> log the decision
+```
+
+If you only code, you will finish with gaps you cannot defend. If you only read, you will never meet the bugs. The course works because you do both.
+
+## How to read documentation
+
+Official docs are not novels. Read them with a job:
+
+- Before setup docs, ask: what command changes my project, and what file should I inspect after?
+- Before Supabase docs, ask: which code runs in the browser, which runs server-side, and which permission boundary applies?
+- Before deployment docs, ask: where does this value live in production, and who can see it?
+
+Keep one note per chapter in `learning-log/`. Copying docs is not useful. Translating them into your project is.
+
+## Module map
+
+### Module 1 - Foundations
+
+Chapters 01-04 establish the product, project setup, database model, and RLS security model. Do not rush this module. Every later feature assumes the database shape and permission rules are correct.
+
+### Module 2 - Public site
+
+Chapters 05-07 build the public reading experience: routes, projects, articles, comments, search, and pagination. The rule is public content only: published rows and approved comments.
+
+### Module 3 - Owner workflows
+
+Chapters 08-14 build the private owner side: login, admin dashboard, project CRUD, article CRUD, image storage, contact inbox, newsletter signup, and scheduled work. This is where the portfolio becomes maintainable.
+
+### Module 4 - Production quality
+
+Chapters 15-18 handle analytics, failure states, responsive/accessibility polish, and deployment. These chapters turn a working app into one you can trust in front of real users.
+
+### Module 5 - Prove and maintain
+
+Chapters 19-20 turn the shipped app into evidence: README, case study, demo script, smoke tests, maintenance rhythm, and the final explanation.
+
 ## Course outline
 
 | # | Chapter | Done when... |

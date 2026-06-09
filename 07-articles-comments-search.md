@@ -22,6 +22,50 @@ A visitor-submitted comment should start as `pending`. The owner approves it bef
 
 Pagination is not only performance polish. It is the habit of never asking the browser or database for more than the screen needs.
 
+## Step 5 - Define the article feature folder
+
+Use a shape like:
+
+```txt
+src/features/articles/
+  articleTypes.ts
+  articleApi.ts
+  ArticleBody.tsx
+  ArticlesPage.tsx
+  ArticleDetailPage.tsx
+  CommentForm.tsx
+  CommentsList.tsx
+```
+
+Keep `ArticleBody` boring and safe. It should be the only place article Markdown becomes rendered UI.
+
+## Step 6 - Compare body formats deliberately
+
+| Format | Beginner fit | Risk |
+|---|---|---|
+| Markdown | best starting point | plugin choices still matter |
+| Sanitized HTML | useful with rich editors | sanitizer must be correct |
+| Raw HTML | avoid | XSS risk |
+| Structured JSON | powerful later | more renderer work |
+
+The course default is Markdown. If you choose otherwise, document why.
+
+## Step 7 - Do it on your project
+
+Build in this order:
+
+1. Published article list with pagination.
+2. Search that still filters to published rows.
+3. Detail page by slug.
+4. Safe body renderer.
+5. Approved comments list.
+6. Comment form that inserts pending comments.
+7. Owner moderation comes later in admin.
+
+## Prove it before moving on
+
+Create an article body with headings, links, code, and suspicious HTML. Create approved and pending comments. Public pages should render the article safely, show approved comments only, and never expose drafts.
+
 > **📖 Mandatory read.** Read [react-markdown](https://github.com/remarkjs/react-markdown), [MDN cross-site scripting](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting), [Supabase JavaScript client](https://supabase.com/docs/reference/javascript/introduction), and [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security). Required: safe rendering and public/private visibility meet in this chapter.
 
 > **💡 Hint.** Create one article containing a harmless code block and one suspicious HTML snippet. The code should display; the suspicious HTML should not execute.

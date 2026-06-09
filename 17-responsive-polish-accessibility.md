@@ -26,6 +26,55 @@ Buttons, cards, sidebars, and dashboards should not overlap or clip important te
 
 Meaningful images need useful alt text. Inputs need labels. Errors need to appear near the field they explain.
 
+## Step 6 - Make a viewport checklist
+
+Test at least:
+
+```txt
+360px mobile
+768px tablet
+1024px laptop
+1440px desktop
+one awkward narrow height
+```
+
+Do not only drag the browser until it looks okay. Use named checkpoints so you can repeat the test later.
+
+## Step 7 - Make a keyboard checklist
+
+Keyboard-test these flows:
+
+```txt
+open navigation
+move through project cards
+submit contact form
+log in to admin
+open admin project actions
+edit and save a form
+archive a message
+```
+
+The visible focus indicator should tell you where you are at every step.
+
+## Step 8 - Do it on your project
+
+Create a polish pass for:
+
+```txt
+public typography and spacing
+project/article card grids
+article body readability
+forms and field errors
+admin sidebar/header behavior
+modal or confirmation actions
+image aspect ratios
+button text wrapping
+```
+
+## Prove it before moving on
+
+Use only the keyboard for one visitor flow and one owner flow. Then inspect a long title, long email, long URL, and empty image. If text overlaps or controls move unpredictably, keep polishing.
+
 > **📖 Mandatory read.** Read [MDN accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility), [MDN responsive design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design), and [WebAIM keyboard accessibility](https://webaim.org/techniques/keyboard/). Required: visual polish and accessibility are both part of frontend quality.
 
 > **💡 Hint.** Complete the contact form and at least one admin flow using only the keyboard. That test reveals more than staring at the page.
